@@ -1,0 +1,19 @@
+Example,Disease_internal,Disease,Predicted_probability,Threshold_used,Risk_classification,Uncertainty
+"Example 1: Middle-aged, relatively low risk",heart_attack,Heart attack,0.010057285727039183,0.16,Low/Moderate risk,0.020114571454078356
+"Example 1: Middle-aged, relatively low risk",coronary_hd,Coronary heart disease,0.008311074693397934,0.17,Low/Moderate risk,0.016622149386795848
+"Example 1: Middle-aged, relatively low risk",stroke,Stroke,0.005276864043968873,0.12,Low/Moderate risk,0.010553728087937753
+"Example 1: Middle-aged, relatively low risk",kidney,Chronic kidney disease,0.013906439928098162,0.09999999999999999,Low/Moderate risk,0.027812879856196293
+"Example 1: Middle-aged, relatively low risk",depression,Depression,0.09679349907289818,0.27,Low/Moderate risk,0.19358699814579639
+"Example 1: Middle-aged, relatively low risk",diabetes,Diabetes,0.027643751895108506,0.23,Low/Moderate risk,0.05528750379021696
+"Example 2: Older female, multiple CVD risk factors",heart_attack,Heart attack,0.12505489813747542,0.16,Low/Moderate risk,0.2501097962749508
+"Example 2: Older female, multiple CVD risk factors",coronary_hd,Coronary heart disease,0.16045078122432335,0.17,Low/Moderate risk,0.32090156244864665
+"Example 2: Older female, multiple CVD risk factors",stroke,Stroke,0.11340756971041974,0.12,Low/Moderate risk,0.22681513942083953
+"Example 2: Older female, multiple CVD risk factors",kidney,Chronic kidney disease,0.5790977525607959,0.09999999999999999,High risk,0.8418044948784082
+"Example 2: Older female, multiple CVD risk factors",depression,Depression,0.2948514004694719,0.27,High risk,0.5897028009389438
+"Example 2: Older female, multiple CVD risk factors",diabetes,Diabetes,0.417999361247468,0.23,High risk,0.835998722494936
+Example 3: Younger adult with depression risk,heart_attack,Heart attack,0.007703226343203442,0.16,Low/Moderate risk,0.015406452686406835
+Example 3: Younger adult with depression risk,coronary_hd,Coronary heart disease,0.01189252374918821,0.17,Low/Moderate risk,0.0237850474983764
+Example 3: Younger adult with depression risk,stroke,Stroke,0.044130260098563946,0.12,Low/Moderate risk,0.08826052019712793
+Example 3: Younger adult with depression risk,kidney,Chronic kidney disease,0.057396594870533106,0.09999999999999999,Low/Moderate risk,0.11479318974106623
+Example 3: Younger adult with depression risk,depression,Depression,0.7944329112160036,0.27,High risk,0.41113417756799286
+Example 3: Younger adult with depression risk,diabetes,Diabetes,0.02588767970440287,0.23,Low/Moderate risk,0.05177535940880573

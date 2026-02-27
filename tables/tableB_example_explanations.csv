@@ -1,0 +1,31 @@
+Example,Explained_disease,Rank,Feature,Feature_pretty,SHAP_value,Abs_SHAP
+"Example 1: Middle-aged, relatively low risk",Heart attack,1,num__SEX,Numsex,0.4663037557626785,0.4663037557626785
+"Example 1: Middle-aged, relatively low risk",Heart attack,2,num__GENHLTH,Numgenhlth,-0.3870638233988303,0.3870638233988303
+"Example 1: Middle-aged, relatively low risk",Heart attack,3,num__BPMEDS,Numbpmeds,-0.2681779553813227,0.2681779553813227
+"Example 1: Middle-aged, relatively low risk",Heart attack,4,num___AGEG5YR,Numageg5Yr,0.16624873035424215,0.16624873035424215
+"Example 1: Middle-aged, relatively low risk",Heart attack,5,num__SMOKE100,Numsmoke100,-0.15242040108635052,0.15242040108635052
+"Example 1: Middle-aged, relatively low risk",Heart attack,6,num__ALCDAY5,Numalcday5,-0.14188121532104142,0.14188121532104142
+"Example 1: Middle-aged, relatively low risk",Heart attack,7,num__TOLDHI2,Numtoldhi2,-0.12832579585592194,0.12832579585592194
+"Example 1: Middle-aged, relatively low risk",Heart attack,8,num__BPHIGH4,Numbphigh4,0.10495981486119944,0.10495981486119944
+"Example 1: Middle-aged, relatively low risk",Heart attack,9,num__FRUIT1,Numfruit1,-0.09668889244048988,0.09668889244048988
+"Example 1: Middle-aged, relatively low risk",Heart attack,10,num__HAVARTH3,Numhavarth3,-0.07974367100720073,0.07974367100720073
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,1,num___AGEG5YR,Numageg5Yr,1.1210532040993466,1.1210532040993466
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,2,num__TOLDHI2,Numtoldhi2,0.3587692046346893,0.3587692046346893
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,3,num__DIFFWALK,Numdiffwalk,0.230645709008759,0.230645709008759
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,4,num__BPHIGH4,Numbphigh4,0.22455047522192942,0.22455047522192942
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,5,num__SEX,Numsex,-0.20071412393116658,0.20071412393116658
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,6,num__PHYSHLTH,Numphyshlth,0.18471033084896088,0.18471033084896088
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,7,num___MRACE1,Nummrace1,-0.16980294740306703,0.16980294740306703
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,8,num__HAVARTH3,Numhavarth3,0.13814498016345417,0.13814498016345417
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,9,num__GENHLTH,Numgenhlth,0.12404404489443797,0.12404404489443797
+"Example 2: Older female, multiple CVD risk factors",Coronary heart disease,10,num__SMOKE100,Numsmoke100,0.10396948895887287,0.10396948895887287
+Example 3: Younger adult with depression risk,Depression,1,num__MENTHLTH,Nummenthlth,1.3857316594549258,1.3857316594549258
+Example 3: Younger adult with depression risk,Depression,2,num__DECIDE,Numdecide,1.1511141461466812,1.1511141461466812
+Example 3: Younger adult with depression risk,Depression,3,num__POORHLTH,Numpoorhlth,0.38816076444606307,0.38816076444606307
+Example 3: Younger adult with depression risk,Depression,4,num___STATE,Numstate,-0.27273990069453896,0.27273990069453896
+Example 3: Younger adult with depression risk,Depression,5,num__ASTHMA3,Numasthma3,0.2503308592046735,0.2503308592046735
+Example 3: Younger adult with depression risk,Depression,6,num__SEX,Numsex,0.1900698409881557,0.1900698409881557
+Example 3: Younger adult with depression risk,Depression,7,num___HISPANC,Numhispanc,-0.18193394834999402,0.18193394834999402
+Example 3: Younger adult with depression risk,Depression,8,num__MEDCOST,Nummedcost,0.16883217836979558,0.16883217836979558
+Example 3: Younger adult with depression risk,Depression,9,num___AGEG5YR,Numageg5Yr,0.16321762183967314,0.16321762183967314
+Example 3: Younger adult with depression risk,Depression,10,num__HAVARTH3,Numhavarth3,-0.14535839977913564,0.14535839977913564
