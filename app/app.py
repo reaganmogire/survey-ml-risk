@@ -7,10 +7,10 @@ Key features
 - Loads trained artifacts (joblib) from app/artifacts/
 - If artifacts are missing, downloads them from GitHub Releases (model-v1)
 - Provides interactive risk prediction for multiple outcomes
-- Optional local explanations with SHAP (no external AI/LLM calls)
+- Local explanations with SHAP for sklearn Pipelines (preprocessor + tree model), if available
+- No external AI/LLM calls
 
-This application is intended for research and demonstration purposes only.
-It is NOT a clinical decision support tool.
+This application is intended for research only.
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ except Exception:
 # ============================================================
 REPO_OWNER = "reaganmogire"
 REPO_NAME = "survey-ml-risk"
-MODEL_TAG = os.environ.get("MODEL_TAG", "model-v1")  # allow override if you ever version-bump
+MODEL_TAG = os.environ.get("MODEL_TAG", "model-v1")  # override if you version-bump
 
 RELEASE_BASE = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/{MODEL_TAG}"
 
@@ -65,6 +65,11 @@ ARTIFACTS = {
     "optimal_thresholds.joblib": f"{RELEASE_BASE}/optimal_thresholds.joblib",
     "predictor_cols.joblib": f"{RELEASE_BASE}/predictor_cols.joblib",
 }
+
+DISCLAIMER_TEXT = (
+    "Disclaimer: This tool is for research only. It does not provide medical advice or diagnosis. "
+    "Consult a qualified clinician for personalised guidance."
+)
 
 
 def _download_file(url: str, dest: Path) -> None:
@@ -219,56 +224,90 @@ def rule_based_guidance(user_inputs: Dict[str, Any], results_df: pd.DataFrame) -
             "mental health."
         )
 
-    lines.append(
-        "\n⚠️ **Disclaimer:** This tool is for research/demonstration only. It does not provide medical advice "
-        "or diagnosis. Consult a qualified clinician for personalised guidance."
-    )
-
+    lines.append("\n⚠️ " + DISCLAIMER_TEXT)
     return "\n".join(lines)
 
 
 # ============================================================
-# 3) Optional SHAP explainers
+# 3) SHAP utilities (Pipeline-safe)
 # ============================================================
 @st.cache_resource(show_spinner=False)
-def build_shap_explainers():
+def build_tree_explainers():
+    """
+    Build SHAP TreeExplainers for the *classifier* inside each sklearn Pipeline.
+
+    Returns:
+      dict[disease] = {"preprocessor": preprocessor, "clf": clf, "explainer": TreeExplainer}
+    """
     if not _HAS_SHAP:
         return None
 
-    explainers = {}
+    out = {}
     for disease, info in disease_models.items():
         model = info["model"] if isinstance(info, dict) and "model" in info else info
+
+        # Expect sklearn Pipeline with named steps
+        if not hasattr(model, "named_steps"):
+            out[disease] = None
+            continue
+
+        if "preprocessor" not in model.named_steps or "clf" not in model.named_steps:
+            out[disease] = None
+            continue
+
+        pre = model.named_steps["preprocessor"]
+        clf = model.named_steps["clf"]
+
         try:
-            # Many of your models are sklearn Pipelines with a tree-based classifier
-            # SHAP can sometimes handle the estimator directly; if not, we degrade gracefully.
-            explainers[disease] = shap.TreeExplainer(model)
+            explainer = shap.TreeExplainer(clf)
+            out[disease] = {"preprocessor": pre, "clf": clf, "explainer": explainer}
         except Exception:
-            explainers[disease] = None
-    return explainers
+            out[disease] = None
+
+    return out
 
 
-shap_explainers = build_shap_explainers()
+tree_explainers = build_tree_explainers()
 
 
-def explain_instance(model_input: Dict[str, Any], disease: str, top_n: int = 20) -> Optional[pd.DataFrame]:
-    if not _HAS_SHAP or shap_explainers is None:
+def explain_instance_pipeline(model_input: Dict[str, Any], disease: str, top_n: int = 20) -> Optional[pd.DataFrame]:
+    """
+    Compute SHAP values for a single instance for a given disease model.
+
+    Pipeline workflow:
+      X_raw -> preprocessor.transform -> X_transformed
+      shap.TreeExplainer(clf).shap_values(X_transformed)
+
+    Returns a DataFrame of the top contributing transformed features.
+    """
+    if not _HAS_SHAP or tree_explainers is None:
         return None
-    explainer = shap_explainers.get(disease)
-    if explainer is None:
+
+    bundle = tree_explainers.get(disease)
+    if bundle is None:
         return None
 
-    x = pd.DataFrame([model_input]).reindex(columns=predictor_cols, fill_value=np.nan)
+    pre = bundle["preprocessor"]
+    explainer = bundle["explainer"]
+
+    x_raw = pd.DataFrame([model_input]).reindex(columns=predictor_cols, fill_value=np.nan)
 
     try:
-        sv = explainer.shap_values(x)
-        # Binary classifiers sometimes return list [class0, class1]
-        if isinstance(sv, list) and len(sv) == 2:
-            sv = sv[1]
-        sv = np.array(sv).reshape(-1)
+        X_t = pre.transform(x_raw)
+        feature_names = pre.get_feature_names_out()
     except Exception:
         return None
 
-    df = pd.DataFrame({"feature": predictor_cols, "shap_value": sv})
+    try:
+        sv = explainer.shap_values(X_t)
+        # For binary classification, SHAP may return a list [class0, class1]
+        if isinstance(sv, list) and len(sv) == 2:
+            sv = sv[1]
+        sv = np.asarray(sv).reshape(-1)
+    except Exception:
+        return None
+
+    df = pd.DataFrame({"feature": feature_names, "shap_value": sv})
     df["abs"] = df["shap_value"].abs()
     df = df.sort_values("abs", ascending=False).head(top_n).drop(columns=["abs"])
     return df
@@ -282,7 +321,7 @@ st.set_page_config(page_title="Survey-ML Risk", layout="wide")
 st.sidebar.title("Survey-ML Risk")
 page = st.sidebar.radio("Navigate", ["Risk prediction", "Model evaluation", "About"])
 st.sidebar.markdown("---")
-st.sidebar.caption("Research prototype; not for clinical use.")
+st.sidebar.caption("Research only; not for clinical use.")
 
 
 # ------------------------------------------------------------
@@ -301,9 +340,8 @@ using population survey data (BRFSS 2011–2015).
 - Interpretable feature contributions (SHAP, optional)
 - Reproducible, publication-oriented outputs (tables/figures)
 
-**Disclaimer**
-This application is intended for research and demonstration purposes only and does not constitute medical advice.
-        """
+⚠️ **{disclaimer}**
+        """.format(disclaimer=DISCLAIMER_TEXT)
     )
 
     st.markdown("### Loaded artifact summary")
@@ -326,7 +364,7 @@ On the first run, the app downloads model artifacts from GitHub Releases.
         """
     )
 
-    # -------- Inputs (minimal set; extend to cover your full predictor schema) --------
+    # -------- Inputs (minimal set; expand to cover your full predictor schema) --------
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -347,13 +385,11 @@ On the first run, the app downloads model artifacts from GitHub Releases.
     # -------- Map user-friendly inputs -> BRFSS-coded predictors --------
     # IMPORTANT: Your trained model expects specific BRFSS-coded columns.
     # This mapping is intentionally minimal and safe; expand it to match your full feature set.
-    # Any missing predictors will be set to NaN (your pipeline should impute if trained accordingly).
+    # Any missing predictors will be set to NaN (your pipeline should impute as trained).
     model_input: Dict[str, Any] = {}
 
-    # Common BRFSS-style codes (examples). Adjust if your training used different coding.
+    # BRFSS-style codes (standard approach; adjust if your training pipeline used different coding)
     if "_AGEG5YR" in predictor_cols:
-        # Approximate 5-year age-group bins: 18–24=1, 25–29=2, ... 80+=13
-        # This is a standard BRFSS-style mapping; update if your pipeline encoded differently.
         def age_to_ageg5yr(a: int) -> int:
             a = max(18, min(int(a), 99))
             bins = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
@@ -371,7 +407,6 @@ On the first run, the app downloads model artifacts from GitHub Releases.
         model_input["_BMI5"] = int(round(float(bmi) * 100))
 
     if "BPHIGH4" in predictor_cols:
-        # 1=yes, 2=no
         model_input["BPHIGH4"] = 1 if htn == "Yes" else 2
 
     if "DIFFWALK" in predictor_cols:
@@ -384,7 +419,7 @@ On the first run, the app downloads model artifacts from GitHub Releases.
         model_input["EXERANY2"] = 1 if exer == "Yes" else 2
 
     if "SMOKE100" in predictor_cols:
-        # crude approximation: never -> 2 (No), former/current -> 1 (Yes)
+        # Approximation: never -> No; former/current -> Yes
         model_input["SMOKE100"] = 2 if smoke == "Never" else 1
 
     if "ALCDAY5" in predictor_cols:
@@ -407,11 +442,11 @@ On the first run, the app downloads model artifacts from GitHub Releases.
         "Any exercise in past month?": exer,
     }
 
-    # Show missing predictors for transparency
+    # Show predictor coverage for transparency
     missing_predictors = [c for c in predictor_cols if c not in model_input]
     with st.expander("Predictor coverage (for transparency)"):
         st.write(f"Provided predictors: {len(model_input)} / {len(predictor_cols)}")
-        st.write("Missing predictors will be imputed as NaN (per training pipeline).")
+        st.write("Missing predictors will be passed as NaN (imputed per training pipeline).")
         st.write(missing_predictors)
 
     run_btn = st.button("Run prediction")
@@ -432,6 +467,22 @@ On the first run, the app downloads model artifacts from GitHub Releases.
             """
         )
 
+        # Simple plots for quick visual interpretation
+        st.subheader("Plots")
+        fig, ax = plt.subplots(figsize=(7, 4))
+        ax.bar(results_df["Condition"], results_df["probability"])
+        ax.set_ylabel("Predicted probability")
+        ax.set_title("Predicted risk by condition")
+        ax.tick_params(axis="x", rotation=30)
+        st.pyplot(fig)
+
+        fig, ax = plt.subplots(figsize=(7, 4))
+        ax.bar(results_df["Condition"], results_df["uncertainty"])
+        ax.set_ylabel("Uncertainty (0=confident, 1=uncertain)")
+        ax.set_title("Prediction uncertainty by condition")
+        ax.tick_params(axis="x", rotation=30)
+        st.pyplot(fig)
+
         st.subheader("Educational guidance (rule-based)")
         st.write(rule_based_guidance(user_inputs, results_df))
 
@@ -439,23 +490,23 @@ On the first run, the app downloads model artifacts from GitHub Releases.
         if not _HAS_SHAP:
             st.info("Install `shap` to enable local explanations.")
         else:
-            top_condition = results_df.iloc[0]["Condition"]
-            disease_choice = st.selectbox("Select condition to explain", options=list(results_df["Condition"]),
-                                          index=0)
+            disease_choice = st.selectbox("Select condition to explain", options=list(results_df["Condition"]), index=0)
 
-            contrib = explain_instance(model_input, disease_choice, top_n=20)
+            contrib = explain_instance_pipeline(model_input, disease_choice, top_n=20)
             if contrib is None or contrib.empty:
                 st.info("SHAP explanation not available for this model/configuration.")
             else:
                 st.dataframe(contrib, use_container_width=True)
 
-                # Simple bar chart
+                # Bar plot of top SHAP values
                 df_plot = contrib.sort_values("shap_value")
                 fig, ax = plt.subplots(figsize=(7, 5))
                 ax.barh(df_plot["feature"], df_plot["shap_value"])
                 ax.set_xlabel("SHAP value (impact on model output)")
                 ax.set_title(f"Local explanation: {disease_choice}")
                 st.pyplot(fig)
+
+        st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
 
 
 # ------------------------------------------------------------
@@ -489,6 +540,7 @@ If these keys are absent, you can still rely on the precomputed tables in `table
         )
         st.markdown("### Precomputed outputs")
         st.write("See the `tables/` and `figures/` folders in this repository for manuscript-ready outputs.")
+        st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
     else:
         disease_choice = st.selectbox("Select condition", options=available)
         info = disease_models[disease_choice]
@@ -523,7 +575,7 @@ If these keys are absent, you can still rely on the precomputed tables in `table
         ax.set_title(f"Precision–Recall: {disease_choice}")
         st.pyplot(fig)
 
-        # Calibration
+        # Calibration curve
         frac_pos, mean_pred = calibration_curve(y, p, n_bins=10, strategy="quantile")
         fig, ax = plt.subplots(figsize=(6, 4))
         ax.plot(mean_pred, frac_pos, marker="o")
@@ -539,3 +591,5 @@ If these keys are absent, you can still rely on the precomputed tables in `table
         cm = confusion_matrix(y, yhat)
         st.write(f"Confusion matrix at threshold {thr:.3f}")
         st.dataframe(pd.DataFrame(cm, index=["True 0", "True 1"], columns=["Pred 0", "Pred 1"]))
+
+        st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
