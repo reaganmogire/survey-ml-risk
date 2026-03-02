@@ -133,26 +133,16 @@ st.markdown(
   }
 
   /* Selectbox dropdown menu - LIGHT TEXT ON DARK BACKGROUND */
-  ul[role="listbox"] {
-    background-color: #1F2937 !important;
-  }
-  ul[role="listbox"] li {
-    color: #FFFFFF !important;
-    background-color: #1F2937 !important;
-  }
-  ul[role="listbox"] li:hover,
-  ul[role="listbox"] li[data-baseweb="menu-item"] {
-    background-color: #374151 !important;
+  ul[role="listbox"],
+  [role="listbox"],
+  [data-baseweb="menu"],
+  .stSelectbox {
     color: #FFFFFF !important;
   }
-  [data-baseweb="select"] [data-baseweb="menu"] {
-    background-color: #1F2937 !important;
-  }
-  [data-baseweb="select"] [data-baseweb="menu"] li {
-    color: #FFFFFF !important;
-  }
-  [data-baseweb="select"] [data-baseweb="menu"] li:hover {
-    background-color: #374151 !important;
+  ul[role="listbox"] *,
+  [role="listbox"] *,
+  [data-baseweb="menu"] *,
+  .stSelectbox * {
     color: #FFFFFF !important;
   }
 
