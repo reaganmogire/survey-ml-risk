@@ -596,7 +596,7 @@ elif page == "Risk prediction":
     st.warning(DISCLAIMER_TEXT, icon="⚠️")
     st.markdown("</div>", unsafe_allow_html=True)
 
-        col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
     cols = [col1, col2, col3]
     col_idx = 0
 
