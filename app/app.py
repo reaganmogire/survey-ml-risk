@@ -310,35 +310,33 @@ st.set_page_config(page_title="Survey-ML Risk", layout="wide")
 st.markdown(
     """
 <style>
-/* Keep general page bright */
-html, body, [class*="css"] { background-color: #f6fbff; }
 
-/* Selectbox control: force light background + readable text */
+/* Keep everything else untouched. Only fix dropdown (selectbox) menu */
+
+/* Closed selectbox appearance */
 div[data-baseweb="select"] > div {
-  background: #ffffff !important;
-  color: #0b1f33 !important;
-  border: 1px solid #cfe3f5 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
 }
 
 /* Dropdown menu background */
 ul[role="listbox"] {
-  background-color: #ffffff !important;
-  color: #0b1f33 !important;
-  border: 1px solid #cfe3f5 !important;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.08) !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
 }
 
-/* Individual dropdown items */
+/* Dropdown items */
 ul[role="listbox"] li {
-  background: #ffffff !important;
-  color: #0b1f33 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
 }
 
-/* Hover effect */
+/* Hover state */
 ul[role="listbox"] li:hover {
-  background-color: #eaf5ff !important;
-  color: #0b1f33 !important;
+    background-color: #f2f2f2 !important;
+    color: #000000 !important;
 }
+
 </style>
 """,
     unsafe_allow_html=True,
