@@ -51,7 +51,7 @@ except Exception:
 # ============================================================
 # 0) Streamlit page + Bright medical theme (forced readability)
 # ============================================================
-st.set_page_config(page_title="Survey-ML Risk", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="Disease Risk Prediction", page_icon="🩺", layout="wide")
 
 st.markdown(
     """
