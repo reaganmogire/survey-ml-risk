@@ -293,6 +293,42 @@ FEATURE_LABELS = {
 
 SEX_MAP = {1: "Male", 2: "Female"}
 
+STATE_MAP = {
+    1: "Alabama", 2: "Alaska", 4: "Arizona", 5: "Arkansas", 6: "California",
+    8: "Colorado", 9: "Connecticut", 10: "Delaware", 12: "Florida", 13: "Georgia",
+    15: "Hawaii", 16: "Idaho", 17: "Illinois", 18: "Indiana", 19: "Iowa",
+    20: "Kansas", 21: "Kentucky", 22: "Louisiana", 23: "Maine", 24: "Maryland",
+    25: "Massachusetts", 26: "Michigan", 27: "Minnesota", 28: "Mississippi", 29: "Missouri",
+    30: "Montana", 31: "Nebraska", 32: "Nevada", 33: "New Hampshire", 34: "New Jersey",
+    35: "New Mexico", 36: "New York", 37: "North Carolina", 38: "North Dakota", 39: "Ohio",
+    40: "Oklahoma", 41: "Oregon", 42: "Pennsylvania", 44: "Rhode Island", 45: "South Carolina",
+    46: "South Dakota", 47: "Tennessee", 48: "Texas", 49: "Utah", 50: "Vermont",
+    51: "Virginia", 53: "Washington", 54: "West Virginia", 55: "Wisconsin", 56: "Wyoming",
+}
+
+CHECKUP1_MAP = {
+    1: "Within past year",
+    2: "Within past 2 years",
+    3: "Within past 5 years",
+    4: "5 or more years ago",
+    7: "Never had checkup",
+    9: "Don't know/refused",
+}
+
+SMOKDAY2_MAP = {
+    1: "Every day",
+    2: "Some days",
+    3: "Not at all",
+    9: "Don't know/refused",
+}
+
+TOLDHI2_MAP = {
+    1: "Yes",
+    2: "No",
+    7: "Borderline",
+    9: "Don't know/refused",
+}
+
 
 def pretty_disease(d: str) -> str:
     return DISEASE_LABELS.get(d, d.replace("_", " ").title())
@@ -628,6 +664,12 @@ elif page == "Risk prediction":
                 model_input["SEX"] = 1 if sex == "Male" else 2
                 user_inputs["Sex"] = sex
 
+            elif col_name == "_STATE":
+                state_name = st.selectbox("State", sorted(STATE_MAP.values()))
+                state_code = [k for k, v in STATE_MAP.items() if v == state_name][0]
+                model_input["_STATE"] = state_code
+                user_inputs["State"] = state_name
+
             elif col_name == "_BMI5":
                 bmi = st.number_input("BMI (kg/m²)", min_value=10.0, max_value=70.0, value=27.0, step=0.1)
                 model_input["_BMI5"] = int(round(float(bmi) * 100))
@@ -650,6 +692,24 @@ elif page == "Risk prediction":
                 model_input["SMOKE100"] = 2 if smoke == "Never" else 1
                 user_inputs["Smoking status"] = smoke
 
+            elif col_name == "SMOKDAY2":
+                smokday = st.selectbox("Current smoking frequency", list(SMOKDAY2_MAP.values()))
+                smokday_code = [k for k, v in SMOKDAY2_MAP.items() if v == smokday][0]
+                model_input["SMOKDAY2"] = smokday_code
+                user_inputs["Current smoking frequency"] = smokday
+
+            elif col_name == "CHECKUP1":
+                checkup = st.selectbox("Time since routine checkup", list(CHECKUP1_MAP.values()))
+                checkup_code = [k for k, v in CHECKUP1_MAP.items() if v == checkup][0]
+                model_input["CHECKUP1"] = checkup_code
+                user_inputs["Time since routine checkup"] = checkup
+
+            elif col_name == "TOLDHI2":
+                cholesterol = st.selectbox("Told high cholesterol", list(TOLDHI2_MAP.values()))
+                cholesterol_code = [k for k, v in TOLDHI2_MAP.items() if v == cholesterol][0]
+                model_input["TOLDHI2"] = cholesterol_code
+                user_inputs["Told high cholesterol"] = cholesterol
+
             elif col_name == "ALCDAY5":
                 drinks_pw = st.number_input("Alcohol (drinks/week)", min_value=0.0, max_value=70.0, value=0.0, step=1.0)
                 if drinks_pw <= 0:
@@ -670,6 +730,7 @@ elif page == "Risk prediction":
                 model_input[col_name] = val
 
         col_idx += 1
+    
 
     # Fill missing columns with NaN
     for c in predictor_cols:
