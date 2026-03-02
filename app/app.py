@@ -583,7 +583,9 @@ using population survey data (BRFSS 2011–2015).
     st.write(f"Model tag: `{MODEL_TAG}`")
     st.write(f"Artifacts directory: `{ARTIFACT_DIR}`")
     st.write("Predictor columns loaded:", len(predictor_cols))
-    st.write("Conditions loaded:") for condition in disease_models.keys(): st.write(f"- {pretty_disease(condition)}")
+    st.write("Conditions loaded:")
+    for condition in disease_models.keys():
+        st.write(f"- {pretty_disease(condition)}")
     st.markdown("</div>", unsafe_allow_html=True)
 
 
