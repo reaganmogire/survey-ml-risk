@@ -192,6 +192,23 @@ st.markdown(
     color: #1A1A1A !important;
   }
 
+  /* JSON/code output blocks */
+  div[data-testid="stDataFrame"],
+  div[data-testid="stJson"],
+  div[data-testid="stCode"],
+  pre,
+  code,
+  .streamlit-expanderContent {
+    background-color: #F5F5F5 !important;
+    color: #1A1A1A !important;
+  }
+  div[data-testid="stJson"] * {
+    color: #1A1A1A !important;
+  }
+  pre * {
+    color: #1A1A1A !important;
+  }
+
   /* Alerts */
   div[role="alert"] * {
     color: #1A1A1A !important;
