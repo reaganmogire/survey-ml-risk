@@ -133,29 +133,19 @@ st.markdown(
   }
 
   /* Selectbox dropdown menu - LIGHT TEXT ON DARK BACKGROUND */
-  ul[role="listbox"] {
-    background: #1F2937 !important;
-  }
-  ul[role="listbox"] li {
+  ul[role="listbox"] > li {
     color: #FFFFFF !important;
   }
-  ul[role="listbox"] li:hover {
-    background: #374151 !important;
+  ul[role="listbox"] > li:hover {
+    background-color: #374151 !important;
     color: #FFFFFF !important;
   }
-
-  /* Radio labels in sidebar */
-  section[data-testid="stSidebar"] .stRadio label,
-  section[data-testid="stSidebar"] .stRadio p {
-    color: #0B1F35 !important;
-    font-weight: 600 !important;
+  div[role="option"] {
+    color: #FFFFFF !important;
   }
-
-  /* DataFrame container */
-  div[data-testid="stDataFrame"] {
-    background: #FFFFFF !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(11,31,53,0.12) !important;
+  div[role="option"]:hover {
+    background-color: #374151 !important;
+    color: #FFFFFF !important;
   }
 
   /* Alerts */
