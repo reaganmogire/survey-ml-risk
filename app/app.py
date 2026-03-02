@@ -596,74 +596,84 @@ elif page == "Risk prediction":
     st.warning(DISCLAIMER_TEXT, icon="⚠️")
     st.markdown("</div>", unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        age = st.number_input("Age (years)", min_value=18, max_value=99, value=35, step=1)
-        sex = st.selectbox("Sex", ["Male", "Female"])
-        bmi = st.number_input("BMI (kg/m²)", min_value=10.0, max_value=70.0, value=27.0, step=0.1)
-
-    with col2:
-        htn = st.selectbox("Ever told you have high blood pressure?", ["No", "Yes"])
-        diffwalk = st.selectbox("Difficulty walking/climbing stairs?", ["No", "Yes"])
-        genhlth = st.selectbox("General health", ["Excellent", "Very good", "Good", "Fair", "Poor"])
-
-    with col3:
-        smoke = st.selectbox("Smoking status", ["Never", "Former", "Current"])
-        drinks_pw = st.number_input("Alcohol (drinks/week)", min_value=0.0, max_value=70.0, value=0.0, step=1.0)
-        exer = st.selectbox("Any exercise in past month?", ["No", "Yes"])
+        col1, col2, col3 = st.columns(3)
+    cols = [col1, col2, col3]
+    col_idx = 0
 
     model_input: Dict[str, Any] = {}
+    user_inputs = {}
 
-    if "_AGEG5YR" in predictor_cols:
-        def age_to_ageg5yr(a: int) -> int:
-            a = max(18, min(int(a), 99))
-            bins = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
-            for i, upper in enumerate(bins, start=1):
-                if a < upper:
-                    return i
-            return 13
-        model_input["_AGEG5YR"] = age_to_ageg5yr(age)
+    # Define age conversion function
+    def age_to_ageg5yr(a: int) -> int:
+        a = max(18, min(int(a), 99))
+        bins = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
+        for i, upper in enumerate(bins, start=1):
+            if a < upper:
+                return i
+        return 13
 
-    if "SEX" in predictor_cols:
-        model_input["SEX"] = 1 if sex == "Male" else 2
+    # Dynamically create inputs for available predictors
+    for col_name in predictor_cols:
+        col = cols[col_idx % 3]
+        feature_label = pretty_feature_name(col_name)
 
-    if "_BMI5" in predictor_cols:
-        model_input["_BMI5"] = int(round(float(bmi) * 100))
+        with col:
+            if col_name == "_AGEG5YR":
+                age = st.number_input("Age (years)", min_value=18, max_value=99, value=35, step=1)
+                model_input["_AGEG5YR"] = age_to_ageg5yr(age)
+                user_inputs["Age (years)"] = age
 
-    if "BPHIGH4" in predictor_cols:
-        model_input["BPHIGH4"] = 1 if htn == "Yes" else 2
+            elif col_name == "SEX":
+                sex = st.selectbox("Sex", ["Male", "Female"])
+                model_input["SEX"] = 1 if sex == "Male" else 2
+                user_inputs["Sex"] = sex
 
-    if "DIFFWALK" in predictor_cols:
-        model_input["DIFFWALK"] = 1 if diffwalk == "Yes" else 2
+            elif col_name == "_BMI5":
+                bmi = st.number_input("BMI (kg/m²)", min_value=10.0, max_value=70.0, value=27.0, step=0.1)
+                model_input["_BMI5"] = int(round(float(bmi) * 100))
+                user_inputs["BMI (kg/m²)"] = bmi
 
-    if "GENHLTH" in predictor_cols:
-        model_input["GENHLTH"] = {"Excellent": 1, "Very good": 2, "Good": 3, "Fair": 4, "Poor": 5}[genhlth]
+            elif col_name == "BPHIGH4":
+                htn = st.selectbox("Ever told you have high blood pressure?", ["No", "Yes"])
+                model_input["BPHIGH4"] = 1 if htn == "Yes" else 2
 
-    if "EXERANY2" in predictor_cols:
-        model_input["EXERANY2"] = 1 if exer == "Yes" else 2
+            elif col_name == "DIFFWALK":
+                diffwalk = st.selectbox("Difficulty walking/climbing stairs?", ["No", "Yes"])
+                model_input["DIFFWALK"] = 1 if diffwalk == "Yes" else 2
 
-    if "SMOKE100" in predictor_cols:
-        model_input["SMOKE100"] = 2 if smoke == "Never" else 1
+            elif col_name == "GENHLTH":
+                genhlth = st.selectbox("General health", ["Excellent", "Very good", "Good", "Fair", "Poor"])
+                model_input["GENHLTH"] = {"Excellent": 1, "Very good": 2, "Good": 3, "Fair": 4, "Poor": 5}[genhlth]
 
-    if "ALCDAY5" in predictor_cols:
-        if drinks_pw <= 0:
-            model_input["ALCDAY5"] = 888
-        else:
-            d = int(round(min(float(drinks_pw), 7.0)))
-            model_input["ALCDAY5"] = 200 + d
+            elif col_name == "SMOKE100":
+                smoke = st.selectbox("Smoking status", ["Never", "Former", "Current"])
+                model_input["SMOKE100"] = 2 if smoke == "Never" else 1
+                user_inputs["Smoking status"] = smoke
 
+            elif col_name == "ALCDAY5":
+                drinks_pw = st.number_input("Alcohol (drinks/week)", min_value=0.0, max_value=70.0, value=0.0, step=1.0)
+                if drinks_pw <= 0:
+                    model_input["ALCDAY5"] = 888
+                else:
+                    d = int(round(min(float(drinks_pw), 7.0)))
+                    model_input["ALCDAY5"] = 200 + d
+                user_inputs["Alcohol (drinks/week)"] = drinks_pw
+
+            elif col_name == "EXERANY2":
+                exer = st.selectbox("Any exercise in past month?", ["No", "Yes"])
+                model_input["EXERANY2"] = 1 if exer == "Yes" else 2
+                user_inputs["Any exercise in past month?"] = exer
+
+            else:
+                # For unmapped fields, create a generic numeric input
+                val = st.number_input(feature_label, value=0.0, step=1.0)
+                model_input[col_name] = val
+
+        col_idx += 1
+
+    # Fill missing columns with NaN
     for c in predictor_cols:
         model_input.setdefault(c, np.nan)
-
-    user_inputs = {
-        "Age (years)": age,
-        "Sex": sex,
-        "BMI (kg/m²)": bmi,
-        "Smoking status": smoke,
-        "Alcohol (drinks/week)": drinks_pw,
-        "Any exercise in past month?": exer,
-    }
 
     run_btn = st.button("Run prediction")
 
