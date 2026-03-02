@@ -49,51 +49,118 @@ except Exception:
 
 
 # ============================================================
-# 0) Streamlit page + Light medical theme
+# 0) Streamlit page + Bright medical theme (forced readability)
 # ============================================================
 st.set_page_config(page_title="Survey-ML Risk", page_icon="🩺", layout="wide")
 
 st.markdown(
     """
-    <style>
-      .stApp {
-        background: linear-gradient(180deg, #F7FBFF 0%, #FFFFFF 40%, #F3FAFF 100%);
-        color: #0B1F35;
-      }
-      section[data-testid="stSidebar"] {
-        background: #EAF5FF;
-        border-right: 1px solid rgba(11,31,53,0.10);
-      }
-      h1, h2, h3, h4 {
-        color: #0B3B66;
-      }
-      .card {
-        background: #FFFFFF;
-        border: 1px solid rgba(11,31,53,0.10);
-        border-radius: 14px;
-        padding: 16px 18px;
-        box-shadow: 0 6px 20px rgba(11,31,53,0.06);
-      }
-      .stButton>button {
-        background: #2F80ED;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 0.55rem 1.0rem;
-      }
-      .stButton>button:hover {
-        background: #1F6FDC;
-        color: white;
-      }
-      div[data-testid="stDataFrame"] {
-        background: #FFFFFF;
-        border-radius: 12px;
-        border: 1px solid rgba(11,31,53,0.10);
-      }
-      .stAlert {
-        border-radius: 12px;
-      }
-    </style>
+<style>
+  /* --- Page background --- */
+  .stApp {
+    background: linear-gradient(180deg, #F7FBFF 0%, #FFFFFF 40%, #F3FAFF 100%);
+  }
+
+  /* --- Sidebar --- */
+  section[data-testid="stSidebar"] {
+    background: #EAF5FF !important;
+    border-right: 1px solid rgba(11,31,53,0.12);
+  }
+
+  /* Make ALL text readable */
+  html, body, [class*="css"]  {
+    color: #0B1F35 !important;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    color: #0B3B66 !important;
+  }
+
+  /* Paragraph/help text */
+  p, li, span, label, small {
+    color: #0B1F35 !important;
+  }
+
+  /* Cards */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid rgba(11,31,53,0.12);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 6px 20px rgba(11,31,53,0.06);
+  }
+
+  /* Buttons */
+  .stButton>button {
+    background: #2F80ED !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0.55rem 1.0rem !important;
+  }
+  .stButton>button:hover {
+    background: #1F6FDC !important;
+    color: #FFFFFF !important;
+  }
+
+  /* --- Widget labels (the ones that became invisible) --- */
+  div[data-testid="stWidgetLabel"] label,
+  div[data-testid="stWidgetLabel"] p,
+  .stRadio label, .stRadio p,
+  .stSelectbox label, .stSelectbox p,
+  .stNumberInput label, .stNumberInput p {
+    color: #0B1F35 !important;
+    font-weight: 600 !important;
+  }
+
+  /* --- Input boxes: force light background + dark text --- */
+  div[data-baseweb="input"] input,
+  div[data-baseweb="base-input"] input,
+  div[data-baseweb="textarea"] textarea {
+    background: #FFFFFF !important;
+    color: #0B1F35 !important;
+    border: 1px solid rgba(11,31,53,0.18) !important;
+    border-radius: 10px !important;
+  }
+
+  /* Selectbox (closed state) */
+  div[data-baseweb="select"] > div {
+    background: #FFFFFF !important;
+    color: #0B1F35 !important;
+    border: 1px solid rgba(11,31,53,0.18) !important;
+    border-radius: 10px !important;
+  }
+
+  /* Selectbox dropdown menu */
+  ul[role="listbox"] {
+    background: #FFFFFF !important;
+    color: #0B1F35 !important;
+    border: 1px solid rgba(11,31,53,0.18) !important;
+  }
+  ul[role="listbox"] * {
+    color: #0B1F35 !important;
+  }
+
+  /* Radio labels in sidebar */
+  section[data-testid="stSidebar"] .stRadio label,
+  section[data-testid="stSidebar"] .stRadio p {
+    color: #0B1F35 !important;
+    font-weight: 600 !important;
+  }
+
+  /* DataFrame container */
+  div[data-testid="stDataFrame"] {
+    background: #FFFFFF !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(11,31,53,0.12) !important;
+  }
+
+  /* Alerts */
+  div[role="alert"] * {
+    color: #0B1F35 !important;
+  }
+</style>
     """,
     unsafe_allow_html=True,
 )
@@ -104,7 +171,7 @@ st.markdown(
 # ============================================================
 REPO_OWNER = "reaganmogire"
 REPO_NAME = "survey-ml-risk"
-MODEL_TAG = os.environ.get("MODEL_TAG", "model-v1")  # override if you version-bump
+MODEL_TAG = os.environ.get("MODEL_TAG", "model-v1")
 
 RELEASE_BASE = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/{MODEL_TAG}"
 
@@ -189,14 +256,12 @@ def pretty_feature_name(raw: str) -> str:
     """
     s = str(raw)
 
-    # Standard sklearn prefixes
     if s.startswith("num__"):
         base = s[len("num__"):]
         return FEATURE_LABELS.get(base, base)
 
     if s.startswith("cat__"):
         base = s[len("cat__"):]
-        # typically VAR_LEVEL
         if "_" in base:
             var, level = base.rsplit("_", 1)
             var_label = FEATURE_LABELS.get(var, var)
@@ -210,14 +275,11 @@ def pretty_feature_name(raw: str) -> str:
             return f"{var_label} = {level}"
         return FEATURE_LABELS.get(base, base)
 
-    # Fall back: try to recover BRFSS variable code via regex
-    # e.g., "Num__MENTHLTH" or "CatGENHLTH_2.0"
+    # Fallback recovery
     s2 = s.replace("Num__", "").replace("Cat__", "")
     s2 = s2.replace("num__", "").replace("cat__", "")
     s2 = s2.replace("__", "")
     s2 = re.sub(r"[^A-Za-z0-9_]", "", s2)
-
-    # Keep last token that looks like BRFSS code
     tokens = re.findall(r"[A-Z0-9_]{3,}", s2.upper())
     if tokens:
         code = tokens[-1]
@@ -227,7 +289,6 @@ def pretty_feature_name(raw: str) -> str:
 
 
 def _download_file(url: str, dest: Path) -> None:
-    """Download a file with a Streamlit progress indicator."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".part")
 
@@ -240,7 +301,7 @@ def _download_file(url: str, dest: Path) -> None:
         msg = st.empty()
 
         with open(tmp, "wb") as f:
-            for chunk in r.iter_content(chunk_size=1024 * 1024):  # 1MB chunks
+            for chunk in r.iter_content(chunk_size=1024 * 1024):
                 if not chunk:
                     continue
                 f.write(chunk)
@@ -254,22 +315,18 @@ def _download_file(url: str, dest: Path) -> None:
 
 
 def ensure_model_artifacts() -> None:
-    """Ensure artifacts exist locally; otherwise download from GitHub Releases."""
     missing = [name for name in ARTIFACTS if not (ARTIFACT_DIR / name).exists()]
     if not missing:
         return
 
     st.info("Downloading model artifacts from GitHub Releases (first run only)…")
     for name in missing:
-        url = ARTIFACTS[name]
-        dest = ARTIFACT_DIR / name
         with st.spinner(f"Downloading {name}…"):
-            _download_file(url, dest)
+            _download_file(ARTIFACTS[name], ARTIFACT_DIR / name)
 
 
 @st.cache_resource(show_spinner=False)
 def load_artifacts():
-    """Load artifacts once per Streamlit container session."""
     ensure_model_artifacts()
     disease_models = joblib.load(ARTIFACT_DIR / "disease_models.joblib")
     optimal_thresholds = joblib.load(ARTIFACT_DIR / "optimal_thresholds.joblib")
@@ -284,11 +341,6 @@ disease_models, optimal_thresholds, predictor_cols = load_artifacts()
 # 2) Utility functions
 # ============================================================
 def uncertainty_from_proba(p: float) -> float:
-    """
-    Simple uncertainty proxy:
-      0 -> very confident (p near 0 or 1)
-      1 -> maximally uncertain (p = 0.5)
-    """
     p = float(p)
     return float(1.0 - abs(p - 0.5) * 2.0)
 
@@ -303,12 +355,6 @@ def _safe_float(x: Any) -> Optional[float]:
 
 
 def predict_all_conditions(model_input: Dict[str, Any]) -> pd.DataFrame:
-    """
-    Predict risk for each condition.
-
-    model_input must include keys matching predictor_cols.
-    Missing predictors are filled with NaN (the pipeline should impute as trained).
-    """
     row = pd.DataFrame([model_input]).reindex(columns=predictor_cols, fill_value=np.nan)
 
     records = []
@@ -334,9 +380,6 @@ def predict_all_conditions(model_input: Dict[str, Any]) -> pd.DataFrame:
 
 
 def rule_based_guidance(user_inputs: Dict[str, Any], results_df: pd.DataFrame) -> str:
-    """
-    Educational, rule-based guidance. No external services, no LLM.
-    """
     lines = []
     high = results_df.loc[results_df["Risk category"] == "Higher risk", "Condition"].tolist()
 
@@ -348,36 +391,21 @@ def rule_based_guidance(user_inputs: Dict[str, Any], results_df: pd.DataFrame) -
     bmi = _safe_float(user_inputs.get("BMI (kg/m²)"))
     if bmi is not None:
         if bmi >= 30:
-            lines.append(
-                "- BMI suggests obesity. Gradual weight reduction (diet quality + regular activity) "
-                "can reduce cardiometabolic risk."
-            )
+            lines.append("- BMI suggests obesity. Gradual weight reduction (diet quality + regular activity) can reduce cardiometabolic risk.")
         elif bmi >= 25:
-            lines.append(
-                "- BMI suggests overweight. Small, sustained changes (daily walking, reduced sugary drinks, "
-                "higher fiber/vegetables) can improve risk."
-            )
+            lines.append("- BMI suggests overweight. Small sustained changes can improve risk.")
 
     smoke = str(user_inputs.get("Smoking status", "")).lower()
     if "current" in smoke:
-        lines.append(
-            "- Current smoking increases cardiovascular and overall risk. Consider evidence-based cessation "
-            "support (counseling, nicotine replacement, medications as appropriate)."
-        )
+        lines.append("- Current smoking increases cardiovascular and overall risk. Consider evidence-based cessation support.")
 
     alc = _safe_float(user_inputs.get("Alcohol (drinks/week)"))
     if alc is not None and alc >= 14:
-        lines.append(
-            "- Reported alcohol intake is relatively high. Reducing intake can lower blood pressure and "
-            "improve cardiometabolic health."
-        )
+        lines.append("- Reported alcohol intake is relatively high. Reducing intake can lower blood pressure and improve cardiometabolic health.")
 
     phys = str(user_inputs.get("Any exercise in past month?", "")).lower()
     if phys == "no":
-        lines.append(
-            "- Increasing physical activity (as medically appropriate) supports cardiometabolic, renal, and "
-            "mental health."
-        )
+        lines.append("- Increasing physical activity (as medically appropriate) supports cardiometabolic, renal, and mental health.")
 
     lines.append("\n⚠️ " + DISCLAIMER_TEXT)
     return "\n".join(lines)
@@ -388,12 +416,6 @@ def rule_based_guidance(user_inputs: Dict[str, Any], results_df: pd.DataFrame) -
 # ============================================================
 @st.cache_resource(show_spinner=False)
 def build_tree_explainers():
-    """
-    Build SHAP TreeExplainers for the *classifier* inside each sklearn Pipeline.
-
-    Returns:
-      dict[disease] = {"preprocessor": preprocessor, "clf": clf, "explainer": TreeExplainer}
-    """
     if not _HAS_SHAP:
         return None
 
@@ -413,7 +435,7 @@ def build_tree_explainers():
 
         try:
             explainer = shap.TreeExplainer(clf)
-            out[disease] = {"preprocessor": pre, "clf": clf, "explainer": explainer}
+            out[disease] = {"preprocessor": pre, "explainer": explainer}
         except Exception:
             out[disease] = None
 
@@ -424,10 +446,6 @@ tree_explainers = build_tree_explainers()
 
 
 def explain_instance_pipeline(model_input: Dict[str, Any], disease: str, top_n: int = 20) -> Optional[pd.DataFrame]:
-    """
-    Compute SHAP values for a single instance for a given disease model.
-    Returns a DataFrame of the top contributing transformed features.
-    """
     if not _HAS_SHAP or tree_explainers is None:
         return None
 
@@ -455,23 +473,15 @@ def explain_instance_pipeline(model_input: Dict[str, Any], disease: str, top_n: 
         return None
 
     df = pd.DataFrame({"feature_raw": feature_names, "shap_value": sv})
-    df["feature"] = df["feature_raw"].apply(pretty_feature_name)
+    df["Feature"] = df["feature_raw"].apply(pretty_feature_name)
     df["abs"] = df["shap_value"].abs()
     df = df.sort_values("abs", ascending=False).head(top_n).drop(columns=["abs"]).reset_index(drop=True)
-    return df
+    return df[["Feature", "shap_value"]]
 
 
 def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
-    """
-    SHAP bar plot with clear interpretation:
-      SHAP > 0 increases predicted risk
-      SHAP < 0 decreases predicted risk
-    """
-    d = df.copy()
-
-    # Sort for plotting (negative at bottom, positive at top)
-    d = d.sort_values("shap_value", ascending=True)
-    y = d["feature"].tolist()
+    d = df.copy().sort_values("shap_value", ascending=True)
+    y = d["Feature"].tolist()
     x = d["shap_value"].values
 
     colors = np.where(x >= 0, "#D9534F", "#2F80ED")  # red=increase, blue=decrease
@@ -479,12 +489,10 @@ def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(9, 6))
     ax.barh(y, x, color=colors)
     ax.axvline(0, color="black", linewidth=1)
-
     ax.set_title(title)
     ax.set_xlabel("SHAP value (impact on predicted risk)")
     ax.grid(axis="x", linestyle="--", alpha=0.25)
 
-    # Add interpretation labels
     ax.text(0.98, 1.02, "→ Increase risk (SHAP > 0)", transform=ax.transAxes,
             ha="right", va="bottom", fontsize=11, color="#D9534F")
     ax.text(0.02, 1.02, "Decrease risk (SHAP < 0) ←", transform=ax.transAxes,
@@ -503,9 +511,6 @@ st.sidebar.markdown("---")
 st.sidebar.caption("Research only; not for clinical use.")
 
 
-# ------------------------------------------------------------
-# About
-# ------------------------------------------------------------
 if page == "About":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.title("About this app")
@@ -521,7 +526,6 @@ using population survey data (BRFSS 2011–2015).
         """
     )
     st.warning(DISCLAIMER_TEXT, icon="⚠️")
-
     st.markdown("### Loaded artifact summary")
     st.write(f"Model tag: `{MODEL_TAG}`")
     st.write(f"Artifacts directory: `{ARTIFACT_DIR}`")
@@ -530,9 +534,6 @@ using population survey data (BRFSS 2011–2015).
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ------------------------------------------------------------
-# Risk prediction
-# ------------------------------------------------------------
 elif page == "Risk prediction":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.title("Risk prediction (survey-based ML)")
@@ -540,7 +541,6 @@ elif page == "Risk prediction":
     st.warning(DISCLAIMER_TEXT, icon="⚠️")
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # -------- Inputs (minimal; expand as needed) --------
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -558,10 +558,8 @@ elif page == "Risk prediction":
         drinks_pw = st.number_input("Alcohol (drinks/week)", min_value=0.0, max_value=70.0, value=0.0, step=1.0)
         exer = st.selectbox("Any exercise in past month?", ["No", "Yes"])
 
-    # -------- Map user-friendly inputs -> BRFSS-coded predictors --------
     model_input: Dict[str, Any] = {}
 
-    # Note: mapping is intentionally minimal; missing predictors will be NaN and imputed by the pipeline.
     if "_AGEG5YR" in predictor_cols:
         def age_to_ageg5yr(a: int) -> int:
             a = max(18, min(int(a), 99))
@@ -570,7 +568,6 @@ elif page == "Risk prediction":
                 if a < upper:
                     return i
             return 13
-
         model_input["_AGEG5YR"] = age_to_ageg5yr(age)
 
     if "SEX" in predictor_cols:
@@ -601,7 +598,6 @@ elif page == "Risk prediction":
             d = int(round(min(float(drinks_pw), 7.0)))
             model_input["ALCDAY5"] = 200 + d
 
-    # Add missing predictors as NaN
     for c in predictor_cols:
         model_input.setdefault(c, np.nan)
 
@@ -609,17 +605,10 @@ elif page == "Risk prediction":
         "Age (years)": age,
         "Sex": sex,
         "BMI (kg/m²)": bmi,
-        "High blood pressure history": htn,
-        "Difficulty walking/climbing stairs?": diffwalk,
-        "General health": genhlth,
         "Smoking status": smoke,
         "Alcohol (drinks/week)": drinks_pw,
         "Any exercise in past month?": exer,
     }
-
-    with st.expander("Predictor coverage (transparency)"):
-        st.write(f"Provided predictors: {sum([not pd.isna(model_input[c]) for c in predictor_cols])} / {len(predictor_cols)}")
-        st.write("All missing predictors are passed as NaN and imputed by the trained pipeline.")
 
     run_btn = st.button("Run prediction")
 
@@ -633,34 +622,6 @@ elif page == "Risk prediction":
         show["Uncertainty (0–1)"] = show["Uncertainty (0–1)"].map(lambda x: f"{x:.4f}")
         st.dataframe(show, use_container_width=True, hide_index=True)
 
-        st.markdown(
-            """
-**Field definitions**
-- **Predicted risk (0–1)**: model-estimated probability  
-- **Threshold**: stored decision threshold for the condition  
-- **Risk category**: label using the stored threshold  
-- **Uncertainty (0–1)**: 0 (confident) → 1 (uncertain; highest at p≈0.5)
-            """
-        )
-
-        st.subheader("Plots")
-        fig, ax = plt.subplots(figsize=(7, 4))
-        ax.bar(results_df["Condition"], results_df["Predicted risk (0–1)"])
-        ax.set_ylabel("Predicted probability")
-        ax.set_title("Predicted risk by condition")
-        ax.tick_params(axis="x", rotation=25)
-        st.pyplot(fig)
-
-        fig, ax = plt.subplots(figsize=(7, 4))
-        ax.bar(results_df["Condition"], results_df["Uncertainty (0–1)"])
-        ax.set_ylabel("Uncertainty (0=confident, 1=uncertain)")
-        ax.set_title("Prediction uncertainty by condition")
-        ax.tick_params(axis="x", rotation=25)
-        st.pyplot(fig)
-
-        st.subheader("Educational guidance (rule-based)")
-        st.write(rule_based_guidance(user_inputs, results_df))
-
         st.subheader("Local feature contributions (optional)")
         if not _HAS_SHAP:
             st.info("Install `shap` to enable local explanations.")
@@ -671,13 +632,12 @@ elif page == "Risk prediction":
                 format_func=lambda d: pretty_disease(d),
                 index=0,
             )
-
             contrib = explain_instance_pipeline(model_input, disease_choice, top_n=20)
             if contrib is None or contrib.empty:
                 st.info("SHAP explanation not available for this model/configuration.")
             else:
                 st.dataframe(
-                    contrib[["feature", "shap_value"]].assign(
+                    contrib.assign(
                         interpretation=lambda d: np.where(
                             d["shap_value"] >= 0, "Increases predicted risk", "Decreases predicted risk"
                         )
@@ -685,31 +645,14 @@ elif page == "Risk prediction":
                     use_container_width=True,
                     hide_index=True
                 )
+                st.pyplot(plot_shap_bar(contrib, title=f"Local explanation: {pretty_disease(disease_choice)}"))
 
-                fig = plot_shap_bar(contrib, title=f"Local explanation: {pretty_disease(disease_choice)}")
-                st.pyplot(fig)
-
-        st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
+        st.subheader("Educational guidance (rule-based)")
+        st.write(rule_based_guidance(user_inputs, results_df))
 
 
-# ------------------------------------------------------------
-# Model evaluation
-# ------------------------------------------------------------
 elif page == "Model evaluation":
     st.title("Model evaluation")
-
-    st.markdown(
-        """
-This page visualizes discrimination and calibration using stored test predictions,
-*if* they were included in the serialized artifact.
-
-Expected keys per disease inside `disease_models.joblib`:
-- `y_test` (array-like)
-- `y_proba` (array-like predicted probabilities)
-
-If these keys are absent, you can still rely on the precomputed tables in `tables/`.
-        """
-    )
 
     available = []
     for disease, info in disease_models.items():
@@ -719,9 +662,8 @@ If these keys are absent, you can still rely on the precomputed tables in `table
     if not available:
         st.warning(
             "No stored test predictions found in `disease_models.joblib` (missing `y_test` and/or `y_proba`). "
-            "To enable interactive evaluation, update `src/model_ai.py` to store these arrays when serializing."
+            "Use precomputed outputs in `tables/` and `figures/`."
         )
-        st.write("See the `tables/` and `figures/` folders in this repository for manuscript-ready outputs.")
         st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
     else:
         disease_choice = st.selectbox("Select condition", options=available, format_func=lambda d: pretty_disease(d))
