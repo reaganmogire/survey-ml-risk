@@ -179,6 +179,19 @@ st.markdown(
     border: 1px solid #E0E0E0 !important;
   }
 
+  {
+    background-color: #F5F5F5 !important;
+    color: #1A1A1A !important;
+  }
+  pre {
+    background-color: #F5F5F5 !important;
+    color: #1A1A1A !important;
+  }
+  pre code {
+    background-color: #F5F5F5 !important;
+    color: #1A1A1A !important;
+  }
+
   /* Alerts */
   div[role="alert"] * {
     color: #1A1A1A !important;
