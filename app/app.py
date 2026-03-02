@@ -1,595 +1,576 @@
-#!/usr/bin/env python3
-# coding: utf-8
+k#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Streamlit app: Survey-based chronic disease risk prediction (BRFSS 2011–2015).
+Streamlit app for survey-based chronic disease risk prediction (research/demo).
 
-Key features
-- Loads trained artifacts (joblib) from app/artifacts/
-- If artifacts are missing, downloads them from GitHub Releases (model-v1)
-- Provides interactive risk prediction for multiple outcomes
-- Local explanations with SHAP for sklearn Pipelines (preprocessor + tree model), if available
-- No external AI/LLM calls
-
-This application is intended for research only.
+- Loads pre-trained model artifacts from app/artifacts/
+- Produces per-condition predicted risk, threshold-based risk category, and uncertainty proxy
+- Provides optional local explanation (SHAP) with intuitive labels and a clear sign convention:
+    SHAP > 0  => increases predicted risk
+    SHAP < 0  => decreases predicted risk
 """
 
 from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Tuple, Optional
 
 import numpy as np
 import pandas as pd
 import joblib
 import streamlit as st
 import matplotlib.pyplot as plt
-import requests
 
-from sklearn.metrics import (
-    roc_auc_score,
-    average_precision_score,
-    brier_score_loss,
-    confusion_matrix,
-    roc_curve,
-    precision_recall_curve,
-)
-from sklearn.calibration import calibration_curve
-
-
-# ------------------------------------------------------------
-# Optional dependency: SHAP
-# ------------------------------------------------------------
+# Optional SHAP
 try:
-    import shap  # noqa: F401
-    _HAS_SHAP = True
+    import shap  # type: ignore
+    HAS_SHAP = True
 except Exception:
-    _HAS_SHAP = False
+    HAS_SHAP = False
 
 
-# ============================================================
-# 1) Artifact auto-download (GitHub Release: model-v1)
-# ============================================================
-REPO_OWNER = "reaganmogire"
-REPO_NAME = "survey-ml-risk"
-MODEL_TAG = os.environ.get("MODEL_TAG", "model-v1")  # override if you version-bump
+# =============================================================================
+# Page config + bright "medical" theme
+# =============================================================================
+st.set_page_config(
+    page_title="Survey ML Risk (Research Demo)",
+    page_icon="🩺",
+    layout="wide",
+)
 
-RELEASE_BASE = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/{MODEL_TAG}"
+st.markdown(
+    """
+    <style>
+      /* Overall background */
+      .stApp {
+        background: linear-gradient(180deg, #F7FBFF 0%, #FFFFFF 35%, #F5FAFF 100%);
+        color: #0B1F35;
+      }
 
-APP_DIR = Path(__file__).resolve().parent
-ARTIFACT_DIR = APP_DIR / "artifacts"
-ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+      /* Reduce dark mode feel */
+      section[data-testid="stSidebar"] {
+        background: #EAF5FF;
+        border-right: 1px solid rgba(11,31,53,0.08);
+      }
 
-ARTIFACTS = {
-    "disease_models.joblib": f"{RELEASE_BASE}/disease_models.joblib",
-    "optimal_thresholds.joblib": f"{RELEASE_BASE}/optimal_thresholds.joblib",
-    "predictor_cols.joblib": f"{RELEASE_BASE}/predictor_cols.joblib",
+      /* Headings */
+      h1, h2, h3, h4 {
+        color: #0B3B66;
+      }
+
+      /* Cards */
+      .card {
+        background: #FFFFFF;
+        border: 1px solid rgba(11,31,53,0.10);
+        border-radius: 14px;
+        padding: 16px 18px;
+        box-shadow: 0 6px 20px rgba(11,31,53,0.06);
+      }
+
+      /* Buttons */
+      .stButton>button {
+        background: #2F80ED;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.55rem 1.0rem;
+      }
+      .stButton>button:hover {
+        background: #1F6FDC;
+        color: white;
+      }
+
+      /* Dataframe container */
+      div[data-testid="stDataFrame"] {
+        background: #FFFFFF;
+        border-radius: 12px;
+        border: 1px solid rgba(11,31,53,0.10);
+      }
+
+      /* Info / warning blocks */
+      .stAlert {
+        border-radius: 12px;
+      }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+# =============================================================================
+# Constants / Labels
+# =============================================================================
+REPO_ROOT = Path(__file__).resolve().parents[1]  # app/app.py -> repo root
+ARTIFACT_DIR = Path(os.environ.get("ARTIFACT_DIR", REPO_ROOT / "app" / "artifacts"))
+
+ART_DISEASE_MODELS = ARTIFACT_DIR / "disease_models.joblib"
+ART_THRESHOLDS = ARTIFACT_DIR / "optimal_thresholds.joblib"
+ART_PREDICTORS = ARTIFACT_DIR / "predictor_cols.joblib"
+
+DISEASE_LABELS = {
+    "heart_attack": "Heart attack (myocardial infarction)",
+    "coronary_hd": "Coronary heart disease",
+    "stroke": "Stroke",
+    "kidney": "Chronic kidney disease",
+    "depression": "Depression",
+    "diabetes": "Diabetes",
 }
 
-DISCLAIMER_TEXT = (
-    "Disclaimer: This tool is for research only. It does not provide medical advice or diagnosis. "
-    "Consult a qualified clinician for personalised guidance."
-)
+# BRFSS feature labels (intuitive display)
+FEATURE_LABELS = {
+    "_STATE": "State",
+    "SEX": "Sex",
+    "_AGEG5YR": "Age group",
+    "_EDUCAG": "Education",
+    "_INCOMG": "Household income",
+    "_MRACE1": "Race",
+    "_HISPANC": "Hispanic ethnicity",
+    "SMOKE100": "Ever smoked (100 cigarettes)",
+    "SMOKDAY2": "Current smoking frequency",
+    "ALCDAY5": "Alcohol use frequency",
+    "DRNKANY5": "Any alcohol use (past 30 days)",
+    "EXERANY2": "Any exercise (past 30 days)",
+    "FRUIT1": "Fruit intake",
+    "VEGETAB1": "Vegetable intake",
+    "HLTHPLN1": "Has health insurance",
+    "PERSDOC2": "Has a personal doctor",
+    "MEDCOST": "Cost barrier to care",
+    "CHECKUP1": "Time since routine checkup",
+    "BPHIGH4": "History of high blood pressure",
+    "BPMEDS": "On BP medication",
+    "TOLDHI2": "Told high cholesterol",
+    "CHOLCHK": "Cholesterol checked recently",
+    "ASTHMA3": "History of asthma",
+    "HAVARTH3": "History of arthritis",
+    "GENHLTH": "Self-rated general health",
+    "PHYSHLTH": "Physically unhealthy days",
+    "MENTHLTH": "Mentally unhealthy days",
+    "POORHLTH": "Days poor health limited activities",
+    "DIFFWALK": "Difficulty walking/climbing stairs",
+    "DECIDE": "Cognitive difficulty (memory/concentration)",
+    "WEIGHT2": "Weight (BRFSS-coded)",
+    "HEIGHT3": "Height (BRFSS-coded)",
+    "_BMI5": "BMI (×100; BRFSS-coded)",
+}
+
+# Compact mappings for common categorical fields (for nicer inputs)
+SEX_MAP = {1: "Male", 2: "Female"}
+YESNO_MAP = {1: "Yes", 2: "No"}
+
+AGEG5YR_MAP = {
+    1: "18–24", 2: "25–29", 3: "30–34", 4: "35–39", 5: "40–44",
+    6: "45–49", 7: "50–54", 8: "55–59", 9: "60–64", 10: "65–69",
+    11: "70–74", 12: "75–79", 13: "80+",
+}
+
+EDUCAG_MAP = {
+    1: "< High school",
+    2: "High school graduate",
+    3: "Some college",
+    4: "College graduate",
+}
+
+INCOMG_MAP = {
+    1: "<$15k",
+    2: "$15–25k",
+    3: "$25–35k",
+    4: "$35–50k",
+    5: "$50–75k",
+    6: "$75k+",
+}
+
+GENHLTH_MAP = {1: "Excellent", 2: "Very good", 3: "Good", 4: "Fair", 5: "Poor"}
 
 
-def _download_file(url: str, dest: Path) -> None:
-    """Download a file with a Streamlit progress indicator."""
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dest.with_suffix(dest.suffix + ".part")
+# =============================================================================
+# Helpers
+# =============================================================================
+def friendly_feature_name(raw: str) -> str:
+    """
+    Convert model feature names (including transformed names from preprocessing)
+    into more intuitive labels for display.
 
-    with requests.get(url, stream=True, timeout=180) as r:
-        r.raise_for_status()
-        total = int(r.headers.get("content-length", 0))
-        downloaded = 0
+    Examples:
+      num__MENTHLTH -> Mentally unhealthy days
+      cat__SEX_1.0  -> Sex = Male
+    """
+    s = str(raw)
 
-        prog = st.progress(0.0)
-        msg = st.empty()
+    # Strip sklearn prefixes
+    if s.startswith("num__"):
+        base = s[len("num__"):]
+        return FEATURE_LABELS.get(base, base)
 
-        with open(tmp, "wb") as f:
-            for chunk in r.iter_content(chunk_size=1024 * 1024):  # 1MB chunks
-                if not chunk:
-                    continue
-                f.write(chunk)
-                downloaded += len(chunk)
-                if total > 0:
-                    prog.progress(min(downloaded / total, 1.0))
-                    msg.caption(f"Downloaded {downloaded/1e6:.1f} / {total/1e6:.1f} MB")
+    if s.startswith("cat__"):
+        base = s[len("cat__"):]
+        # Often: <VAR>_<LEVEL>
+        # Try to split last underscore as level
+        if "_" in base:
+            var, level = base.rsplit("_", 1)
+            var_label = FEATURE_LABELS.get(var, var)
+            # Special handling for SEX
+            if var == "SEX":
+                try:
+                    level_i = int(float(level))
+                    level_label = SEX_MAP.get(level_i, level)
+                    return f"{var_label} = {level_label}"
+                except Exception:
+                    return f"{var_label} = {level}"
+            # Generic
+            return f"{var_label} = {level}"
+        return FEATURE_LABELS.get(base, base)
 
-    tmp.replace(dest)
-    msg.empty()
-
-
-def ensure_model_artifacts() -> None:
-    """Ensure artifacts exist locally; otherwise download from GitHub Releases."""
-    missing = [name for name in ARTIFACTS if not (ARTIFACT_DIR / name).exists()]
-    if not missing:
-        return
-
-    st.info("Downloading model artifacts from GitHub Releases (first run only)…")
-    for name in missing:
-        url = ARTIFACTS[name]
-        dest = ARTIFACT_DIR / name
-        with st.spinner(f"Downloading {name}…"):
-            _download_file(url, dest)
-
-
-@st.cache_resource(show_spinner=False)
-def load_artifacts():
-    """Load artifacts once per Streamlit container session."""
-    ensure_model_artifacts()
-    disease_models = joblib.load(ARTIFACT_DIR / "disease_models.joblib")
-    optimal_thresholds = joblib.load(ARTIFACT_DIR / "optimal_thresholds.joblib")
-    predictor_cols = joblib.load(ARTIFACT_DIR / "predictor_cols.joblib")
-    return disease_models, optimal_thresholds, predictor_cols
+    # Fall back to raw mapping when possible
+    # Also handle strings like "Num__MENTHLTH" from older pipelines
+    s2 = s.replace("Num__", "").replace("Cat__", "").replace("num__", "").replace("cat__", "")
+    s2 = s2.replace("__", "")
+    return FEATURE_LABELS.get(s2, s2)
 
 
-disease_models, optimal_thresholds, predictor_cols = load_artifacts()
+def disease_label(code: str) -> str:
+    return DISEASE_LABELS.get(code, code.replace("_", " ").title())
 
 
-# ============================================================
-# 2) Utility functions
-# ============================================================
 def uncertainty_from_proba(p: float) -> float:
     """
-    Simple uncertainty proxy:
-      0 -> very confident (p near 0 or 1)
-      1 -> maximally uncertain (p = 0.5)
+    Uncertainty proxy in [0,1], highest at p=0.5, lowest near 0 or 1.
     """
-    p = float(p)
     return float(1.0 - abs(p - 0.5) * 2.0)
 
 
-def _safe_float(x: Any) -> Optional[float]:
-    try:
-        if x is None:
-            return None
-        return float(x)
-    except Exception:
-        return None
-
-
-def predict_all_conditions(model_input: Dict[str, Any]) -> pd.DataFrame:
-    """
-    Predict risk for each condition.
-
-    model_input must include keys matching predictor_cols.
-    Missing predictors are filled with NaN (the pipeline should impute as trained).
-    """
-    row = pd.DataFrame([model_input]).reindex(columns=predictor_cols, fill_value=np.nan)
-
-    records = []
-    for disease, info in disease_models.items():
-        model = info["model"] if isinstance(info, dict) and "model" in info else info
-        thr = float(optimal_thresholds.get(disease, 0.5))
-
-        proba = float(model.predict_proba(row)[0, 1])
-        label = "High risk" if proba >= thr else "Low / moderate risk"
-        records.append(
-            {
-                "Condition": disease,
-                "probability": proba,
-                "threshold_used": thr,
-                "risk_classification": label,
-                "uncertainty": uncertainty_from_proba(proba),
-            }
-        )
-
-    df = pd.DataFrame(records).sort_values("probability", ascending=False)
-    return df
-
-
-def rule_based_guidance(user_inputs: Dict[str, Any], results_df: pd.DataFrame) -> str:
-    """
-    Educational, rule-based guidance. No external services, no LLM.
-    """
-    lines = []
-    high = results_df.loc[results_df["risk_classification"] == "High risk", "Condition"].tolist()
-
-    if high:
-        lines.append("**Higher-risk flags (model-based):** " + ", ".join(high) + ".")
-    else:
-        lines.append("**Model-based result:** No conditions flagged as higher risk at the stored thresholds.")
-
-    bmi = _safe_float(user_inputs.get("BMI (kg/m²)"))
-    if bmi is not None:
-        if bmi >= 30:
-            lines.append(
-                "- BMI suggests obesity. Gradual weight reduction (diet quality + regular activity) "
-                "can reduce cardiometabolic risk."
-            )
-        elif bmi >= 25:
-            lines.append(
-                "- BMI suggests overweight. Small, sustained changes (daily walking, reduced sugary drinks, "
-                "higher fiber/vegetables) can improve risk."
-            )
-
-    smoke = str(user_inputs.get("Smoking status", "")).lower()
-    if "current" in smoke:
-        lines.append(
-            "- Current smoking increases cardiovascular and overall risk. Consider evidence-based cessation "
-            "support (counseling, nicotine replacement, medications as appropriate)."
-        )
-
-    alc = _safe_float(user_inputs.get("Alcohol (drinks/week)"))
-    if alc is not None and alc >= 14:
-        lines.append(
-            "- Reported alcohol intake is relatively high. Reducing intake can lower blood pressure and "
-            "improve cardiometabolic health."
-        )
-
-    phys = str(user_inputs.get("Any exercise in past month?", "")).lower()
-    if phys == "no":
-        lines.append(
-            "- Increasing physical activity (as medically appropriate) supports cardiometabolic, renal, and "
-            "mental health."
-        )
-
-    lines.append("\n⚠️ " + DISCLAIMER_TEXT)
-    return "\n".join(lines)
-
-
-# ============================================================
-# 3) SHAP utilities (Pipeline-safe)
-# ============================================================
 @st.cache_resource(show_spinner=False)
-def build_tree_explainers():
+def load_artifacts() -> Tuple[Dict[str, Any], Dict[str, float], list]:
     """
-    Build SHAP TreeExplainers for the *classifier* inside each sklearn Pipeline.
-
-    Returns:
-      dict[disease] = {"preprocessor": preprocessor, "clf": clf, "explainer": TreeExplainer}
+    Load model artifacts saved by src/model_ai.py
     """
-    if not _HAS_SHAP:
-        return None
+    if not ART_DISEASE_MODELS.exists():
+        raise FileNotFoundError(f"Missing model artifact: {ART_DISEASE_MODELS}")
+    if not ART_THRESHOLDS.exists():
+        raise FileNotFoundError(f"Missing thresholds artifact: {ART_THRESHOLDS}")
+    if not ART_PREDICTORS.exists():
+        raise FileNotFoundError(f"Missing predictor columns artifact: {ART_PREDICTORS}")
 
-    out = {}
-    for disease, info in disease_models.items():
+    disease_models = joblib.load(ART_DISEASE_MODELS)
+    thresholds = joblib.load(ART_THRESHOLDS)
+    predictor_cols = joblib.load(ART_PREDICTORS)
+
+    # Ensure disease_models dict has expected structure
+    if not isinstance(disease_models, dict):
+        raise ValueError("disease_models.joblib did not load as a dict")
+
+    return disease_models, thresholds, predictor_cols
+
+
+def predict_all(input_row: Dict[str, Any],
+                disease_models: Dict[str, Any],
+                thresholds: Dict[str, float],
+                predictor_cols: list) -> pd.DataFrame:
+    """
+    Predict across all diseases; return a tidy DataFrame for display.
+    """
+    X = pd.DataFrame([input_row]).reindex(columns=predictor_cols, fill_value=np.nan)
+
+    rows = []
+    for dis, info in disease_models.items():
         model = info["model"] if isinstance(info, dict) and "model" in info else info
+        p = float(model.predict_proba(X)[0, 1])
+        thr = float(thresholds.get(dis, 0.5))
+        unc = uncertainty_from_proba(p)
+        label = "Higher risk" if p >= thr else "Lower / moderate risk"
 
-        # Expect sklearn Pipeline with named steps
-        if not hasattr(model, "named_steps"):
-            out[disease] = None
-            continue
+        rows.append({
+            "Condition": disease_label(dis),
+            "Predicted risk (0–1)": p,
+            "Threshold": thr,
+            "Risk category": label,
+            "Uncertainty (0–1)": unc,
+            "_disease_code": dis,
+        })
 
-        if "preprocessor" not in model.named_steps or "clf" not in model.named_steps:
-            out[disease] = None
-            continue
-
-        pre = model.named_steps["preprocessor"]
-        clf = model.named_steps["clf"]
-
-        try:
-            explainer = shap.TreeExplainer(clf)
-            out[disease] = {"preprocessor": pre, "clf": clf, "explainer": explainer}
-        except Exception:
-            out[disease] = None
-
-    return out
-
-
-tree_explainers = build_tree_explainers()
-
-
-def explain_instance_pipeline(model_input: Dict[str, Any], disease: str, top_n: int = 20) -> Optional[pd.DataFrame]:
-    """
-    Compute SHAP values for a single instance for a given disease model.
-
-    Pipeline workflow:
-      X_raw -> preprocessor.transform -> X_transformed
-      shap.TreeExplainer(clf).shap_values(X_transformed)
-
-    Returns a DataFrame of the top contributing transformed features.
-    """
-    if not _HAS_SHAP or tree_explainers is None:
-        return None
-
-    bundle = tree_explainers.get(disease)
-    if bundle is None:
-        return None
-
-    pre = bundle["preprocessor"]
-    explainer = bundle["explainer"]
-
-    x_raw = pd.DataFrame([model_input]).reindex(columns=predictor_cols, fill_value=np.nan)
-
-    try:
-        X_t = pre.transform(x_raw)
-        feature_names = pre.get_feature_names_out()
-    except Exception:
-        return None
-
-    try:
-        sv = explainer.shap_values(X_t)
-        # For binary classification, SHAP may return a list [class0, class1]
-        if isinstance(sv, list) and len(sv) == 2:
-            sv = sv[1]
-        sv = np.asarray(sv).reshape(-1)
-    except Exception:
-        return None
-
-    df = pd.DataFrame({"feature": feature_names, "shap_value": sv})
-    df["abs"] = df["shap_value"].abs()
-    df = df.sort_values("abs", ascending=False).head(top_n).drop(columns=["abs"])
+    df = pd.DataFrame(rows).sort_values("Predicted risk (0–1)", ascending=False).reset_index(drop=True)
     return df
 
 
-# ============================================================
-# 4) Streamlit UI
-# ============================================================
-st.set_page_config(page_title="Survey-ML Risk", layout="wide")
+def shap_local_explanation(input_row: Dict[str, Any],
+                           disease: str,
+                           disease_models: Dict[str, Any],
+                           predictor_cols: list,
+                           top_n: int = 15) -> Optional[pd.DataFrame]:
+    """
+    Compute SHAP contributions for one selected disease model.
+    Returns a DataFrame with intuitive feature labels.
 
-st.sidebar.title("Survey-ML Risk")
-page = st.sidebar.radio("Navigate", ["Risk prediction", "Model evaluation", "About"])
-st.sidebar.markdown("---")
-st.sidebar.caption("Research only; not for clinical use.")
+    Requires SHAP and a pipeline with:
+      - model.named_steps["preprocessor"]
+      - model.named_steps["clf"]  (tree-based)
+    """
+    if not HAS_SHAP:
+        return None
 
+    info = disease_models[disease]
+    model = info["model"] if isinstance(info, dict) and "model" in info else info
 
-# ------------------------------------------------------------
-# Page: About
-# ------------------------------------------------------------
-if page == "About":
-    st.title("About this app")
+    # Expect sklearn Pipeline
+    if not hasattr(model, "named_steps"):
+        return None
+    if "preprocessor" not in model.named_steps or "clf" not in model.named_steps:
+        return None
 
-    st.markdown(
-        """
-This repository provides an interpretable machine-learning framework for estimating chronic disease risk
-using population survey data (BRFSS 2011–2015).
+    preprocessor = model.named_steps["preprocessor"]
+    clf = model.named_steps["clf"]
 
-**Key design goals**
-- Scalable risk estimation without EHRs, biomarkers, or laboratory data
-- Interpretable feature contributions (SHAP, optional)
-- Reproducible, publication-oriented outputs (tables/figures)
+    X = pd.DataFrame([input_row]).reindex(columns=predictor_cols, fill_value=np.nan)
+    Xt = preprocessor.transform(X)
 
-⚠️ **{disclaimer}**
-        """.format(disclaimer=DISCLAIMER_TEXT)
-    )
+    try:
+        explainer = shap.TreeExplainer(clf)
+        shap_values = explainer.shap_values(Xt)
+    except Exception:
+        return None
 
-    st.markdown("### Loaded artifact summary")
-    st.write(f"Model tag: `{MODEL_TAG}`")
-    st.write(f"Artifacts directory: `{ARTIFACT_DIR}`")
-    st.write("Predictor columns loaded:", len(predictor_cols))
-    st.write("Conditions loaded:", list(disease_models.keys()))
-
-
-# ------------------------------------------------------------
-# Page: Risk prediction
-# ------------------------------------------------------------
-elif page == "Risk prediction":
-    st.title("Risk prediction (survey-based ML)")
-
-    st.markdown(
-        """
-Enter inputs below to generate predicted risks for multiple conditions.
-On the first run, the app downloads model artifacts from GitHub Releases.
-        """
-    )
-
-    # -------- Inputs (minimal set; expand to cover your full predictor schema) --------
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        age = st.number_input("Age (years)", min_value=18, max_value=99, value=35, step=1)
-        sex = st.selectbox("Sex", ["Male", "Female"])
-        bmi = st.number_input("BMI (kg/m²)", min_value=10.0, max_value=70.0, value=27.0, step=0.1)
-
-    with col2:
-        htn = st.selectbox("Ever told you have high blood pressure?", ["No", "Yes"])
-        diffwalk = st.selectbox("Difficulty walking/climbing stairs?", ["No", "Yes"])
-        genhlth = st.selectbox("General health", ["Excellent", "Very good", "Good", "Fair", "Poor"])
-
-    with col3:
-        smoke = st.selectbox("Smoking status", ["Never", "Former", "Current"])
-        drinks_pw = st.number_input("Alcohol (drinks/week)", min_value=0.0, max_value=70.0, value=0.0, step=1.0)
-        exer = st.selectbox("Any exercise in past month?", ["No", "Yes"])
-
-    # -------- Map user-friendly inputs -> BRFSS-coded predictors --------
-    # IMPORTANT: Your trained model expects specific BRFSS-coded columns.
-    # This mapping is intentionally minimal and safe; expand it to match your full feature set.
-    # Any missing predictors will be set to NaN (your pipeline should impute as trained).
-    model_input: Dict[str, Any] = {}
-
-    # BRFSS-style codes (standard approach; adjust if your training pipeline used different coding)
-    if "_AGEG5YR" in predictor_cols:
-        def age_to_ageg5yr(a: int) -> int:
-            a = max(18, min(int(a), 99))
-            bins = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
-            for i, upper in enumerate(bins, start=1):
-                if a < upper:
-                    return i
-            return 13
-
-        model_input["_AGEG5YR"] = age_to_ageg5yr(age)
-
-    if "SEX" in predictor_cols:
-        model_input["SEX"] = 1 if sex == "Male" else 2
-
-    if "_BMI5" in predictor_cols:
-        model_input["_BMI5"] = int(round(float(bmi) * 100))
-
-    if "BPHIGH4" in predictor_cols:
-        model_input["BPHIGH4"] = 1 if htn == "Yes" else 2
-
-    if "DIFFWALK" in predictor_cols:
-        model_input["DIFFWALK"] = 1 if diffwalk == "Yes" else 2
-
-    if "GENHLTH" in predictor_cols:
-        model_input["GENHLTH"] = {"Excellent": 1, "Very good": 2, "Good": 3, "Fair": 4, "Poor": 5}[genhlth]
-
-    if "EXERANY2" in predictor_cols:
-        model_input["EXERANY2"] = 1 if exer == "Yes" else 2
-
-    if "SMOKE100" in predictor_cols:
-        # Approximation: never -> No; former/current -> Yes
-        model_input["SMOKE100"] = 2 if smoke == "Never" else 1
-
-    if "ALCDAY5" in predictor_cols:
-        # Simple encoding: 888=no drinks; else 200+drinks/week capped at 7
-        if drinks_pw <= 0:
-            model_input["ALCDAY5"] = 888
-        else:
-            d = int(round(min(float(drinks_pw), 7.0)))
-            model_input["ALCDAY5"] = 200 + d
-
-    user_inputs = {
-        "Age (years)": age,
-        "Sex": sex,
-        "BMI (kg/m²)": bmi,
-        "High blood pressure history": htn,
-        "Difficulty walking/climbing stairs?": diffwalk,
-        "General health": genhlth,
-        "Smoking status": smoke,
-        "Alcohol (drinks/week)": drinks_pw,
-        "Any exercise in past month?": exer,
-    }
-
-    # Show predictor coverage for transparency
-    missing_predictors = [c for c in predictor_cols if c not in model_input]
-    with st.expander("Predictor coverage (for transparency)"):
-        st.write(f"Provided predictors: {len(model_input)} / {len(predictor_cols)}")
-        st.write("Missing predictors will be passed as NaN (imputed per training pipeline).")
-        st.write(missing_predictors)
-
-    run_btn = st.button("Run prediction")
-
-    if run_btn:
-        results_df = predict_all_conditions(model_input)
-
-        st.subheader("Predicted risks")
-        st.dataframe(results_df, use_container_width=True)
-
-        st.markdown(
-            """
-**Field definitions**
-- `probability`: predicted risk (0–1)  
-- `threshold_used`: stored threshold for classification  
-- `risk_classification`: label using `threshold_used`  
-- `uncertainty`: 0 (confident) → 1 (uncertain; highest at p≈0.5)
-            """
-        )
-
-        # Simple plots for quick visual interpretation
-        st.subheader("Plots")
-        fig, ax = plt.subplots(figsize=(7, 4))
-        ax.bar(results_df["Condition"], results_df["probability"])
-        ax.set_ylabel("Predicted probability")
-        ax.set_title("Predicted risk by condition")
-        ax.tick_params(axis="x", rotation=30)
-        st.pyplot(fig)
-
-        fig, ax = plt.subplots(figsize=(7, 4))
-        ax.bar(results_df["Condition"], results_df["uncertainty"])
-        ax.set_ylabel("Uncertainty (0=confident, 1=uncertain)")
-        ax.set_title("Prediction uncertainty by condition")
-        ax.tick_params(axis="x", rotation=30)
-        st.pyplot(fig)
-
-        st.subheader("Educational guidance (rule-based)")
-        st.write(rule_based_guidance(user_inputs, results_df))
-
-        st.subheader("Local feature contributions (optional)")
-        if not _HAS_SHAP:
-            st.info("Install `shap` to enable local explanations.")
-        else:
-            disease_choice = st.selectbox("Select condition to explain", options=list(results_df["Condition"]), index=0)
-
-            contrib = explain_instance_pipeline(model_input, disease_choice, top_n=20)
-            if contrib is None or contrib.empty:
-                st.info("SHAP explanation not available for this model/configuration.")
-            else:
-                st.dataframe(contrib, use_container_width=True)
-
-                # Bar plot of top SHAP values
-                df_plot = contrib.sort_values("shap_value")
-                fig, ax = plt.subplots(figsize=(7, 5))
-                ax.barh(df_plot["feature"], df_plot["shap_value"])
-                ax.set_xlabel("SHAP value (impact on model output)")
-                ax.set_title(f"Local explanation: {disease_choice}")
-                st.pyplot(fig)
-
-        st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
-
-
-# ------------------------------------------------------------
-# Page: Model evaluation
-# ------------------------------------------------------------
-elif page == "Model evaluation":
-    st.title("Model evaluation")
-
-    st.markdown(
-        """
-This page visualizes discrimination and calibration using stored test predictions,
-*if* they were included in the serialized artifact.
-
-Expected keys per disease inside `disease_models.joblib`:
-- `y_test` (array-like)
-- `y_proba` (array-like predicted probabilities)
-
-If these keys are absent, you can still rely on the precomputed tables in `tables/`.
-        """
-    )
-
-    available = []
-    for disease, info in disease_models.items():
-        if isinstance(info, dict) and ("y_test" in info and "y_proba" in info):
-            available.append(disease)
-
-    if not available:
-        st.warning(
-            "No stored test predictions found in `disease_models.joblib` (missing `y_test` and/or `y_proba`). "
-            "To enable interactive evaluation, update `src/model_ai.py` to store these arrays when serializing."
-        )
-        st.markdown("### Precomputed outputs")
-        st.write("See the `tables/` and `figures/` folders in this repository for manuscript-ready outputs.")
-        st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
+    # Binary classification: shap_values could be list [neg, pos] or array
+    if isinstance(shap_values, list):
+        # Use positive class
+        vals = shap_values[1][0]
     else:
-        disease_choice = st.selectbox("Select condition", options=available)
-        info = disease_models[disease_choice]
-        y = np.asarray(info["y_test"]).astype(int)
-        p = np.asarray(info["y_proba"]).astype(float)
+        vals = shap_values[0] if shap_values.ndim > 1 else shap_values
 
-        auroc = roc_auc_score(y, p)
-        ap = average_precision_score(y, p)
-        brier = brier_score_loss(y, p)
+    try:
+        feat_names = preprocessor.get_feature_names_out()
+    except Exception:
+        # fallback: generic names
+        feat_names = np.array([f"feature_{i}" for i in range(len(vals))])
 
-        c1, c2, c3 = st.columns(3)
-        c1.metric("AUROC", f"{auroc:.3f}")
-        c2.metric("PR-AUC", f"{ap:.3f}")
-        c3.metric("Brier", f"{brier:.3f}")
+    df = pd.DataFrame({
+        "feature_raw": feat_names,
+        "feature": [friendly_feature_name(f) for f in feat_names],
+        "shap_value": vals.astype(float),
+    })
+    df["abs_shap"] = df["shap_value"].abs()
+    df = df.sort_values("abs_shap", ascending=False).head(top_n).drop(columns=["abs_shap"]).reset_index(drop=True)
+    return df
 
-        # ROC curve
-        fpr, tpr, _ = roc_curve(y, p)
-        fig, ax = plt.subplots(figsize=(6, 4))
-        ax.plot(fpr, tpr)
-        ax.plot([0, 1], [0, 1], linestyle="--")
-        ax.set_xlabel("False positive rate")
-        ax.set_ylabel("True positive rate")
-        ax.set_title(f"ROC: {disease_choice}")
-        st.pyplot(fig)
 
-        # PR curve
-        prec, rec, _ = precision_recall_curve(y, p)
-        fig, ax = plt.subplots(figsize=(6, 4))
-        ax.plot(rec, prec)
-        ax.set_xlabel("Recall")
-        ax.set_ylabel("Precision")
-        ax.set_title(f"Precision–Recall: {disease_choice}")
-        st.pyplot(fig)
+def plot_shap_bar(contrib: pd.DataFrame, title: str) -> plt.Figure:
+    """
+    Horizontal bar plot with sign convention explicitly labeled:
+      +SHAP increases risk, -SHAP decreases risk
+    """
+    df = contrib.copy()
 
-        # Calibration curve
-        frac_pos, mean_pred = calibration_curve(y, p, n_bins=10, strategy="quantile")
-        fig, ax = plt.subplots(figsize=(6, 4))
-        ax.plot(mean_pred, frac_pos, marker="o")
-        ax.plot([0, 1], [0, 1], linestyle="--")
-        ax.set_xlabel("Mean predicted probability")
-        ax.set_ylabel("Fraction of positives")
-        ax.set_title(f"Calibration: {disease_choice}")
-        st.pyplot(fig)
+    # Order: smallest at top -> largest at bottom looks nice in barh
+    df = df.iloc[::-1].reset_index(drop=True)
 
-        # Confusion matrix at stored threshold
-        thr = float(optimal_thresholds.get(disease_choice, 0.5))
-        yhat = (p >= thr).astype(int)
-        cm = confusion_matrix(y, yhat)
-        st.write(f"Confusion matrix at threshold {thr:.3f}")
-        st.dataframe(pd.DataFrame(cm, index=["True 0", "True 1"], columns=["Pred 0", "Pred 1"]))
+    y = df["feature"].tolist()
+    x = df["shap_value"].values
 
-        st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
+    # Color by sign (increase vs decrease)
+    colors = np.where(x >= 0, "#D9534F", "#2F80ED")  # red-ish for increase, blue for decrease
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.barh(y, x, color=colors, edgecolor="none")
+    ax.axvline(0, color="#0B1F35", linewidth=1)
+
+    ax.set_title(title, fontsize=14)
+    ax.set_xlabel("SHAP value (impact on predicted risk)", fontsize=12)
+    ax.set_ylabel("Feature", fontsize=12)
+
+    # Make the sign convention explicit on the plot
+    # Place directional annotations near the top
+    xlim = ax.get_xlim()
+    xr = max(abs(xlim[0]), abs(xlim[1]))
+    ax.set_xlim(-xr, xr)
+
+    ax.text(0.98, 1.02, "→ Increase risk (SHAP > 0)", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=11, color="#D9534F")
+    ax.text(0.02, 1.02, "Decrease risk (SHAP < 0) ←", transform=ax.transAxes,
+            ha="left", va="bottom", fontsize=11, color="#2F80ED")
+
+    ax.grid(axis="x", linestyle="--", alpha=0.25)
+    fig.tight_layout()
+    return fig
+
+
+# =============================================================================
+# UI
+# =============================================================================
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.title("🩺 Survey-based Chronic Disease Risk Prediction (Research Demo)")
+st.write(
+    "This demo uses survey-derived inputs to generate model-based risk estimates for multiple chronic diseases, "
+    "with optional local explanations."
+)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Disclaimer (updated as requested)
+st.warning(
+    "Disclaimer: This tool does not provide a diagnosis and is not a substitute for professional medical advice. "
+    "If you have health concerns, consult a qualified clinician.",
+    icon="⚠️",
+)
+
+# Load artifacts
+with st.spinner("Loading model artifacts..."):
+    try:
+        disease_models, thresholds, predictor_cols = load_artifacts()
+    except Exception as e:
+        st.error(
+            f"Could not load model artifacts.\n\n"
+            f"Expected files under: `{ARTIFACT_DIR}`\n"
+            f"- disease_models.joblib\n"
+            f"- optimal_thresholds.joblib\n"
+            f"- predictor_cols.joblib\n\n"
+            f"Error: {e}"
+        )
+        st.stop()
+
+# Sidebar inputs
+st.sidebar.header("Input survey fields")
+
+# Minimal “friendly” inputs for key variables.
+# For advanced/repro: allow raw-code editing too.
+use_advanced = st.sidebar.toggle("Advanced mode (edit raw BRFSS-coded fields)", value=False)
+
+input_row: Dict[str, Any] = {}
+
+def select_code(label: str, mapping: Dict[int, str], default_code: int) -> int:
+    options = list(mapping.keys())
+    idx = options.index(default_code) if default_code in options else 0
+    choice = st.sidebar.selectbox(label, options=options, index=idx, format_func=lambda k: mapping.get(k, str(k)))
+    return int(choice)
+
+def yesno(label: str, default_yes: bool = False) -> int:
+    code = 1 if default_yes else 2
+    return select_code(label, YESNO_MAP, code)
+
+# Core demographics
+input_row["SEX"] = select_code("Sex", SEX_MAP, 1)
+input_row["_AGEG5YR"] = select_code("Age group", AGEG5YR_MAP, 9)
+input_row["_EDUCAG"] = select_code("Education", EDUCAG_MAP, 3)
+input_row["_INCOMG"] = select_code("Household income", INCOMG_MAP, 4)
+input_row["GENHLTH"] = select_code("Self-rated general health", GENHLTH_MAP, 2)
+
+# Health history / behaviors (simple toggles)
+input_row["BPHIGH4"] = select_code("History of high blood pressure", {1: "Yes", 2: "No", 3: "Borderline", 4: "Pregnancy-related"}, 2)
+input_row["BPMEDS"] = yesno("On BP medication", default_yes=False)
+input_row["TOLDHI2"] = yesno("Told high cholesterol", default_yes=False)
+input_row["DIFFWALK"] = yesno("Difficulty walking/climbing stairs", default_yes=False)
+input_row["DECIDE"] = yesno("Cognitive difficulty (memory/concentration)", default_yes=False)
+input_row["ASTHMA3"] = yesno("History of asthma", default_yes=False)
+input_row["HAVARTH3"] = yesno("History of arthritis", default_yes=False)
+input_row["EXERANY2"] = yesno("Any exercise (past 30 days)", default_yes=True)
+
+# “Days” fields
+input_row["PHYSHLTH"] = st.sidebar.slider("Physically unhealthy days (past 30 days)", 0, 30, 0)
+input_row["MENTHLTH"] = st.sidebar.slider("Mentally unhealthy days (past 30 days)", 0, 30, 0)
+input_row["POORHLTH"] = st.sidebar.slider("Days poor health limited activities", 0, 30, 0)
+
+# BMI input (store as BRFSS-coded _BMI5 = BMI*100)
+bmi = st.sidebar.slider("BMI (kg/m²)", 15.0, 60.0, 26.5, 0.1)
+input_row["_BMI5"] = int(round(bmi * 100))
+
+# Optional: allow users to set state + other codes (kept simple)
+input_row["_STATE"] = st.sidebar.number_input("State code (BRFSS _STATE)", min_value=1, max_value=99, value=24, step=1)
+
+# Additional fields required by model but not exposed in simple UI:
+# set as NaN; model pipeline handles missing via imputation.
+for col in predictor_cols:
+    input_row.setdefault(col, np.nan)
+
+# If advanced mode, show an editable table for all predictor cols
+if use_advanced:
+    st.sidebar.markdown("---")
+    st.sidebar.caption("Advanced: edit raw BRFSS-coded predictors used by the model.")
+    adv_df = pd.DataFrame([input_row], columns=predictor_cols)
+    edited = st.sidebar.data_editor(adv_df, use_container_width=True, hide_index=True)
+    # Pull edited values back
+    for c in predictor_cols:
+        v = edited.loc[0, c]
+        input_row[c] = v
+
+
+# =============================================================================
+# Predictions
+# =============================================================================
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.subheader("Predicted risks")
+
+pred_df = predict_all(input_row, disease_models, thresholds, predictor_cols)
+
+# Display table with intuitive column names and formatting
+display_df = pred_df.drop(columns=["_disease_code"]).copy()
+display_df["Predicted risk (0–1)"] = display_df["Predicted risk (0–1)"].map(lambda x: f"{x:.4f}")
+display_df["Threshold"] = display_df["Threshold"].map(lambda x: f"{x:.2f}")
+display_df["Uncertainty (0–1)"] = display_df["Uncertainty (0–1)"].map(lambda x: f"{x:.4f}")
+
+st.dataframe(display_df, use_container_width=True, hide_index=True)
+
+st.markdown(
+    """
+    **Field definitions**
+    - **Predicted risk (0–1)**: model-estimated probability
+    - **Threshold**: stored decision threshold for the condition
+    - **Risk category**: label using the stored threshold
+    - **Uncertainty (0–1)**: simple proxy; 0 = confident (p near 0 or 1), 1 = most uncertain (p near 0.5)
+    """
+)
+st.markdown("</div>", unsafe_allow_html=True)
+
+
+# =============================================================================
+# Optional: SHAP local explanations
+# =============================================================================
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.subheader("Local feature contributions (optional)")
+
+if not HAS_SHAP:
+    st.info("SHAP is not available in this environment. Install `shap` to enable local explanations.")
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.stop()
+
+disease_options = pred_df["_disease_code"].tolist()
+default_disease = "depression" if "depression" in disease_options else disease_options[0]
+selected_disease = st.selectbox(
+    "Select a condition to explain",
+    options=disease_options,
+    index=disease_options.index(default_disease),
+    format_func=lambda d: disease_label(d),
+)
+
+top_n = st.slider("Number of top features to display", 5, 30, 15, 1)
+
+contrib = shap_local_explanation(input_row, selected_disease, disease_models, predictor_cols, top_n=top_n)
+
+if contrib is None or contrib.empty:
+    st.info("SHAP explanation not available for this model/configuration.")
+else:
+    # Table: intuitive labels + explicit sign interpretation
+    contrib_table = contrib.copy()
+    contrib_table.rename(
+        columns={
+            "feature": "Feature",
+            "shap_value": "SHAP value",
+        },
+        inplace=True,
+    )
+    contrib_table["Interpretation"] = np.where(
+        contrib_table["SHAP value"] >= 0,
+        "Increases predicted risk",
+        "Decreases predicted risk",
+    )
+    contrib_table["SHAP value"] = contrib_table["SHAP value"].astype(float)
+
+    st.markdown("**Interpretation:** Positive SHAP values increase predicted risk; negative values decrease predicted risk.")
+    st.dataframe(
+        contrib_table[["Feature", "SHAP value", "Interpretation"]]
+        .assign(**{"SHAP value": lambda d: d["SHAP value"].map(lambda x: f"{x:.4f}")}),
+        use_container_width=True,
+        hide_index=True,
+    )
+
+    # Plot
+    fig = plot_shap_bar(contrib, title=f"Local explanation: {disease_label(selected_disease)}")
+    st.pyplot(fig, clear_figure=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
