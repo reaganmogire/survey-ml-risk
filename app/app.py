@@ -134,15 +134,34 @@ st.markdown(
 
   /* Selectbox dropdown menu - LIGHT BACKGROUND WITH DARK TEXT */
   ul[role="listbox"] {
-    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
     border: 1px solid #D0D8E0 !important;
   }
-  ul[role="listbox"] li {
+  ul[role="listbox"] > li {
     color: #1A1A1A !important;
-    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
   }
-  ul[role="listbox"] li:hover {
-    background: #E8F5E9 !important;
+  ul[role="listbox"] > li:hover {
+    background-color: #E8F5E9 !important;
+    color: #1A1A1A !important;
+  }
+  div[data-baseweb="menu"] {
+    background-color: #FFFFFF !important;
+  }
+  div[data-baseweb="menu"] div {
+    color: #1A1A1A !important;
+    background-color: #FFFFFF !important;
+  }
+  div[data-baseweb="menu"] div:hover {
+    background-color: #E8F5E9 !important;
+    color: #1A1A1A !important;
+  }
+  [role="option"] {
+    color: #1A1A1A !important;
+    background-color: #FFFFFF !important;
+  }
+  [role="option"]:hover {
+    background-color: #E8F5E9 !important;
     color: #1A1A1A !important;
   }
 
