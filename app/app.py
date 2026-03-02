@@ -493,10 +493,11 @@ def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
     ax.set_xlabel("SHAP value (impact on predicted risk)")
     ax.grid(axis="x", linestyle="--", alpha=0.25)
 
-    ax.text(0.98, 1.02, "→ Increase risk (SHAP > 0)", transform=ax.transAxes,
-            ha="right", va="bottom", fontsize=11, color="#D9534F")
-    ax.text(0.02, 1.02, "Decrease risk (SHAP < 0) ←", transform=ax.transAxes,
-            ha="left", va="bottom", fontsize=11, color="#2F80ED")
+    # Move legend to bottom
+    ax.text(0.02, -0.15, "← Decrease risk (SHAP < 0)", transform=ax.transAxes,
+            ha="left", va="top", fontsize=11, color="#2F80ED")
+    ax.text(0.98, -0.15, "Increase risk (SHAP > 0) →", transform=ax.transAxes,
+            ha="right", va="top", fontsize=11, color="#D9534F")
 
     fig.tight_layout()
     return fig
@@ -647,7 +648,7 @@ elif page == "Risk prediction":
                 )
                 st.pyplot(plot_shap_bar(contrib, title=f"Local explanation: {pretty_disease(disease_choice)}"))
 
-        st.subheader("Educational guidance (rule-based)")
+        st.subheader("Guidance")
         st.write(rule_based_guidance(user_inputs, results_df))
 
 
