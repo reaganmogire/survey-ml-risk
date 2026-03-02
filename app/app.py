@@ -58,103 +58,116 @@ st.markdown(
 <style>
   /* --- Page background --- */
   .stApp {
-    background: linear-gradient(180deg, #F7FBFF 0%, #FFFFFF 40%, #F3FAFF 100%);
+    background: linear-gradient(180deg, #F5F5F5 0%, #FFFFFF 50%, #F5F5F5 100%);
   }
 
   /* --- Sidebar --- */
   section[data-testid="stSidebar"] {
-    background: #EAF5FF !important;
-    border-right: 1px solid rgba(11,31,53,0.12);
+    background: #F0F4F8 !important;
+    border-right: 1px solid #D0D8E0;
   }
 
   /* Make ALL text readable */
   html, body, [class*="css"]  {
-    color: #0B1F35 !important;
+    color: #1A1A1A !important;
   }
 
   /* Headings */
   h1, h2, h3, h4, h5, h6 {
-    color: #0B3B66 !important;
+    color: #0F3A66 !important;
   }
 
   /* Paragraph/help text */
   p, li, span, label, small {
-    color: #0B1F35 !important;
+    color: #1A1A1A !important;
   }
 
   /* Cards */
   .card {
     background: #FFFFFF;
-    border: 1px solid rgba(11,31,53,0.12);
-    border-radius: 14px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
     padding: 16px 18px;
-    box-shadow: 0 6px 20px rgba(11,31,53,0.06);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
   /* Buttons */
   .stButton>button {
-    background: #2F80ED !important;
+    background: #2E7D32 !important;
     color: #FFFFFF !important;
     border: none !important;
-    border-radius: 10px !important;
-    padding: 0.55rem 1.0rem !important;
+    border-radius: 6px !important;
+    padding: 0.5rem 1.2rem !important;
   }
   .stButton>button:hover {
-    background: #1F6FDC !important;
+    background: #1B5E20 !important;
     color: #FFFFFF !important;
   }
 
-  /* --- Widget labels (the ones that became invisible) --- */
+  /* --- Widget labels --- */
   div[data-testid="stWidgetLabel"] label,
   div[data-testid="stWidgetLabel"] p,
   .stRadio label, .stRadio p,
   .stSelectbox label, .stSelectbox p,
   .stNumberInput label, .stNumberInput p {
-    color: #0B1F35 !important;
+    color: #1A1A1A !important;
     font-weight: 600 !important;
   }
 
-  /* --- Input boxes: force light background + dark text --- */
+  /* --- Input boxes --- */
   div[data-baseweb="input"] input,
   div[data-baseweb="base-input"] input,
   div[data-baseweb="textarea"] textarea {
-    background: #FFFFFF !important;
-    color: #0B1F35 !important;
-    border: 1px solid rgba(11,31,53,0.18) !important;
-    border-radius: 10px !important;
+    background: #FAFAFA !important;
+    color: #1A1A1A !important;
+    border: 1px solid #D0D8E0 !important;
+    border-radius: 6px !important;
   }
 
   /* Selectbox (closed state) */
   div[data-baseweb="select"] > div {
-    background: #FFFFFF !important;
-    color: #0B1F35 !important;
-    border: 1px solid rgba(11,31,53,0.18) !important;
-    border-radius: 10px !important;
+    background: #FAFAFA !important;
+    color: #1A1A1A !important;
+    border: 1px solid #D0D8E0 !important;
+    border-radius: 6px !important;
   }
 
-  /* Selectbox dropdown menu - LIGHT TEXT ON DARK BACKGROUND */
-  ul[role="listbox"],
-  [role="listbox"],
-  [data-baseweb="menu"],
-  .stSelectbox {
-    color: #FFFFFF !important;
+  /* Selectbox dropdown menu - LIGHT BACKGROUND WITH DARK TEXT */
+  ul[role="listbox"] {
+    background: #FFFFFF !important;
+    border: 1px solid #D0D8E0 !important;
   }
-  ul[role="listbox"] *,
-  [role="listbox"] *,
-  [data-baseweb="menu"] *,
-  .stSelectbox * {
-    color: #FFFFFF !important;
+  ul[role="listbox"] li {
+    color: #1A1A1A !important;
+    background: #FFFFFF !important;
+  }
+  ul[role="listbox"] li:hover {
+    background: #E8F5E9 !important;
+    color: #1A1A1A !important;
+  }
+
+  /* Radio labels in sidebar */
+  section[data-testid="stSidebar"] .stRadio label,
+  section[data-testid="stSidebar"] .stRadio p {
+    color: #1A1A1A !important;
+    font-weight: 600 !important;
+  }
+
+  /* DataFrame container */
+  div[data-testid="stDataFrame"] {
+    background: #FAFAFA !important;
+    border-radius: 8px !important;
+    border: 1px solid #E0E0E0 !important;
   }
 
   /* Alerts */
   div[role="alert"] * {
-    color: #0B1F35 !important;
+    color: #1A1A1A !important;
   }
 </style>
     """,
     unsafe_allow_html=True,
 )
-
 
 # ============================================================
 # 1) Artifact auto-download (GitHub Release: model-v1)
@@ -499,7 +512,7 @@ def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
 st.sidebar.title("Survey-ML Risk")
 page = st.sidebar.radio("Navigate", ["Risk prediction", "Model evaluation", "About"])
 st.sidebar.markdown("---")
-st.sidebar.caption("Research only; not for clinical use.")
+st.sidebar.caption("Research/demonstration only; not yet for clinical use.")
 
 
 if page == "About":
