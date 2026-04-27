@@ -329,7 +329,15 @@ TOLDHI2_MAP = {
     9: "Don't know / Refused",
 }
 
-# ── NEW: expanded BRFSS-aligned maps ─────────────────────────
+# ── BRFSS-aligned maps ────────────────────────────────────────
+EDUCAG_MAP = {
+    1: "Did not graduate high school",
+    2: "Graduated high school",
+    3: "Attended college or technical school",
+    4: "Graduated from college or technical school",
+    9: "Don't know / Refused",
+}
+
 MRACE1_MAP = {
     1: "White only, non-Hispanic",
     2: "Black / African American only, non-Hispanic",
@@ -733,6 +741,16 @@ elif page == "Risk prediction":
                 model_input["_STATE"] = state_code
                 user_inputs["State"] = state_name
 
+            elif col_name == "_EDUCAG":
+                edu_label = st.selectbox(
+                    "Highest education level completed",
+                    list(EDUCAG_MAP.values()),
+                    help="BRFSS education category based on the highest grade or year of school completed.",
+                )
+                edu_code = [k for k, v in EDUCAG_MAP.items() if v == edu_label][0]
+                model_input["_EDUCAG"] = edu_code
+                user_inputs["Education"] = edu_label
+
             elif col_name == "_MRACE1":
                 race_label = st.selectbox("Race / ethnicity", list(MRACE1_MAP.values()))
                 race_code = [k for k, v in MRACE1_MAP.items() if v == race_label][0]
@@ -829,7 +847,7 @@ elif page == "Risk prediction":
                 )
                 model_input["DECIDE"] = 1 if decide == "Yes" else 2
 
-            # ── Cardiovascular risk factors ────��──────────────────
+            # ── Cardiovascular risk factors ───────────────────────
             elif col_name == "BPHIGH4":
                 htn = st.selectbox("Ever told you have high blood pressure?", ["No", "Yes", "Borderline / Pre-hypertension", "Don't know / Refused"])
                 model_input["BPHIGH4"] = {"Yes": 1, "No": 2, "Borderline / Pre-hypertension": 3, "Don't know / Refused": 9}[htn]
