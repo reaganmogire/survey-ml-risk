@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # coding: utf-8
 """
-Streamlit app: Survey-based chronic disease risk prediction (BRFSS 2011–2015).
+Streamlit app: Survey-based chronic Disease Prediction (BRFSS 2011–2015).
 
 Key features
 - Loads trained artifacts (joblib) from app/artifacts/
 - If artifacts are missing, downloads them from GitHub Releases (model-v1)
-- Provides interactive risk prediction for multiple outcomes
+- Provides interactive disease prediction for multiple outcomes
 - Local explanations with SHAP for sklearn Pipelines (preprocessor + tree model), if available
 - No external AI/LLM calls
 
@@ -51,7 +51,7 @@ except Exception:
 # ============================================================
 # 0) Streamlit page + Bright medical theme (forced readability)
 # ============================================================
-st.set_page_config(page_title="Disease Risk Prediction", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="Chronic Disease Prediction", page_icon="🩺", layout="wide")
 
 st.markdown(
     """
@@ -222,24 +222,24 @@ st.markdown(
 # 1) Artifact auto-download (GitHub Release: model-v1)
 # ============================================================
 REPO_OWNER = "reaganmogire"
-REPO_NAME = "survey-ml-risk"
-MODEL_TAG = os.environ.get("MODEL_TAG", "model-v1")
+REPO_NAME  = "survey-ml-risk"
+MODEL_TAG  = os.environ.get("MODEL_TAG", "model-v1")
 
 RELEASE_BASE = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/{MODEL_TAG}"
 
-APP_DIR = Path(__file__).resolve().parent
+APP_DIR      = Path(__file__).resolve().parent
 ARTIFACT_DIR = APP_DIR / "artifacts"
 ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
 ARTIFACTS = {
-    "disease_models.joblib": f"{RELEASE_BASE}/disease_models.joblib",
+    "disease_models.joblib":     f"{RELEASE_BASE}/disease_models.joblib",
     "optimal_thresholds.joblib": f"{RELEASE_BASE}/optimal_thresholds.joblib",
-    "predictor_cols.joblib": f"{RELEASE_BASE}/predictor_cols.joblib",
+    "predictor_cols.joblib":     f"{RELEASE_BASE}/predictor_cols.joblib",
 }
 
 DISCLAIMER_TEXT = (
-    "Disclaimer: This tool does not provide a diagnosis and is not a substitute for professional medical advice. "
-    "If you have health concerns, consult a qualified clinician."
+    "Disclaimer: This tool does not provide a diagnosis and is not a substitute for "
+    "professional medical advice. If you have health concerns, consult a qualified clinician."
 )
 
 
@@ -248,47 +248,47 @@ DISCLAIMER_TEXT = (
 # ============================================================
 DISEASE_LABELS = {
     "heart_attack": "Heart attack (myocardial infarction)",
-    "coronary_hd": "Coronary heart disease",
-    "stroke": "Stroke",
-    "kidney": "Chronic kidney disease",
-    "depression": "Depression",
-    "diabetes": "Diabetes",
+    "coronary_hd":  "Coronary heart disease",
+    "stroke":       "Stroke",
+    "kidney":       "Chronic kidney disease",
+    "depression":   "Depression",
+    "diabetes":     "Diabetes",
 }
 
 FEATURE_LABELS = {
-    "_STATE": "State",
-    "SEX": "Sex",
+    "_STATE":   "State",
+    "SEX":      "Sex",
     "_AGEG5YR": "Age group",
-    "_EDUCAG": "Education",
-    "_INCOMG": "Household income (USD, per year)",
-    "_MRACE1": "Race / ethnicity",
+    "_EDUCAG":  "Education",
+    "_INCOMG":  "Household income (USD, per year)",
+    "_MRACE1":  "Race / ethnicity",
     "_HISPANC": "Hispanic ethnicity",
     "SMOKE100": "Ever smoked (100 cigarettes)",
     "SMOKDAY2": "Current smoking frequency",
-    "ALCDAY5": "Alcohol use frequency",
+    "ALCDAY5":  "Alcohol use frequency",
     "DRNKANY5": "Any alcohol use (past 30 days)",
     "EXERANY2": "Any exercise (past 30 days)",
-    "FRUIT1": "Fruit intake frequency",
+    "FRUIT1":   "Fruit intake frequency",
     "VEGETAB1": "Vegetable intake frequency",
     "HLTHPLN1": "Has health insurance",
     "PERSDOC2": "Has a personal doctor",
-    "MEDCOST": "Cost barrier to care (past 12 months)",
+    "MEDCOST":  "Cost barrier to care (past 12 months)",
     "CHECKUP1": "Time since last routine checkup",
-    "BPHIGH4": "Ever told you have high blood pressure",
-    "BPMEDS": "Currently taking blood pressure medication",
-    "TOLDHI2": "Ever told you have high cholesterol",
-    "CHOLCHK": "Time since last cholesterol check",
-    "ASTHMA3": "Ever told you have asthma",
+    "BPHIGH4":  "Ever told you have high blood pressure",
+    "BPMEDS":   "Currently taking blood pressure medication",
+    "TOLDHI2":  "Ever told you have high cholesterol",
+    "CHOLCHK":  "Time since last cholesterol check",
+    "ASTHMA3":  "Ever told you have asthma",
     "HAVARTH3": "Ever told you have arthritis",
-    "GENHLTH": "Self-rated general health",
+    "GENHLTH":  "Self-rated general health",
     "PHYSHLTH": "Days physical health was not good (past 30 days)",
     "MENTHLTH": "Days mental health was not good (past 30 days)",
     "POORHLTH": "Days poor health limited usual activities (past 30 days)",
     "DIFFWALK": "Difficulty walking or climbing stairs",
-    "DECIDE": "Difficulty concentrating, remembering, or making decisions",
-    "WEIGHT2": "Weight (pounds)",
-    "HEIGHT3": "Height (feet and inches)",
-    "_BMI5": "BMI (×100; BRFSS-coded)",
+    "DECIDE":   "Difficulty concentrating, remembering, or making decisions",
+    "WEIGHT2":  "Weight (pounds)",
+    "HEIGHT3":  "Height (feet and inches)",
+    "_BMI5":    "BMI (×100; BRFSS-coded)",
 }
 
 SEX_MAP = {1: "Male", 2: "Female"}
@@ -329,7 +329,6 @@ TOLDHI2_MAP = {
     9: "Don't know / Refused",
 }
 
-# ── BRFSS-aligned maps ────────────────────────────────────────
 EDUCAG_MAP = {
     1: "Did not graduate high school",
     2: "Graduated high school",
@@ -388,7 +387,6 @@ CHOLCHK_MAP = {
     9: "Don't know / Refused",
 }
 
-# Fruit / vegetable frequency — simplified BRFSS-representative codes
 FRUIT_MAP = {
     555: "Never",
     300: "Less than once a month",
@@ -408,13 +406,6 @@ def pretty_disease(d: str) -> str:
 
 
 def pretty_feature_name(raw: str) -> str:
-    """
-    Convert transformed feature names into intuitive labels.
-
-    Examples:
-      num__MENTHLTH -> Days mental health was not good (past 30 days)
-      cat__SEX_1.0  -> Sex = Male
-    """
     s = str(raw)
 
     if s.startswith("num__"):
@@ -428,7 +419,7 @@ def pretty_feature_name(raw: str) -> str:
             var_label = FEATURE_LABELS.get(var, var)
             if var == "SEX":
                 try:
-                    level_i = int(float(level))
+                    level_i   = int(float(level))
                     level_label = SEX_MAP.get(level_i, str(level_i))
                     return f"{var_label} = {level_label}"
                 except Exception:
@@ -436,11 +427,10 @@ def pretty_feature_name(raw: str) -> str:
             return f"{var_label} = {level}"
         return FEATURE_LABELS.get(base, base)
 
-    # Fallback recovery
-    s2 = s.replace("Num__", "").replace("Cat__", "")
-    s2 = s2.replace("num__", "").replace("cat__", "")
-    s2 = s2.replace("__", "")
-    s2 = re.sub(r"[^A-Za-z0-9_]", "", s2)
+    s2     = s.replace("Num__", "").replace("Cat__", "")
+    s2     = s2.replace("num__", "").replace("cat__", "")
+    s2     = s2.replace("__", "")
+    s2     = re.sub(r"[^A-Za-z0-9_]", "", s2)
     tokens = re.findall(r"[A-Z0-9_]{3,}", s2.upper())
     if tokens:
         code = tokens[-1]
@@ -455,11 +445,11 @@ def _download_file(url: str, dest: Path) -> None:
 
     with requests.get(url, stream=True, timeout=180) as r:
         r.raise_for_status()
-        total = int(r.headers.get("content-length", 0))
+        total      = int(r.headers.get("content-length", 0))
         downloaded = 0
 
         prog = st.progress(0.0)
-        msg = st.empty()
+        msg  = st.empty()
 
         with open(tmp, "wb") as f:
             for chunk in r.iter_content(chunk_size=1024 * 1024):
@@ -489,9 +479,9 @@ def ensure_model_artifacts() -> None:
 @st.cache_resource(show_spinner=False)
 def load_artifacts():
     ensure_model_artifacts()
-    disease_models = joblib.load(ARTIFACT_DIR / "disease_models.joblib")
+    disease_models     = joblib.load(ARTIFACT_DIR / "disease_models.joblib")
     optimal_thresholds = joblib.load(ARTIFACT_DIR / "optimal_thresholds.joblib")
-    predictor_cols = joblib.load(ARTIFACT_DIR / "predictor_cols.joblib")
+    predictor_cols     = joblib.load(ARTIFACT_DIR / "predictor_cols.joblib")
     return disease_models, optimal_thresholds, predictor_cols
 
 
@@ -521,52 +511,76 @@ def predict_all_conditions(model_input: Dict[str, Any]) -> pd.DataFrame:
     records = []
     for disease, info in disease_models.items():
         model = info["model"] if isinstance(info, dict) and "model" in info else info
-        thr = float(optimal_thresholds.get(disease, 0.5))
+        thr   = float(optimal_thresholds.get(disease, 0.5))
 
         proba = float(model.predict_proba(row)[0, 1])
-        label = "Higher risk" if proba >= thr else "Lower / moderate risk"
+        label = "Likely present" if proba >= thr else "Likely absent / lower probability"
         records.append(
             {
-                "Condition": pretty_disease(disease),
-                "Predicted risk (0–1)": proba,
-                "Threshold": thr,
-                "Risk category": label,
-                "Uncertainty (0–1)": uncertainty_from_proba(proba),
-                "_disease_code": disease,
+                "Condition":                pretty_disease(disease),
+                "Predicted probability (0–1)": proba,
+                "Threshold":               thr,
+                "Prediction category":      label,
+                "Uncertainty (0–1)":       uncertainty_from_proba(proba),
+                "_disease_code":           disease,
             }
         )
 
-    df = pd.DataFrame(records).sort_values("Predicted risk (0–1)", ascending=False).reset_index(drop=True)
+    df = (
+        pd.DataFrame(records)
+        .sort_values("Predicted probability (0–1)", ascending=False)
+        .reset_index(drop=True)
+    )
     return df
 
 
 def rule_based_guidance(user_inputs: Dict[str, Any], results_df: pd.DataFrame) -> str:
     lines = []
-    high = results_df.loc[results_df["Risk category"] == "Higher risk", "Condition"].tolist()
+    flagged = results_df.loc[
+        results_df["Prediction category"] == "Likely present", "Condition"
+    ].tolist()
 
-    if high:
-        lines.append("**Higher-risk flags (model-based):** " + ", ".join(high) + ".")
+    if flagged:
+        lines.append(
+            "**Conditions flagged as likely present (model-based):** "
+            + ", ".join(flagged) + "."
+        )
     else:
-        lines.append("**Model-based result:** No conditions flagged as higher risk at the stored thresholds.")
+        lines.append(
+            "**Model-based result:** No conditions flagged as likely present "
+            "at the stored thresholds."
+        )
 
     bmi = _safe_float(user_inputs.get("BMI (kg/m²)"))
     if bmi is not None:
         if bmi >= 30:
-            lines.append("- BMI suggests obesity. Gradual weight reduction (diet quality + regular activity) can reduce cardiometabolic risk.")
+            lines.append(
+                "- BMI suggests obesity. Gradual weight reduction (diet quality + "
+                "regular activity) can reduce cardiometabolic risk."
+            )
         elif bmi >= 25:
             lines.append("- BMI suggests overweight. Small sustained changes can improve risk.")
 
     smoke = str(user_inputs.get("Smoking status", "")).lower()
     if "current" in smoke:
-        lines.append("- Current smoking increases cardiovascular and overall risk. Consider evidence-based cessation support.")
+        lines.append(
+            "- Current smoking increases cardiovascular and overall risk. "
+            "Consider evidence-based cessation support."
+        )
 
     alc = _safe_float(user_inputs.get("Alcohol (drinks/week)"))
     if alc is not None and alc >= 14:
-        lines.append("- Reported alcohol intake is relatively high. Reducing intake can lower blood pressure and improve cardiometabolic health.")
+        lines.append(
+            "- Reported alcohol intake is relatively high. Reducing intake can lower "
+            "blood pressure and improve cardiometabolic health."
+        )
 
     phys = str(user_inputs.get("Any exercise in past month?", "")).lower()
     if phys == "no":
-        lines.append("- Increasing physical activity (as medically appropriate) supports cardiometabolic, renal, and mental health.")
+        lines.append(
+            "- Increasing physical activity (as medically appropriate) supports "
+            "cardiometabolic, renal, and mental health."
+        )
 
     lines.append("\n⚠️ " + DISCLAIMER_TEXT)
     return "\n".join(lines)
@@ -595,7 +609,7 @@ def build_tree_explainers():
         clf = model.named_steps["clf"]
 
         try:
-            explainer = shap.TreeExplainer(clf)
+            explainer    = shap.TreeExplainer(clf)
             out[disease] = {"preprocessor": pre, "explainer": explainer}
         except Exception:
             out[disease] = None
@@ -606,7 +620,11 @@ def build_tree_explainers():
 tree_explainers = build_tree_explainers()
 
 
-def explain_instance_pipeline(model_input: Dict[str, Any], disease: str, top_n: int = 20) -> Optional[pd.DataFrame]:
+def explain_instance_pipeline(
+    model_input: Dict[str, Any],
+    disease: str,
+    top_n: int = 20,
+) -> Optional[pd.DataFrame]:
     if not _HAS_SHAP or tree_explainers is None:
         return None
 
@@ -614,13 +632,13 @@ def explain_instance_pipeline(model_input: Dict[str, Any], disease: str, top_n: 
     if bundle is None:
         return None
 
-    pre = bundle["preprocessor"]
+    pre      = bundle["preprocessor"]
     explainer = bundle["explainer"]
 
     x_raw = pd.DataFrame([model_input]).reindex(columns=predictor_cols, fill_value=np.nan)
 
     try:
-        X_t = pre.transform(x_raw)
+        X_t           = pre.transform(x_raw)
         feature_names = pre.get_feature_names_out()
     except Exception:
         return None
@@ -635,8 +653,13 @@ def explain_instance_pipeline(model_input: Dict[str, Any], disease: str, top_n: 
 
     df = pd.DataFrame({"feature_raw": feature_names, "shap_value": sv})
     df["Feature"] = df["feature_raw"].apply(pretty_feature_name)
-    df["abs"] = df["shap_value"].abs()
-    df = df.sort_values("abs", ascending=False).head(top_n).drop(columns=["abs"]).reset_index(drop=True)
+    df["abs"]     = df["shap_value"].abs()
+    df = (
+        df.sort_values("abs", ascending=False)
+        .head(top_n)
+        .drop(columns=["abs"])
+        .reset_index(drop=True)
+    )
     return df[["Feature", "shap_value"]]
 
 
@@ -645,19 +668,19 @@ def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
     y = d["Feature"].tolist()
     x = d["shap_value"].values
 
-    colors = np.where(x >= 0, "#D9534F", "#2F80ED")  # red=increase, blue=decrease
+    colors = np.where(x >= 0, "#D9534F", "#2F80ED")
 
     fig, ax = plt.subplots(figsize=(9, 6))
     ax.barh(y, x, color=colors)
     ax.axvline(0, color="black", linewidth=1)
     ax.set_title(title)
-    ax.set_xlabel("SHAP value (impact on predicted risk)")
+    ax.set_xlabel("SHAP value (impact on predicted probability)")
     ax.grid(axis="x", linestyle="--", alpha=0.25)
 
-    ax.text(0.02, -0.15, "← Decrease risk (SHAP < 0)", transform=ax.transAxes,
-            ha="left", va="top", fontsize=11, color="#2F80ED")
-    ax.text(0.98, -0.15, "Increase risk (SHAP > 0) →", transform=ax.transAxes,
-            ha="right", va="top", fontsize=11, color="#D9534F")
+    ax.text(0.02, -0.15, "← Decreases predicted probability (SHAP < 0)",
+            transform=ax.transAxes, ha="left", va="top", fontsize=11, color="#2F80ED")
+    ax.text(0.98, -0.15, "Increases predicted probability (SHAP > 0) →",
+            transform=ax.transAxes, ha="right", va="top", fontsize=11, color="#D9534F")
 
     fig.tight_layout()
     return fig
@@ -666,8 +689,8 @@ def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
 # ============================================================
 # 4) Streamlit UI
 # ============================================================
-st.sidebar.title("Survey-ML Risk")
-page = st.sidebar.radio("Navigate", ["Risk prediction", "Model evaluation", "About"])
+st.sidebar.title("Survey-ML: Disease Prediction")
+page = st.sidebar.radio("Navigate", ["Disease prediction", "Model evaluation", "About"])
 st.sidebar.markdown("---")
 st.sidebar.caption("Research/demonstration only; not yet for clinical use.")
 
@@ -677,11 +700,11 @@ if page == "About":
     st.title("About this app")
     st.markdown(
         """
-This repository provides an interpretable machine-learning framework for estimating chronic disease risk
-using population survey data (BRFSS 2011–2015).
+This repository provides an interpretable machine-learning framework for chronic disease
+prediction using population survey data (BRFSS 2011–2015).
 
 **Key design goals**
-- Scalable risk estimation without EHRs, biomarkers, or laboratory data
+- Scalable disease prediction without EHRs, biomarkers, or laboratory data
 - Interpretable feature contributions (SHAP, optional)
 - Reproducible, publication-oriented outputs (tables/figures)
         """
@@ -697,22 +720,25 @@ using population survey data (BRFSS 2011–2015).
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-elif page == "Risk prediction":
+elif page == "Disease prediction":
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.title("Risk prediction (survey-based ML)")
-    st.write("Enter inputs to generate predicted risks. On first run, the app downloads model artifacts from GitHub Releases.")
+    st.title("Chronic disease prediction (survey-based ML)")
+    st.write(
+        "Enter inputs to generate predicted probabilities for each condition. "
+        "On first run, the app downloads model artifacts from GitHub Releases."
+    )
     st.warning(DISCLAIMER_TEXT, icon="⚠️")
     st.markdown("</div>", unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
-    cols = [col1, col2, col3]
+    cols    = [col1, col2, col3]
     col_idx = 0
 
     model_input: Dict[str, Any] = {}
-    user_inputs = {}
+    user_inputs                  = {}
 
     def age_to_ageg5yr(a: int) -> int:
-        a = max(18, min(int(a), 99))
+        a    = max(18, min(int(a), 99))
         bins = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
         for i, upper in enumerate(bins, start=1):
             if a < upper:
@@ -720,7 +746,7 @@ elif page == "Risk prediction":
         return 13
 
     for col_name in predictor_cols:
-        col = cols[col_idx % 3]
+        col           = cols[col_idx % 3]
         feature_label = pretty_feature_name(col_name)
 
         with col:
@@ -739,7 +765,7 @@ elif page == "Risk prediction":
                 state_name = st.selectbox("State", sorted(STATE_MAP.values()))
                 state_code = [k for k, v in STATE_MAP.items() if v == state_name][0]
                 model_input["_STATE"] = state_code
-                user_inputs["State"] = state_name
+                user_inputs["State"]  = state_name
 
             elif col_name == "_EDUCAG":
                 edu_label = st.selectbox(
@@ -748,20 +774,20 @@ elif page == "Risk prediction":
                     help="BRFSS education category based on the highest grade or year of school completed.",
                 )
                 edu_code = [k for k, v in EDUCAG_MAP.items() if v == edu_label][0]
-                model_input["_EDUCAG"] = edu_code
+                model_input["_EDUCAG"]   = edu_code
                 user_inputs["Education"] = edu_label
 
             elif col_name == "_MRACE1":
                 race_label = st.selectbox("Race / ethnicity", list(MRACE1_MAP.values()))
-                race_code = [k for k, v in MRACE1_MAP.items() if v == race_label][0]
-                model_input["_MRACE1"] = race_code
+                race_code  = [k for k, v in MRACE1_MAP.items() if v == race_label][0]
+                model_input["_MRACE1"]         = race_code
                 user_inputs["Race / ethnicity"] = race_label
 
             elif col_name == "_HISPANC":
                 hisp_label = st.selectbox("Hispanic or Latino ethnicity", list(HISPANC_MAP.values()))
-                hisp_code = [k for k, v in HISPANC_MAP.items() if v == hisp_label][0]
-                model_input["_HISPANC"] = hisp_code
-                user_inputs["Hispanic ethnicity"] = hisp_label
+                hisp_code  = [k for k, v in HISPANC_MAP.items() if v == hisp_label][0]
+                model_input["_HISPANC"]            = hisp_code
+                user_inputs["Hispanic ethnicity"]   = hisp_label
 
             elif col_name == "_INCOMG":
                 inc_label = st.selectbox(
@@ -770,13 +796,13 @@ elif page == "Risk prediction":
                     help="Annual household income bracket (BRFSS 2011–2015)",
                 )
                 inc_code = [k for k, v in INCOMG_MAP.items() if v == inc_label][0]
-                model_input["_INCOMG"] = inc_code
-                user_inputs["Household income"] = inc_label
+                model_input["_INCOMG"]          = inc_code
+                user_inputs["Household income"]  = inc_label
 
             # ── Anthropometrics ───────────────────────────────────
             elif col_name == "_BMI5":
                 bmi = st.number_input("BMI (kg/m²)", min_value=10.0, max_value=70.0, value=27.0, step=0.1)
-                model_input["_BMI5"] = int(round(float(bmi) * 100))
+                model_input["_BMI5"]     = int(round(float(bmi) * 100))
                 user_inputs["BMI (kg/m²)"] = bmi
 
             elif col_name == "WEIGHT2":
@@ -785,30 +811,34 @@ elif page == "Risk prediction":
                     min_value=50, max_value=700, value=160, step=1,
                     help="Enter your weight in pounds (1 kg ≈ 2.205 lbs). BRFSS records weight in pounds.",
                 )
-                model_input["WEIGHT2"] = int(weight_lbs)
-                user_inputs["Weight (lbs)"] = weight_lbs
+                model_input["WEIGHT2"]       = int(weight_lbs)
+                user_inputs["Weight (lbs)"]  = weight_lbs
 
             elif col_name == "HEIGHT3":
                 st.markdown("**Height**")
                 h_col1, h_col2 = st.columns(2)
                 with h_col1:
-                    h_ft = st.number_input("Feet", min_value=4, max_value=7, value=5, step=1)
+                    h_ft = st.number_input("Feet",   min_value=4, max_value=7, value=5, step=1)
                 with h_col2:
                     h_in = st.number_input("Inches", min_value=0, max_value=11, value=7, step=1)
-                # BRFSS HEIGHT3 encoding: fii  (e.g. 507 = 5 ft 7 in)
-                model_input["HEIGHT3"] = int(h_ft) * 100 + int(h_in)
-                user_inputs["Height"] = f"{int(h_ft)}′{int(h_in)}″"
+                model_input["HEIGHT3"]  = int(h_ft) * 100 + int(h_in)
+                user_inputs["Height"]   = f"{int(h_ft)}′{int(h_in)}″"
 
             # ── General health ────────────────────────────────────
             elif col_name == "GENHLTH":
-                genhlth = st.selectbox("General health (self-rated)", ["Excellent", "Very good", "Good", "Fair", "Poor"])
-                model_input["GENHLTH"] = {"Excellent": 1, "Very good": 2, "Good": 3, "Fair": 4, "Poor": 5}[genhlth]
+                genhlth = st.selectbox(
+                    "General health (self-rated)",
+                    ["Excellent", "Very good", "Good", "Fair", "Poor"],
+                )
+                model_input["GENHLTH"] = {
+                    "Excellent": 1, "Very good": 2, "Good": 3, "Fair": 4, "Poor": 5
+                }[genhlth]
 
             elif col_name == "PHYSHLTH":
                 phys_days = st.number_input(
                     "Days physical health was NOT good (past 30 days)",
                     min_value=0, max_value=30, value=0, step=1,
-                    help="BRFSS asks: 'How many days during the past 30 days was your physical health not good?' Enter 0 if none.",
+                    help="Enter 0 if none.",
                 )
                 model_input["PHYSHLTH"] = 88 if int(phys_days) == 0 else int(phys_days)
                 user_inputs["Physically unhealthy days (past 30)"] = int(phys_days)
@@ -817,7 +847,7 @@ elif page == "Risk prediction":
                 ment_days = st.number_input(
                     "Days mental health was NOT good (past 30 days)",
                     min_value=0, max_value=30, value=0, step=1,
-                    help="BRFSS asks: 'How many days during the past 30 days was your mental health not good?' Enter 0 if none.",
+                    help="Enter 0 if none.",
                 )
                 model_input["MENTHLTH"] = 88 if int(ment_days) == 0 else int(ment_days)
                 user_inputs["Mentally unhealthy days (past 30)"] = int(ment_days)
@@ -826,7 +856,7 @@ elif page == "Risk prediction":
                 poor_days = st.number_input(
                     "Days poor health limited usual activities (past 30 days)",
                     min_value=0, max_value=30, value=0, step=1,
-                    help="BRFSS asks: 'How many days during the past 30 days did poor physical or mental health keep you from doing your usual activities?' Enter 0 if none.",
+                    help="Enter 0 if none.",
                 )
                 model_input["POORHLTH"] = 88 if int(poor_days) == 0 else int(poor_days)
                 user_inputs["Activity-limiting poor health days (past 30)"] = int(poor_days)
@@ -849,8 +879,15 @@ elif page == "Risk prediction":
 
             # ── Cardiovascular risk factors ───────────────────────
             elif col_name == "BPHIGH4":
-                htn = st.selectbox("Ever told you have high blood pressure?", ["No", "Yes", "Borderline / Pre-hypertension", "Don't know / Refused"])
-                model_input["BPHIGH4"] = {"Yes": 1, "No": 2, "Borderline / Pre-hypertension": 3, "Don't know / Refused": 9}[htn]
+                htn = st.selectbox(
+                    "Ever told you have high blood pressure?",
+                    ["No", "Yes", "Borderline / Pre-hypertension", "Don't know / Refused"],
+                )
+                model_input["BPHIGH4"] = {
+                    "Yes": 1, "No": 2,
+                    "Borderline / Pre-hypertension": 3,
+                    "Don't know / Refused": 9,
+                }[htn]
 
             elif col_name == "BPMEDS":
                 bp_med_label = st.selectbox(
@@ -858,7 +895,7 @@ elif page == "Risk prediction":
                     list(BPMEDS_MAP.values()),
                     help="Are you currently taking medicine for high blood pressure?",
                 )
-                bp_med_code = [k for k, v in BPMEDS_MAP.items() if v == bp_med_label][0]
+                bp_med_code        = [k for k, v in BPMEDS_MAP.items() if v == bp_med_label][0]
                 model_input["BPMEDS"] = bp_med_code
 
             elif col_name == "TOLDHI2":
@@ -866,7 +903,7 @@ elif page == "Risk prediction":
                     "Ever told you have high blood cholesterol?",
                     list(TOLDHI2_MAP.values()),
                 )
-                cholesterol_code = [k for k, v in TOLDHI2_MAP.items() if v == cholesterol][0]
+                cholesterol_code       = [k for k, v in TOLDHI2_MAP.items() if v == cholesterol][0]
                 model_input["TOLDHI2"] = cholesterol_code
                 user_inputs["Told high cholesterol"] = cholesterol
 
@@ -876,7 +913,7 @@ elif page == "Risk prediction":
                     list(CHOLCHK_MAP.values()),
                     help="Blood cholesterol check by a doctor, nurse, or other health professional.",
                 )
-                chol_code = [k for k, v in CHOLCHK_MAP.items() if v == chol_label][0]
+                chol_code          = [k for k, v in CHOLCHK_MAP.items() if v == chol_label][0]
                 model_input["CHOLCHK"] = chol_code
 
             # ── Health care access ────────────────────────────────
@@ -884,7 +921,7 @@ elif page == "Risk prediction":
                 ins = st.selectbox(
                     "Do you have any kind of health care coverage?",
                     ["Yes", "No", "Don't know / Refused"],
-                    help="Includes health insurance, prepaid plans (HMOs), government plans (Medicare, Medicaid), etc.",
+                    help="Includes health insurance, prepaid plans, government plans (Medicare, Medicaid), etc.",
                 )
                 model_input["HLTHPLN1"] = {"Yes": 1, "No": 2, "Don't know / Refused": 9}[ins]
 
@@ -894,7 +931,7 @@ elif page == "Risk prediction":
                     list(PERSDOC2_MAP.values()),
                     help="Personal doctor or health care provider you see regularly.",
                 )
-                doc_code = [k for k, v in PERSDOC2_MAP.items() if v == doc_label][0]
+                doc_code           = [k for k, v in PERSDOC2_MAP.items() if v == doc_label][0]
                 model_input["PERSDOC2"] = doc_code
 
             elif col_name == "MEDCOST":
@@ -905,7 +942,7 @@ elif page == "Risk prediction":
                 model_input["MEDCOST"] = {"Yes": 1, "No": 2, "Don't know / Refused": 9}[cost]
 
             elif col_name == "CHECKUP1":
-                checkup = st.selectbox("How long since your last routine checkup?", list(CHECKUP1_MAP.values()))
+                checkup      = st.selectbox("How long since your last routine checkup?", list(CHECKUP1_MAP.values()))
                 checkup_code = [k for k, v in CHECKUP1_MAP.items() if v == checkup][0]
                 model_input["CHECKUP1"] = checkup_code
 
@@ -916,25 +953,27 @@ elif page == "Risk prediction":
                     ["Never", "Former", "Current"],
                     help="'Never' = fewer than 100 cigarettes lifetime; 'Former' = smoked 100+ but not now; 'Current' = still smokes.",
                 )
-                model_input["SMOKE100"] = 2 if smoke == "Never" else 1
+                model_input["SMOKE100"]       = 2 if smoke == "Never" else 1
                 user_inputs["Smoking status"] = smoke
 
             elif col_name == "SMOKDAY2":
-                smokday = st.selectbox("Current smoking frequency", list(SMOKDAY2_MAP.values()))
+                smokday      = st.selectbox("Current smoking frequency", list(SMOKDAY2_MAP.values()))
                 smokday_code = [k for k, v in SMOKDAY2_MAP.items() if v == smokday][0]
-                model_input["SMOKDAY2"] = smokday_code
-                user_inputs["Current smoking frequency"] = smokday
+                model_input["SMOKDAY2"]                   = smokday_code
+                user_inputs["Current smoking frequency"]  = smokday
 
             elif col_name == "DRNKANY5":
                 drnk = st.selectbox(
                     "Any alcohol use in the past 30 days?",
                     ["No", "Yes", "Don't know / Refused"],
-                    help="At least one alcoholic drink (beer, wine, spirits, etc.) in the past 30 days.",
+                    help="At least one alcoholic drink in the past 30 days.",
                 )
                 model_input["DRNKANY5"] = {"Yes": 1, "No": 2, "Don't know / Refused": 9}[drnk]
 
             elif col_name == "ALCDAY5":
-                drinks_pw = st.number_input("Alcohol (drinks/week)", min_value=0.0, max_value=70.0, value=0.0, step=1.0)
+                drinks_pw = st.number_input(
+                    "Alcohol (drinks/week)", min_value=0.0, max_value=70.0, value=0.0, step=1.0
+                )
                 if drinks_pw <= 0:
                     model_input["ALCDAY5"] = 888
                 else:
@@ -946,9 +985,9 @@ elif page == "Risk prediction":
                 exer = st.selectbox(
                     "Any physical activity or exercise in the past 30 days?",
                     ["No", "Yes", "Don't know / Refused"],
-                    help="Other than your regular job — any physical activity such as running, calisthenics, golf, gardening, etc.",
+                    help="Other than your regular job.",
                 )
-                model_input["EXERANY2"] = {"Yes": 1, "No": 2, "Don't know / Refused": 9}[exer]
+                model_input["EXERANY2"]                  = {"Yes": 1, "No": 2, "Don't know / Refused": 9}[exer]
                 user_inputs["Any exercise in past month?"] = exer
 
             elif col_name == "FRUIT1":
@@ -957,16 +996,16 @@ elif page == "Risk prediction":
                     list(FRUIT_MAP.values()),
                     help="Not counting juice. Count fresh, frozen, canned, or dried fruit.",
                 )
-                fruit_code = [k for k, v in FRUIT_MAP.items() if v == fruit_label][0]
+                fruit_code         = [k for k, v in FRUIT_MAP.items() if v == fruit_label][0]
                 model_input["FRUIT1"] = fruit_code
 
             elif col_name == "VEGETAB1":
                 veg_label = st.selectbox(
                     "How often do you eat vegetables?",
-                    list(FRUIT_MAP.values()),  # same frequency scale
+                    list(FRUIT_MAP.values()),
                     help="Not counting juice or potatoes. Count fresh, frozen, canned, or dried vegetables.",
                 )
-                veg_code = [k for k, v in FRUIT_MAP.items() if v == veg_label][0]
+                veg_code             = [k for k, v in FRUIT_MAP.items() if v == veg_label][0]
                 model_input["VEGETAB1"] = veg_code
 
             # ── Chronic conditions ────────────────────────────────
@@ -979,7 +1018,8 @@ elif page == "Risk prediction":
 
             elif col_name == "HAVARTH3":
                 arth = st.selectbox(
-                    "Ever told by a doctor, nurse, or health professional that you have some form of arthritis, rheumatoid arthritis, gout, lupus, or fibromyalgia?",
+                    "Ever told by a doctor, nurse, or health professional that you have some form of arthritis, "
+                    "rheumatoid arthritis, gout, lupus, or fibromyalgia?",
                     ["No", "Yes", "Don't know / Refused"],
                 )
                 model_input["HAVARTH3"] = {"Yes": 1, "No": 2, "Don't know / Refused": 9}[arth]
@@ -990,28 +1030,26 @@ elif page == "Risk prediction":
 
         col_idx += 1
 
-    # Fill missing columns with NaN
     for c in predictor_cols:
         model_input.setdefault(c, np.nan)
 
     run_btn = st.button("Run prediction")
 
-    # Persist results in session_state so they survive reruns triggered by widget interaction
     if run_btn:
-        st.session_state["results_df"] = predict_all_conditions(model_input)
-        st.session_state["model_input_cache"] = model_input.copy()
-        st.session_state["user_inputs_cache"] = user_inputs.copy()
+        st.session_state["results_df"]         = predict_all_conditions(model_input)
+        st.session_state["model_input_cache"]  = model_input.copy()
+        st.session_state["user_inputs_cache"]  = user_inputs.copy()
 
     if "results_df" in st.session_state:
-        results_df = st.session_state["results_df"]
+        results_df        = st.session_state["results_df"]
         model_input_cache = st.session_state["model_input_cache"]
         user_inputs_cache = st.session_state["user_inputs_cache"]
 
-        st.subheader("Predicted risks")
+        st.subheader("Predicted probabilities")
         show = results_df.drop(columns=["_disease_code"]).copy()
-        show["Predicted risk (0–1)"] = show["Predicted risk (0–1)"].map(lambda x: f"{x:.4f}")
-        show["Threshold"] = show["Threshold"].map(lambda x: f"{x:.2f}")
-        show["Uncertainty (0–1)"] = show["Uncertainty (0–1)"].map(lambda x: f"{x:.4f}")
+        show["Predicted probability (0–1)"] = show["Predicted probability (0–1)"].map(lambda x: f"{x:.4f}")
+        show["Threshold"]                   = show["Threshold"].map(lambda x: f"{x:.2f}")
+        show["Uncertainty (0–1)"]           = show["Uncertainty (0–1)"].map(lambda x: f"{x:.4f}")
         st.dataframe(show, use_container_width=True, hide_index=True)
 
         st.subheader("Local feature contributions (optional)")
@@ -1031,13 +1069,20 @@ elif page == "Risk prediction":
                 st.dataframe(
                     contrib.assign(
                         interpretation=lambda d: np.where(
-                            d["shap_value"] >= 0, "Increases predicted risk", "Decreases predicted risk"
+                            d["shap_value"] >= 0,
+                            "Increases predicted probability",
+                            "Decreases predicted probability",
                         )
                     ),
                     use_container_width=True,
-                    hide_index=True
+                    hide_index=True,
                 )
-                st.pyplot(plot_shap_bar(contrib, title=f"Local explanation: {pretty_disease(disease_choice)}"))
+                st.pyplot(
+                    plot_shap_bar(
+                        contrib,
+                        title=f"Local explanation: {pretty_disease(disease_choice)}",
+                    )
+                )
 
         st.subheader("Guidance")
         st.write(rule_based_guidance(user_inputs_cache, results_df))
@@ -1053,24 +1098,29 @@ elif page == "Model evaluation":
 
     if not available:
         st.warning(
-            "No stored test predictions found in `disease_models.joblib` (missing `y_test` and/or `y_proba`). "
+            "No stored test predictions found in `disease_models.joblib` "
+            "(missing `y_test` and/or `y_proba`). "
             "Use precomputed outputs in `tables/` and `figures/`."
         )
         st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
     else:
-        disease_choice = st.selectbox("Select condition", options=available, format_func=lambda d: pretty_disease(d))
+        disease_choice = st.selectbox(
+            "Select condition",
+            options=available,
+            format_func=lambda d: pretty_disease(d),
+        )
         info = disease_models[disease_choice]
-        y = np.asarray(info["y_test"]).astype(int)
-        p = np.asarray(info["y_proba"]).astype(float)
+        y    = np.asarray(info["y_test"]).astype(int)
+        p    = np.asarray(info["y_proba"]).astype(float)
 
-        auroc = roc_auc_score(y, p)
-        ap = average_precision_score(y, p)
-        brier = brier_score_loss(y, p)
+        auroc  = roc_auc_score(y, p)
+        ap     = average_precision_score(y, p)
+        brier  = brier_score_loss(y, p)
 
         c1, c2, c3 = st.columns(3)
-        c1.metric("AUROC", f"{auroc:.3f}")
+        c1.metric("AUROC",  f"{auroc:.3f}")
         c2.metric("PR-AUC", f"{ap:.3f}")
-        c3.metric("Brier", f"{brier:.3f}")
+        c3.metric("Brier",  f"{brier:.3f}")
 
         fpr, tpr, _ = roc_curve(y, p)
         fig, ax = plt.subplots(figsize=(6, 4))
@@ -1098,10 +1148,12 @@ elif page == "Model evaluation":
         ax.set_title(f"Calibration: {pretty_disease(disease_choice)}")
         st.pyplot(fig)
 
-        thr = float(optimal_thresholds.get(disease_choice, 0.5))
+        thr  = float(optimal_thresholds.get(disease_choice, 0.5))
         yhat = (p >= thr).astype(int)
-        cm = confusion_matrix(y, yhat)
+        cm   = confusion_matrix(y, yhat, labels=[0, 1])
         st.write(f"Confusion matrix at threshold {thr:.3f}")
-        st.dataframe(pd.DataFrame(cm, index=["True 0", "True 1"], columns=["Pred 0", "Pred 1"]))
+        st.dataframe(
+            pd.DataFrame(cm, index=["True 0", "True 1"], columns=["Pred 0", "Pred 1"])
+        )
 
         st.markdown("\n⚠️ **{}**".format(DISCLAIMER_TEXT))
