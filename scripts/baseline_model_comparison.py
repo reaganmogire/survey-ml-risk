@@ -7,8 +7,7 @@ Trains logistic regression (and, optionally, random forest) baselines
 for all six outcomes, using the IDENTICAL preprocessing pipeline,
 predictor set, and train/val/test splits as the primary
 HistGradientBoostingClassifier models in src/model_ai.py, so that
-algorithm choice is the only varying factor. Addresses Reviewer 1
-Comment 9, Reviewer 2 Comment 1, and Reviewer 3 Comment 4 (justify
+algorithm choice is the only varying factor. Addresses a review comment, a review comment, and a review comment (justify
 gradient boosting vs. simpler/alternative models).
 
 IMPORTANT -- DUPLICATED LOGIC WARNING: as in

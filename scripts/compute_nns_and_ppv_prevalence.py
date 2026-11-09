@@ -7,13 +7,12 @@ Computes two related clinical-utility analyses from the FINAL trained
 models' existing test-set predictions (no retraining needed):
 
   B7 -- Number Needed to Screen (NNS = 1/PPV) at the F1-optimized
-        threshold, for all six outcomes. Addresses Reviewer 1 Comment 4.
+        threshold, for all six outcomes. Addresses a review comment.
 
   B8 -- Predicted PPV and NPV across a range of assumed population
         prevalences (0.5x, 1x, 2x the observed test-set prevalence),
         holding sensitivity and specificity fixed at their test-set
-        values at the F1-optimized threshold. Addresses Reviewer 1
-        Comment 11.
+        values at the F1-optimized threshold. Addresses a review comment.
 
 Both use the standard PPV/NPV-from-prevalence formulas:
     PPV(prev) = (Sens * prev) / (Sens * prev + (1 - Spec) * (1 - prev))

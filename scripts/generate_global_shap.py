@@ -4,7 +4,7 @@
 scripts/generate_global_shap.py
 
 Computes population-level (global) SHAP feature importance for all six
-disease models. Addresses Reviewer 1 Comment 6 (global
+disease models. Addresses a review comment (global
 interpretability) and provides the evidence used to finalize the
 predictor-retention decision for the structurally-missing predictor
 cluster (BPHIGH4, BPMEDS, TOLDHI2, CHOLCHK, FRUIT1, VEGETAB1, plus

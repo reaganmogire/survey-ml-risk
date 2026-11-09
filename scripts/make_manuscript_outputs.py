@@ -14,7 +14,7 @@ script itself does for Table 1).
 
 This script ends by printing a COMPLETE MANUSCRIPT STATUS REPORT: every
 Table 1-3, every Table, every S Table, every Fig and S Fig, every
-S Dataset (labels follow the CURRENT manuscript numbering) -- what it is, which script generates it, which reviewer
+S Dataset (labels follow the CURRENT manuscript numbering) -- what it is, which script generates it, which review
 comment / TRIPOD+AI item it satisfies, and whether it's present, stale,
 empty, or missing. This is the single source of truth for "is the
 supplementary package done."
@@ -993,13 +993,13 @@ def _apply_current_labels(entries: List[dict], T: Path, F: Path) -> List[dict]:
          "title": "GBM vs. logistic regression vs. random forest (AUROC, AUPRC, Brier)",
          "path": F / "fig_model_comparison_all_metrics.pdf",
          "generator": "baseline_model_comparison.py -> make_manuscript_outputs.py",
-         "reviewer": "R1 Comment 9; R2 Comment 1", "note": "Baseline comparison figure.",
+         "reviewer": "", "note": "Baseline comparison figure.",
          "required_cols": None, "confirmed": False},
         {"section": "S Table", "item": "S6 Table",
          "title": "Characteristics of the three illustrative participant profiles",
          "path": T / "table_example_inputs.csv",
          "generator": "make_manuscript_outputs.py (this script, CORE)",
-         "reviewer": "R1 Comment 13", "note": "Decoded inputs for Fig 4 profiles.",
+         "reviewer": "", "note": "Decoded inputs for Fig 4 profiles.",
          "required_cols": None, "confirmed": True},
         {"section": "S Dataset", "item": "S12 Dataset",
          "title": "TRIPOD+AI for Abstracts checklist", "path": None,
@@ -1009,7 +1009,7 @@ def _apply_current_labels(entries: List[dict], T: Path, F: Path) -> List[dict]:
         {"section": "S Dataset", "item": "S15 Dataset",
          "title": "Subgroup calibration (slope, intercept, O/E, ECE)",
          "path": T / "fairness" / "subgroup_calibration.csv",
-         "generator": "subgroup_calibration.py", "reviewer": "R1 Comment 8",
+         "generator": "subgroup_calibration.py", "reviewer": "",
          "note": "Calibration within sex, age, race/ethnicity and income subgroups.",
          "required_cols": ["calibration_slope", "calibration_intercept", "obs_exp_ratio", "ECE"],
          "confirmed": True},
@@ -1034,7 +1034,7 @@ def _registry() -> List[dict]:
             "title": "Predictive performance across six outcomes",
             "path": T / "table3_model_performance_updated.csv",
             "generator": "make_manuscript_outputs.py (this script, CORE)",
-            "reviewer": "TRIPOD+AI Item 23a (CIs); R1 Comment 4 (NNS); R1 Comment 5 (MCE fix)",
+            "reviewer": "",
             "note": "AUROC/AUPRC/Brier with 95% bootstrap CIs, NNS, post-bin-merge MCE. Core result table.",
             "required_cols": ["AUROC", "AUROC_CI_low", "AUROC_CI_high", "NNS", "MCE", "MCE_bins_merged"],
             "confirmed": True,
@@ -1073,7 +1073,7 @@ def _registry() -> List[dict]:
             "title": "Example profiles + SHAP explanations",
             "path": F / "example_shap_explanations.pdf",
             "generator": "make_manuscript_outputs.py (this script, CORE)",
-            "reviewer": "R1 Comment 6 (feature attribution)",
+            "reviewer": "",
             "note": "⚠️ FIGURE IS CURRENT, but the manuscript's Example 1 NARRATIVE TEXT describes the wrong "
                     "explained disease (CHD instead of the corrected CKD) -- fix the Results prose, not this figure.",
             "required_cols": None, "confirmed": True,
@@ -1103,7 +1103,7 @@ def _registry() -> List[dict]:
             "title": "TRIPOD+AI reporting checklist",
             "path": None,  # lives as TRIPOD.docx, not a CSV
             "generator": "manual (TRIPOD.docx)",
-            "reviewer": "R3 Comment 1",
+            "reviewer": "",
             "note": "27-item checklist. Item 23a currently cites stale 'S13 Table' -- needs fixing to S11 Table.",
             "required_cols": None, "confirmed": True,
         },
@@ -1112,7 +1112,7 @@ def _registry() -> List[dict]:
             "title": "GBM vs. RF vs. LR comparison",
             "path": T / "model_comparison_summary_formatted.csv",
             "generator": "baseline_model_comparison.py -> make_manuscript_outputs.py",  # UNCONFIRMED for baseline_model_comparison.py itself
-            "reviewer": "R1 Comment 9, R2 Comment 1, R3 Comment 4",
+            "reviewer": "",
             "note": "Justifies gradient boosting over simpler baselines.",
             "required_cols": None, "confirmed": False,
         },
@@ -1121,7 +1121,7 @@ def _registry() -> List[dict]:
             "title": "Restricted-years (2013+2015) performance comparison",
             "path": T / "restricted_years_sensitivity" / "restricted_years_performance_comparison.csv",
             "generator": "restricted_years_sensitivity.py",
-            "reviewer": "R1 Comment 3, R3 Comment 3(c)",
+            "reviewer": "",
             "note": "AUROC/AUPRC/Brier deltas, full vs. years-with-complete-predictor-administration. Pre-computed deltas confirmed present.",
             "required_cols": ["AUROC_full", "AUROC_restricted", "AUROC_delta"],
             "confirmed": True,
@@ -1131,7 +1131,7 @@ def _registry() -> List[dict]:
             "title": "Restricted-years SHAP rank stability",
             "path": T / "restricted_years_sensitivity" / "restricted_years_shap_rank_stability.csv",
             "generator": "restricted_years_sensitivity.py",
-            "reviewer": "R1 Comment 3, R3 Comment 3(c)",
+            "reviewer": "",
             "note": "Confirms the 10 structurally-missing predictors aren't artifacts of imputed years. "
                     "Check NaN count: one-hot vars report only their best-ranked dummy level.",
             "required_cols": ["rank_full", "rank_restricted", "rank_delta"],
@@ -1142,7 +1142,7 @@ def _registry() -> List[dict]:
             "title": "PPV/NPV across assumed prevalence",
             "path": T / "ppv_npv_vs_prevalence.csv",
             "generator": "compute_nns_and_ppv_prevalence.py",
-            "reviewer": "R1 Comment 11",
+            "reviewer": "",
             "note": "0.5x/1x/2x prevalence scenarios, holding sensitivity/specificity fixed.",
             "required_cols": ["PPV", "NPV", "prevalence_multiplier"],
             "confirmed": True,
@@ -1152,7 +1152,7 @@ def _registry() -> List[dict]:
             "title": "Decision-curve analysis summary",
             "path": T / "decision_curve_summary.csv",
             "generator": "decision_curve_analysis.py",
-            "reviewer": "R3 Comment 5",
+            "reviewer": "",
             "note": "Threshold-probability range of positive net benefit, per outcome.",
             "required_cols": None, "confirmed": True,
         },
@@ -1161,7 +1161,7 @@ def _registry() -> List[dict]:
             "title": "Top 15 SHAP predictors by outcome",
             "path": T / "global_shap_top15_all_outcomes.csv",
             "generator": "generate_global_shap.py",  # UNCONFIRMED -- never seen this script
-            "reviewer": "R1 Comment 6",
+            "reviewer": "",
             "note": "Global feature importance, stratified 20,000-obs sample per outcome.",
             "required_cols": None, "confirmed": False,
         },
@@ -1170,7 +1170,7 @@ def _registry() -> List[dict]:
             "title": "Full SHAP ranking, all predictors",
             "path": T / "global_shap_full_ranking_all_outcomes.csv",
             "generator": "generate_global_shap.py",  # UNCONFIRMED
-            "reviewer": "R1 Comment 6",
+            "reviewer": "",
             "note": "Exhaustive version of S8 Table.",
             "required_cols": None, "confirmed": False,
         },
@@ -1179,7 +1179,7 @@ def _registry() -> List[dict]:
             "title": "SHAP rank for structurally-missing predictors",
             "path": T / "global_shap_flagged_cluster_summary.csv",
             "generator": "generate_global_shap.py",  # UNCONFIRMED
-            "reviewer": "R1 Comment 7",
+            "reviewer": "",
             "note": "Justifies retaining the 10 high-missingness predictors (they're highly ranked).",
             "required_cols": None, "confirmed": False,
         },
@@ -1188,7 +1188,7 @@ def _registry() -> List[dict]:
             "title": "Subgroup performance (sex/age/race/income)",
             "path": T / "fairness" / "subgroup_fairness_full.csv",
             "generator": "subgroup_fairness_analysis.py",  # UNCONFIRMED -- never seen this script
-            "reviewer": "R1 Comment 8",
+            "reviewer": "",
             "note": "AUROC/Brier with 95% CIs by subgroup, all 6 outcomes. ALSO now the sole representation "
                     "of subgroup performance (S6-S9 Figs were dropped -- never implemented).",
             "required_cols": None, "confirmed": False,
@@ -1198,7 +1198,7 @@ def _registry() -> List[dict]:
             "title": "Largest subgroup AUROC gaps",
             "path": T / "fairness" / "subgroup_auroc_gaps_summary.csv",
             "generator": "subgroup_fairness_analysis.py",  # UNCONFIRMED
-            "reviewer": "R1 Comment 8",
+            "reviewer": "",
             "note": "Companion summary to S11 Table -- biggest disparities at a glance.",
             "required_cols": None, "confirmed": False,
         },
@@ -1207,7 +1207,7 @@ def _registry() -> List[dict]:
             "title": "Full loaded sample vs. outcome-specific analytic samples",
             "path": T / "phase1_3_full_vs_analytic_cohort.csv",
             "generator": "revision_analyses.py --phase 1 (phase_1_3_full_vs_analytic_cohort)",
-            "reviewer": "R3 Comment 3(a)",
+            "reviewer": "",
             "note": "Confirms outcome-specific missing-data exclusions didn't introduce demographic bias.",
             "required_cols": ["sample", "variable", "category", "n", "pct"],
             "confirmed": True,
@@ -1227,7 +1227,7 @@ def _registry() -> List[dict]:
             "title": "Comparison with prior BRFSS-based ML studies",
             "path": None,  # lives inline in manuscript / response letter, not yet a standalone CSV
             "generator": "manual (literature review)",
-            "reviewer": "R2 Comment 2",
+            "reviewer": "",
             "note": "⚠️ Citations unresolved for 5 of 6 comparator studies; [4]/[4b] CKD relationship unconfirmed.",
             "required_cols": None, "confirmed": False,
         },
@@ -1246,7 +1246,7 @@ def _registry() -> List[dict]:
             "title": "PPV vs. prevalence curves",
             "path": F / "fig_ppv_vs_prevalence.pdf",
             "generator": "compute_nns_and_ppv_prevalence.py",
-            "reviewer": "R1 Comment 11",
+            "reviewer": "",
             "note": "3x2 grid, PDF+PNG parity patched.",
             "required_cols": None, "confirmed": True,
         },
@@ -1255,7 +1255,7 @@ def _registry() -> List[dict]:
             "title": "Decision curves",
             "path": F / "fig_decision_curves.pdf",
             "generator": "decision_curve_analysis.py",
-            "reviewer": "R3 Comment 5",
+            "reviewer": "",
             "note": "PDF+PNG parity patched.",
             "required_cols": None, "confirmed": True,
         },
@@ -1264,7 +1264,7 @@ def _registry() -> List[dict]:
             "title": "Global SHAP bar chart, top 15, all outcomes",
             "path": F / "fig_global_shap_bar_all_outcomes.pdf",
             "generator": "generate_global_shap.py -> make_manuscript_outputs.py",
-            "reviewer": "R1 Comment 6",
+            "reviewer": "",
             "note": "Visual companion to S8 Table.",
             "required_cols": None, "confirmed": True,
         },
@@ -1273,7 +1273,7 @@ def _registry() -> List[dict]:
             "title": "Global SHAP violin/beeswarm plots",
             "path": F / "fig_global_shap_violin_combined.pdf",
             "generator": "plot_shap_violin.py -> make_manuscript_outputs.py",
-            "reviewer": "R1 Comment 6",
+            "reviewer": "",
             "note": "Richer visual companion to S9 Table. PDF+PNG parity patched. Last item in S-Fig sequence "
                     "(S6-S9 Figs dropped -- never implemented, superseded by S11/S12 Tables).",
             "required_cols": None, "confirmed": True,
@@ -1304,7 +1304,7 @@ def _registry() -> List[dict]:
             "title": "Missing data counts, structural vs. person-level",
             "path": T / "S3_missing_data_predictors.csv",
             "generator": "generate_s3_missingness_table.py",  # UNCONFIRMED -- never seen this script
-            "reviewer": "R1 Comment 7, R1 Comment 3, R3 Comment 3",
+            "reviewer": "",
             "note": "Distinguishes 'not administered that year' from genuine person-level nonresponse.",
             "required_cols": None, "confirmed": False,
         },

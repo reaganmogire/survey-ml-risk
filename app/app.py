@@ -5,7 +5,7 @@ Streamlit app: Survey-based chronic disease detection (prevalent disease case-fi
 
 Key features
 - Loads trained artifacts (joblib) from app/artifacts/
-- If artifacts are missing, downloads them from GitHub Releases (model-v1)
+- If artifacts are missing, downloads them from GitHub Releases (model-v2)
 - Provides interactive disease detection (case-finding) estimates for multiple outcomes
 - Local explanations with SHAP for sklearn Pipelines (preprocessor + tree model), if available
 - No external AI/LLM calls
@@ -288,11 +288,11 @@ st.markdown(
 )
 
 # ============================================================
-# 1) Artifact auto-download (GitHub Release: model-v1)
+# 1) Artifact auto-download (GitHub Release: model-v2)
 # ============================================================
 REPO_OWNER = "reaganmogire"
 REPO_NAME  = "survey-ml-risk"
-MODEL_TAG  = os.environ.get("MODEL_TAG", "model-v1")
+MODEL_TAG  = os.environ.get("MODEL_TAG", "model-v2")
 
 RELEASE_BASE = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/{MODEL_TAG}"
 

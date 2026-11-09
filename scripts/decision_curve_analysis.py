@@ -5,7 +5,7 @@ scripts/decision_curve_analysis.py
 Computes decision-curve (net benefit) analysis for all six outcomes,
 following Vickers & Elkin (2006), comparing the model against "treat
 all" and "treat none" reference strategies across a range of threshold
-probabilities. Addresses Reviewer 3 Comment 5 (clinical utility beyond
+probabilities. Addresses a review comment (clinical utility beyond
 discrimination/calibration).
 
 Uses the FINAL trained models' stored test-set predictions
