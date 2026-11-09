@@ -1,0 +1,25 @@
+disease,disease_pretty,stratification_variable,best_subgroup,best_AUROC,worst_subgroup,worst_AUROC,AUROC_gap
+stroke,Stroke,age_group,18-44,0.8416,65+,0.7242,0.1174
+diabetes,Diabetes,age_group,18-44,0.8592,65+,0.7688,0.0904
+heart_attack,Heart attack,age_group,18-44,0.8348,65+,0.7554,0.0794
+coronary_hd,Coronary heart disease,age_group,45-64,0.8363,65+,0.7614,0.0749
+heart_attack,Heart attack,income_tertile,Higher ($50k+),0.8657,Lower (<$25k),0.8026,0.0631
+coronary_hd,Coronary heart disease,income_tertile,Higher ($50k+),0.8738,Lower (<$25k),0.817,0.0568
+stroke,Stroke,income_tertile,Higher ($50k+),0.8304,Lower (<$25k),0.7753,0.0551
+stroke,Stroke,race_ethnicity,Other/Multiracial non-Hispanic,0.8533,Black non-Hispanic,0.7985,0.0548
+depression,Depression,income_tertile,Lower (<$25k),0.847,Higher ($50k+),0.7979,0.0491
+kidney,Chronic kidney disease,age_group,45-64,0.7824,65+,0.7334,0.049
+depression,Depression,age_group,45-64,0.8384,65+,0.7933,0.0451
+depression,Depression,race_ethnicity,Black non-Hispanic,0.8692,White non-Hispanic,0.8257,0.0435
+diabetes,Diabetes,income_tertile,Higher ($50k+),0.8594,Lower (<$25k),0.8171,0.0423
+diabetes,Diabetes,race_ethnicity,Hispanic (any race),0.8635,Black non-Hispanic,0.8231,0.0404
+heart_attack,Heart attack,race_ethnicity,Other/Multiracial non-Hispanic,0.8562,Black non-Hispanic,0.8176,0.0386
+coronary_hd,Coronary heart disease,race_ethnicity,Other/Multiracial non-Hispanic,0.8717,Black non-Hispanic,0.8345,0.0372
+kidney,Chronic kidney disease,sex,Male,0.8113,Female,0.7777,0.0336
+kidney,Chronic kidney disease,race_ethnicity,Other/Multiracial non-Hispanic,0.817,Hispanic (any race),0.7886,0.0284
+kidney,Chronic kidney disease,income_tertile,Middle ($25-50k),0.7841,Lower (<$25k),0.7638,0.0203
+depression,Depression,sex,Male,0.8297,Female,0.8186,0.0111
+stroke,Stroke,sex,Male,0.8314,Female,0.8227,0.0087
+diabetes,Diabetes,sex,Female,0.8467,Male,0.8405,0.0062
+heart_attack,Heart attack,sex,Male,0.842,Female,0.8386,0.0034
+coronary_hd,Coronary heart disease,sex,Female,0.8512,Male,0.8493,0.0019

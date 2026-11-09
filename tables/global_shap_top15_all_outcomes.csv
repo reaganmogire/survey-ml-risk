@@ -1,0 +1,91 @@
+feature,feature_pretty,underlying_brfss_var,mean_abs_shap,rank,disease,disease_pretty
+num___AGEG5YR,Age group,,0.8351047453475574,1,heart_attack,Heart attack
+num__GENHLTH,General health,,0.46493557109592987,2,heart_attack,Heart attack
+cat__SEX_1.0,Sex: Male,,0.3040264743026005,3,heart_attack,Heart attack
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.15209079935321573,4,heart_attack,Heart attack
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.1366118137013091,5,heart_attack,Heart attack
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.1249307668685695,6,heart_attack,Heart attack
+num___INCOMG,Income category,,0.11609032760628149,7,heart_attack,Heart attack
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.09009562129823671,8,heart_attack,Heart attack
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.08691265584644066,9,heart_attack,Heart attack
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.07314640102278876,10,heart_attack,Heart attack
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.06935214642572268,11,heart_attack,Heart attack
+cat__SEX_2.0,Sex: Female,,0.06171244327355497,12,heart_attack,Heart attack
+num__PHYSHLTH,Physical health days,,0.06076679526493864,13,heart_attack,Heart attack
+num___EDUCAG,Education category,,0.05958669503373644,14,heart_attack,Heart attack
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.05611462277976252,15,heart_attack,Heart attack
+num___AGEG5YR,Age group,,0.8880356908193289,1,coronary_hd,Coronary heart disease
+num__GENHLTH,General health,,0.5615226062811708,2,coronary_hd,Coronary heart disease
+cat__SEX_1.0,Sex: Male,,0.25215955241281734,3,coronary_hd,Coronary heart disease
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.1706662550608523,4,coronary_hd,Coronary heart disease
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.15465958809773803,5,coronary_hd,Coronary heart disease
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.14394451484482412,6,coronary_hd,Coronary heart disease
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.10399663601382568,7,coronary_hd,Coronary heart disease
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.1007804317657905,8,coronary_hd,Coronary heart disease
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.09075988862382425,9,coronary_hd,Coronary heart disease
+num__PHYSHLTH,Physical health days,,0.07719357326373652,10,coronary_hd,Coronary heart disease
+num___INCOMG,Income category,,0.061814716303540684,11,coronary_hd,Coronary heart disease
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.06046431946302411,12,coronary_hd,Coronary heart disease
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.05744927995439225,13,coronary_hd,Coronary heart disease
+cat__ASTHMA3_1.0,Asthma: Yes,,0.05534099261434443,14,coronary_hd,Coronary heart disease
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.0535097544232284,15,coronary_hd,Coronary heart disease
+num___AGEG5YR,Age group,,0.6617249026989295,1,stroke,Stroke
+num__GENHLTH,General health,,0.40413818243215477,2,stroke,Stroke
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.17923452413338828,3,stroke,Stroke
+num___INCOMG,Income category,,0.15858662719707686,4,stroke,Stroke
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.09960895409787439,5,stroke,Stroke
+num__CHECKUP1,Time since last checkup,,0.0788390697040748,6,stroke,Stroke
+num__PHYSHLTH,Physical health days,,0.07674719923164727,7,stroke,Stroke
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.0691661845098288,8,stroke,Stroke
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.06554513456469882,9,stroke,Stroke
+cat__ASTHMA3_1.0,Asthma: Yes,,0.060425710121301414,10,stroke,Stroke
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.056910458148668706,11,stroke,Stroke
+cat__SEX_1.0,Sex: Male,,0.05421023272296226,12,stroke,Stroke
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.0512534937553935,13,stroke,Stroke
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.047645589834292276,14,stroke,Stroke
+num__POORHLTH,Days poor health limited activities,,0.04366131258666782,15,stroke,Stroke
+num__GENHLTH,General health,,0.429235891178805,1,kidney,Chronic kidney disease
+num___AGEG5YR,Age group,,0.3315211794103537,2,kidney,Chronic kidney disease
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.16650712189476766,3,kidney,Chronic kidney disease
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.14369646526644853,4,kidney,Chronic kidney disease
+num__PHYSHLTH,Physical health days,,0.11849682076520249,5,kidney,Chronic kidney disease
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.07535987572871185,6,kidney,Chronic kidney disease
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.05920583522728559,7,kidney,Chronic kidney disease
+cat__HAVARTH3_2.0,Arthritis: No,,0.05172466404991559,8,kidney,Chronic kidney disease
+num__POORHLTH,Days poor health limited activities,,0.05110131381020916,9,kidney,Chronic kidney disease
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.04773884773625387,10,kidney,Chronic kidney disease
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.04591235163181487,11,kidney,Chronic kidney disease
+num___EDUCAG,Education category,,0.04237903120635726,12,kidney,Chronic kidney disease
+num__CHECKUP1,Time since last checkup,,0.041033988519240304,13,kidney,Chronic kidney disease
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.03747305290038617,14,kidney,Chronic kidney disease
+num___INCOMG,Income category,,0.03559771683855045,15,kidney,Chronic kidney disease
+num__MENTHLTH,Mental health days,,0.6837404579348345,1,depression,Depression
+cat__SEX_1.0,Sex: Male,,0.19596498360286455,2,depression,Depression
+num__POORHLTH,Days poor health limited activities,,0.18492636489226905,3,depression,Depression
+num___AGEG5YR,Age group,,0.1718786846335167,4,depression,Depression
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.15381782637324456,5,depression,Depression
+num__GENHLTH,General health,,0.12166628425271035,6,depression,Depression
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.11606502785701134,7,depression,Depression
+cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,DECIDE,0.11131027724874702,8,depression,Depression
+num___INCOMG,Income category,,0.09531180246109629,9,depression,Depression
+num___EDUCAG,Education category,,0.08276716847825073,10,depression,Depression
+cat__ASTHMA3_1.0,Asthma: Yes,,0.07433258791043847,11,depression,Depression
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.06992417403940919,12,depression,Depression
+cat__HAVARTH3_2.0,Arthritis: No,,0.06723884314718251,13,depression,Depression
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.06364445405810687,14,depression,Depression
+num___BMI5,BMI,,0.06174558299294498,15,depression,Depression
+num__GENHLTH,General health,,0.6479335386704818,1,diabetes,Diabetes
+num___AGEG5YR,Age group,,0.594560251481687,2,diabetes,Diabetes
+num___BMI5,BMI,,0.28747415138046006,3,diabetes,Diabetes
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.20914057284799228,4,diabetes,Diabetes
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.20913964918524774,5,diabetes,Diabetes
+num__CHECKUP1,Time since last checkup,,0.1918839653853285,6,diabetes,Diabetes
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.16969722662456949,7,diabetes,Diabetes
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.1291093067096829,8,diabetes,Diabetes
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.12413708785160854,9,diabetes,Diabetes
+num__WEIGHT2,Weight (lb),,0.11555107751996106,10,diabetes,Diabetes
+cat__SEX_1.0,Sex: Male,,0.09279870844463052,11,diabetes,Diabetes
+num___INCOMG,Income category,,0.08812007611393752,12,diabetes,Diabetes
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.06620739457029699,13,diabetes,Diabetes
+num__FRUIT1,Fruit intake (per day rate),FRUIT1,0.057352792114757085,14,diabetes,Diabetes
+num__PHYSHLTH,Physical health days,,0.03733483442930644,15,diabetes,Diabetes

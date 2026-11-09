@@ -1,0 +1,34 @@
+Variable,Label,"Example 1: Older female, multiple CVD risk factors","Example 2: Middle-aged, favourable health indicators","Example 3: Younger adult, prominent mental health indicators"
+_STATE,State,13 (Georgia),24 (Maryland),6 (California)
+SEX,Sex,2 (Female),1 (Male),2 (Female)
+_AGEG5YR,Age group,13,7,3
+_EDUCAG,Education category,2,3,4
+_INCOMG,Income category,2,4,5
+_MRACE1,Race,2 (Black),1 (White),1 (White)
+_HISPANC,Hispanic ethnicity,2 (Non-Hispanic),2 (Non-Hispanic),1 (Hispanic)
+SMOKE100,Ever smoked 100 cigarettes,1 (Yes),2 (No),2 (No)
+SMOKDAY2,Current smoking frequency,2 (Some days),3 (Not at all),3 (Not at all)
+ALCDAY5,Alcohol drinking days (per day rate),0.0333,0.1429,0.4286
+DRNKANY5,Any alcohol use,1 (Yes),2 (No),1 (Yes)
+EXERANY2,Any exercise in past month,2 (No),1 (Yes),1 (Yes)
+FRUIT1,Fruit intake (per day rate),0.71,1.0,1.0
+VEGETAB1,Vegetable intake (per day rate),0.71,1.0,0.14
+HLTHPLN1,Has health insurance,1 (Yes),1 (Yes),1 (Yes)
+PERSDOC2,Has personal doctor,"1 (Yes, one)","1 (Yes, one)","2 (Yes, more than one)"
+MEDCOST,Could not see doctor (cost),2 (No),2 (No),1 (Yes)
+CHECKUP1,Time since last checkup,1,2,3
+BPHIGH4,High blood pressure,1 (Yes),2 (No),2 (No)
+BPMEDS,Blood pressure medication,1 (Yes),2 (No),2 (No)
+TOLDHI2,Told high cholesterol,1 (Yes),2 (No),2 (No)
+CHOLCHK,Cholesterol checked recently,1,1,1
+ASTHMA3,Asthma,2 (No),2 (No),1 (Yes)
+HAVARTH3,Arthritis,1 (Yes),2 (No),2 (No)
+GENHLTH,General health,3,2,3
+PHYSHLTH,Physical health days,10,0,3
+MENTHLTH,Mental health days,5,0,15
+POORHLTH,Days poor health limited activities,7,0,5
+DIFFWALK,Difficulty walking/climbing,1 (Yes),2 (No),2 (No)
+DECIDE,Cognitive difficulty (memory/concentration),2 (No),2 (No),1 (Yes)
+WEIGHT2,Weight (lb),210,170,150
+HEIGHT3,Height (feet and inches code),504,507,505
+_BMI5,BMI (x100),3600,2650,2500
