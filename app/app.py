@@ -820,9 +820,9 @@ def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
     ax.set_xlabel("SHAP value (impact on predicted probability)")
     ax.grid(axis="x", linestyle="--", alpha=0.25)
 
-    ax.text(0.02, -0.15, "← Decreases predicted probability (SHAP < 0)",
+    ax.text(0.02, -0.15, "← Lowers risk",
             transform=ax.transAxes, ha="left", va="top", fontsize=11, color="#2F80ED")
-    ax.text(0.98, -0.15, "Increases predicted probability (SHAP > 0) →",
+    ax.text(0.98, -0.15, "Raises risk →",
             transform=ax.transAxes, ha="right", va="top", fontsize=11, color="#D9534F")
 
     fig.tight_layout()
