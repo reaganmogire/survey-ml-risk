@@ -3,9 +3,9 @@
 """
 scripts/revision_analyses.py
 
-Analyses for the PDIG-D-26-01022 revision (PLOS Digital Health).
+Analyses for the revision.
 Organized by phase, matching the "Analysis Execution Plan" agreed with
-the response-to-reviewers letters. Run phases independently and in order:
+the revision plan. Run phases independently and in order:
 
     python scripts/revision_analyses.py --phase 0
     python scripts/revision_analyses.py --phase 1
@@ -351,7 +351,7 @@ def phase_0_2_pipeline_diagnostic() -> dict:
 
 
 # ============================================================
-# PHASE 1.1 — MCE bin-size detail (R1 Comment 5)
+# PHASE 1.1 — MCE bin-size detail (a review comment)
 #             Run for ALL six outcomes, not just CHD, since the
 #             same diagnostic is useful supporting context for
 #             every outcome's Table 1 footnote.
@@ -425,7 +425,7 @@ def phase_1_1_mce_bin_detail(n_bins: int = 10) -> pd.DataFrame:
 
 # ============================================================
 # PHASE 1.3 — Full loaded sample vs. analytic cohort comparison
-#             (R3 Comment 3a)
+#             (a review comment)
 #
 # [PATCH] Output now goes to the SHARED TABLES_DIR (<repo>/tables/),
 # not the isolated revision/tables/ tree -- this is the file

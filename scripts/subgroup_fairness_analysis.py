@@ -5,7 +5,7 @@ scripts/subgroup_fairness_analysis.py
 
 Computes AUROC and Brier score, with bootstrap confidence intervals,
 stratified by sex, age group, race/ethnicity, and income tertile, for
-all six outcome models. Addresses Reviewer 1 Comment 8 (algorithmic
+all six outcome models. Addresses a review comment (algorithmic
 fairness / subgroup performance).
 
 Uses the FINAL trained models' stored test-set predictions and raw

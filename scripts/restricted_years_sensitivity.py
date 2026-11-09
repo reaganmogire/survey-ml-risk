@@ -12,7 +12,7 @@ due to non-administration -- and compares:
   (a) AUROC / AUPRC / Brier against the full 2011-2015 pooled model
   (b) SHAP feature ranking stability for the flagged cluster specifically
 
-This addresses Reviewer 1 Comment 3 (race/ethnicity coding sensitivity)
+This addresses a review comment (race/ethnicity coding sensitivity)
 and extends it to the full structurally-missing cluster identified
 during revision, and informs the limitation language in the Discussion
 regarding potential confounding between imputed predictor values and
@@ -377,7 +377,7 @@ def main():
 
     print("\nDone. Use restricted_years_performance_comparison.csv and "
           "restricted_years_shap_rank_stability.csv to finalize the response to "
-          "Reviewer 1 Comment 3 / Reviewer 3 Comment 3(c), and the corresponding "
+          "a review comment / a review comment, and the corresponding "
           "Discussion limitation paragraph.")
 
 

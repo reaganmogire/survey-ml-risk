@@ -40,7 +40,7 @@ This script:
      held-out validation set (separate from the test set)
   5) Exports artifacts for inference (Streamlit app) and manuscript-ready tables/figures
   6) Compares performance against the frozen pre-revision model artifacts,
-     for direct before/after reporting in the response to reviewers
+     for direct before/after reporting in the manuscript revision
 
 Portability notes (GitHub-friendly):
   - No absolute paths are used.
@@ -459,8 +459,8 @@ def compare_against_frozen(eval_opt_new: pd.DataFrame, frozen_dir: Path = FROZEN
     out_path = TABLES_DIR / "encoding_fix_before_after_comparison.csv"
     comp_df.to_csv(out_path)
     print(f"\n  Saved -> {out_path}")
-    print("  Use this table for the response to Reviewer 1 (Comment 3) and")
-    print("  Reviewer 3 (model specification, Comment 4).")
+    print("  Use this table for the response to the review and")
+    print("  the review (model specification, review comment).")
     return comp_df
 
 
