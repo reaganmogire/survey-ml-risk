@@ -1,7 +1,0 @@
-disease,mean_uncertainty,median_uncertainty,q1_uncertainty,q3_uncertainty,ci_low_mean,ci_high_mean
-heart_attack,0.119,0.045,0.012,0.162,0.119,0.12
-coronary_hd,0.121,0.043,0.01,0.163,0.12,0.121
-stroke,0.083,0.034,0.011,0.116,0.083,0.083
-kidney,0.067,0.035,0.016,0.084,0.067,0.067
-depression,0.296,0.201,0.106,0.419,0.295,0.297
-diabetes,0.244,0.129,0.03,0.384,0.243,0.245
