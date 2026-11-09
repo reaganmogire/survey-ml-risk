@@ -1,0 +1,8 @@
+# .streamlit/config.toml
+# Forces the light theme for everyone, regardless of their browser or system dark mode.
+[theme]
+base = "light"
+primaryColor = "#2E7D32"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F0F4F8"
+textColor = "#1A1A1A"

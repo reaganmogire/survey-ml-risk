@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # coding: utf-8
 """
-Streamlit app: Survey-based chronic Disease Prediction (BRFSS 2011–2015).
+Streamlit app: Survey-based chronic disease detection (prevalent disease case-finding; BRFSS 2011–2015).
 
 Key features
 - Loads trained artifacts (joblib) from app/artifacts/
 - If artifacts are missing, downloads them from GitHub Releases (model-v1)
-- Provides interactive disease prediction for multiple outcomes
+- Provides interactive disease detection (case-finding) estimates for multiple outcomes
 - Local explanations with SHAP for sklearn Pipelines (preprocessor + tree model), if available
 - No external AI/LLM calls
 
@@ -51,7 +51,7 @@ except Exception:
 # ============================================================
 # 0) Streamlit page + Bright medical theme (forced readability)
 # ============================================================
-st.set_page_config(page_title="Chronic Disease Prediction", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="Disease Detection", page_icon="🩺", layout="wide")
 
 st.markdown(
     """
@@ -212,6 +212,75 @@ st.markdown(
   /* Alerts */
   div[role="alert"] * {
     color: #1A1A1A !important;
+  }
+
+  /* --- Force a light look even when the browser/system is in dark mode (Streamlit dark theme
+         otherwise paints inputs, dropdowns and alerts dark and overrides the rules above) --- */
+  :root, .stApp { color-scheme: light !important; }
+  div[data-baseweb="select"] > div,
+  div[data-baseweb="select"] > div > div,
+  div[data-baseweb="input"],
+  div[data-baseweb="input"] > div,
+  div[data-baseweb="base-input"],
+  .stNumberInput input,
+  .stNumberInput button,
+  .stTextInput input {
+    background-color: #FFFFFF !important;
+    color: #1A1A1A !important;
+    border-color: #C9D2DC !important;
+  }
+  div[data-baseweb="select"] span,
+  div[data-baseweb="select"] input { color: #1A1A1A !important; -webkit-text-fill-color: #1A1A1A !important; }
+  div[data-baseweb="select"] svg, .stNumberInput svg { fill: #1A1A1A !important; color: #1A1A1A !important; }
+  div[data-testid="stAlert"] { background-color: #FFF8E1 !important; border: 1px solid #F2D98C !important; }
+  div[data-testid="stAlert"] *, div[data-testid="stAlert"] p { color: #5D4037 !important; }
+  div[data-testid="stDataFrame"] { background-color: #FFFFFF !important; }
+
+  /* --- Second pass (brute force): dropdown controls and alert boxes still rendered dark on newer
+         Streamlit builds, whose inner elements carry their own dark backgrounds. --- */
+  .stApp div[data-baseweb="select"],
+  .stApp div[data-baseweb="select"] *,
+  .stApp .stSelectbox div[data-baseweb="select"] div {
+    background-color: #FFFFFF !important;
+    color: #1A1A1A !important;
+    -webkit-text-fill-color: #1A1A1A !important;
+    border-color: #C9D2DC !important;
+  }
+  .stApp div[data-baseweb="select"] svg { fill: #1A1A1A !important; }
+  .stApp div[data-baseweb="popover"] *, .stApp ul[role="listbox"] * {
+    background-color: #FFFFFF !important; color: #1A1A1A !important;
+  }
+  .stApp [data-testid^="stAlert"],
+  .stApp [data-testid^="stAlert"] > div,
+  .stApp [data-testid="stAlertContainer"],
+  .stApp div[role="alert"],
+  .stApp .stAlert {
+    background-color: #FFF8E1 !important;
+    border-color: #F2D98C !important;
+  }
+  .stApp [data-testid^="stAlert"] *, .stApp div[role="alert"] *, .stApp .stAlert * {
+    color: #5D4037 !important; background-color: transparent !important;
+  }
+
+  /* --- Third pass: select controls by role / test id (newer Streamlit builds no longer expose
+         data-baseweb on every element) --- */
+  .stApp [data-testid="stSelectbox"] *,
+  .stApp [data-testid="stSelectbox"] [role="combobox"],
+  .stApp [data-testid="stSelectbox"] [role="combobox"] *,
+  .stApp [data-testid="stMultiSelect"] *,
+  .stApp [data-testid="stSelectboxVirtualDropdown"],
+  .stApp [data-testid="stSelectboxVirtualDropdown"] *,
+  .stApp [data-testid="stVirtualDropdown"] *,
+  .stApp [role="listbox"], .stApp [role="listbox"] *,
+  .stApp [role="option"] {
+    background-color: #FFFFFF !important;
+    color: #1A1A1A !important;
+    -webkit-text-fill-color: #1A1A1A !important;
+    border-color: #C9D2DC !important;
+  }
+  .stApp [data-testid="stSelectbox"] svg { fill: #1A1A1A !important; color: #1A1A1A !important; }
+  .stApp [data-testid="stSelectbox"] label, .stApp [data-testid="stSelectbox"] label * {
+    background-color: transparent !important;
   }
 </style>
     """,
@@ -491,9 +560,14 @@ disease_models, optimal_thresholds, predictor_cols = load_artifacts()
 # ============================================================
 # 2) Utility functions
 # ============================================================
-def uncertainty_from_proba(p: float) -> float:
-    p = float(p)
-    return float(1.0 - abs(p - 0.5) * 2.0)
+def show_disclaimer() -> None:
+    """Light-coloured disclaimer box drawn with plain HTML, so it looks the same in light and dark
+    Streamlit themes (st.warning is painted dark by the dark theme on newer Streamlit builds)."""
+    st.markdown(
+        f'<div style="background:#FFF8E1;border:1px solid #F2D98C;border-radius:8px;'
+        f'padding:12px 16px;color:#5D4037;font-size:0.95rem;">⚠️ {DISCLAIMER_TEXT}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def _safe_float(x: Any) -> Optional[float]:
@@ -503,6 +577,76 @@ def _safe_float(x: Any) -> Optional[float]:
         return float(x)
     except Exception:
         return None
+
+
+# ------------------------------------------------------------
+# The trained pipeline was fitted on DECODED values (data_preparation.py decodes the compound
+# frequency codes and the 88 = "None" code, and sets don't-know / refused codes to missing).
+# The form collects BRFSS-style codes, so decode them the same way before predicting; otherwise
+# PHYSHLTH = 88 is read as 88 days and FRUIT1 = 205 as 205 servings per day.
+# ------------------------------------------------------------
+_DK_CODES = {
+    "SEX": [9], "_AGEG5YR": [14], "_EDUCAG": [9], "_INCOMG": [9], "_MRACE1": [77, 99], "_HISPANC": [9],
+    "SMOKE100": [7, 9], "SMOKDAY2": [7, 9], "DRNKANY5": [7, 9], "EXERANY2": [7, 9], "HLTHPLN1": [7, 9],
+    "PERSDOC2": [7, 9], "MEDCOST": [7, 9], "CHECKUP1": [7, 9], "BPHIGH4": [7, 9], "BPMEDS": [7, 9],
+    "TOLDHI2": [7, 9], "CHOLCHK": [7, 9], "ASTHMA3": [7, 9], "HAVARTH3": [7, 9], "GENHLTH": [7, 9],
+    "DIFFWALK": [7, 9], "DECIDE": [7, 9], "WEIGHT2": [777, 999, 7777, 9999],
+    "HEIGHT3": [777, 999, 7777, 9999], "_BMI5": [9999],
+}
+
+
+def _decode_day_week_month(v):          # FRUIT1 / VEGETAB1 -> times per day
+    if v is None or pd.isna(v):
+        return np.nan
+    v = float(v)
+    if 100 < v < 200:
+        return v - 100
+    if 200 < v < 300:
+        return round((v - 200) / 7.0, 2)
+    if 300 < v < 400:
+        return round((v - 300) / 30.0, 2)
+    if v == 555:
+        return 0.0
+    if v == 300:
+        return 0.02
+    return np.nan
+
+
+def _decode_week_month(v):              # ALCDAY5 -> times per day
+    if v is None or pd.isna(v):
+        return np.nan
+    v = float(v)
+    if 100 < v < 200:
+        return round((v - 100) / 7.0, 4)
+    if 200 < v < 300:
+        return round((v - 200) / 30.0, 4)
+    if v == 888:
+        return 0.0
+    return np.nan
+
+
+def _decode_none_88(v):                 # PHYSHLTH / MENTHLTH / POORHLTH -> days (0-30)
+    if v is None or pd.isna(v):
+        return np.nan
+    v = float(v)
+    if 0 <= v <= 30:
+        return v
+    if v == 88:
+        return 0.0
+    return np.nan
+
+
+def decode_model_input(model_input: Dict[str, Any]) -> Dict[str, Any]:
+    out = dict(model_input)
+    for col, fn in [("FRUIT1", _decode_day_week_month), ("VEGETAB1", _decode_day_week_month),
+                    ("ALCDAY5", _decode_week_month), ("PHYSHLTH", _decode_none_88),
+                    ("MENTHLTH", _decode_none_88), ("POORHLTH", _decode_none_88)]:
+        if col in out:
+            out[col] = fn(out[col])
+    for col, codes in _DK_CODES.items():
+        if col in out and out[col] in codes:
+            out[col] = np.nan
+    return out
 
 
 def predict_all_conditions(model_input: Dict[str, Any]) -> pd.DataFrame:
@@ -521,7 +665,6 @@ def predict_all_conditions(model_input: Dict[str, Any]) -> pd.DataFrame:
                 "Predicted probability (0–1)": proba,
                 "Threshold":               thr,
                 "Prediction category":      label,
-                "Uncertainty (0–1)":       uncertainty_from_proba(proba),
                 "_disease_code":           disease,
             }
         )
@@ -689,8 +832,8 @@ def plot_shap_bar(df: pd.DataFrame, title: str) -> plt.Figure:
 # ============================================================
 # 4) Streamlit UI
 # ============================================================
-st.sidebar.title("Survey-ML: Disease Prediction")
-page = st.sidebar.radio("Navigate", ["Disease prediction", "Model evaluation", "About"])
+st.sidebar.title("Survey-ML Disease Detection")
+page = st.sidebar.radio("Navigate", ["Disease Detection ML", "Model evaluation", "About"])
 st.sidebar.markdown("---")
 st.sidebar.caption("Research/demonstration only; not yet for clinical use.")
 
@@ -701,15 +844,15 @@ if page == "About":
     st.markdown(
         """
 This repository provides an interpretable machine-learning framework for chronic disease
-prediction using population survey data (BRFSS 2011–2015).
+detection (case-finding of prevalent disease) using population survey data (BRFSS 2011–2015).
 
 **Key design goals**
-- Scalable disease prediction without EHRs, biomarkers, or laboratory data
+- Scalable disease detection without EHRs, biomarkers, or laboratory data
 - Interpretable feature contributions (SHAP, optional)
 - Reproducible, publication-oriented outputs (tables/figures)
         """
     )
-    st.warning(DISCLAIMER_TEXT, icon="⚠️")
+    show_disclaimer()
     st.markdown("### Loaded artifact summary")
     st.write(f"Model tag: `{MODEL_TAG}`")
     st.write(f"Artifacts directory: `{ARTIFACT_DIR}`")
@@ -720,14 +863,14 @@ prediction using population survey data (BRFSS 2011–2015).
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-elif page == "Disease prediction":
+elif page == "Disease Detection ML":
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.title("Chronic disease prediction (survey-based ML)")
+    st.title("Disease Detection ML")
     st.write(
-        "Enter inputs to generate predicted probabilities for each condition. "
+        "Enter inputs to estimate the probability that each condition is already present (prevalent, previously diagnosed). "
         "On first run, the app downloads model artifacts from GitHub Releases."
     )
-    st.warning(DISCLAIMER_TEXT, icon="⚠️")
+    show_disclaimer()
     st.markdown("</div>", unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
@@ -801,7 +944,17 @@ elif page == "Disease prediction":
 
             # ── Anthropometrics ───────────────────────────────────
             elif col_name == "_BMI5":
-                bmi = st.number_input("BMI (kg/m²)", min_value=10.0, max_value=70.0, value=27.0, step=0.1)
+                # BMI is estimated from the height and weight entered above (BMI = lb x 703 / inches^2).
+                # WEIGHT2 and HEIGHT3 precede _BMI5 in predictor_cols, so they are already set here.
+                _w, _h = model_input.get("WEIGHT2"), model_input.get("HEIGHT3")
+                if _w is not None and _h is not None:
+                    _inches = (int(_h) // 100) * 12 + (int(_h) % 100)
+                    bmi = round(float(_w) * 703.0 / (_inches ** 2), 1)
+                    st.number_input("BMI (kg/m²), calculated from height and weight", value=float(bmi),
+                                    disabled=True, format="%.1f",
+                                    help="Calculated automatically: weight (lb) × 703 ÷ height (in)².")
+                else:
+                    bmi = st.number_input("BMI (kg/m²)", min_value=10.0, max_value=70.0, value=27.0, step=0.1)
                 model_input["_BMI5"]     = int(round(float(bmi) * 100))
                 user_inputs["BMI (kg/m²)"] = bmi
 
@@ -978,7 +1131,7 @@ elif page == "Disease prediction":
                     model_input["ALCDAY5"] = 888
                 else:
                     d = int(round(min(float(drinks_pw), 7.0)))
-                    model_input["ALCDAY5"] = 200 + d
+                    model_input["ALCDAY5"] = 100 + d      # 1xx = days per WEEK (was 200 + d = days per month)
                 user_inputs["Alcohol (drinks/week)"] = drinks_pw
 
             elif col_name == "EXERANY2":
@@ -1033,9 +1186,10 @@ elif page == "Disease prediction":
     for c in predictor_cols:
         model_input.setdefault(c, np.nan)
 
-    run_btn = st.button("Run prediction")
+    run_btn = st.button("Run detection")
 
     if run_btn:
+        model_input = decode_model_input(model_input)
         st.session_state["results_df"]         = predict_all_conditions(model_input)
         st.session_state["model_input_cache"]  = model_input.copy()
         st.session_state["user_inputs_cache"]  = user_inputs.copy()
@@ -1049,7 +1203,6 @@ elif page == "Disease prediction":
         show = results_df.drop(columns=["_disease_code"]).copy()
         show["Predicted probability (0–1)"] = show["Predicted probability (0–1)"].map(lambda x: f"{x:.4f}")
         show["Threshold"]                   = show["Threshold"].map(lambda x: f"{x:.2f}")
-        show["Uncertainty (0–1)"]           = show["Uncertainty (0–1)"].map(lambda x: f"{x:.4f}")
         st.dataframe(show, use_container_width=True, hide_index=True)
 
         st.subheader("Local feature contributions (optional)")
