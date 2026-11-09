@@ -35,3 +35,14 @@ venv/
 # ----------------------------
 .DS_Store
 .vscode/
+
+# large artifacts are distributed via GitHub Releases (see scripts/fetch_release_assets.py)
+*.joblib
+data/raw/
+data/derived/
+tables/global_shap/
+.DS_Store
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.bak*

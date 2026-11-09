@@ -5,11 +5,11 @@ Download large assets from GitHub Releases to keep the repository lightweight an
 
 What it downloads
 -----------------
-1) Data release (default tag: data-v1)
+1) Data release (default tag: data-v2)
    - BRFSS annual extracts (2011–2015): 2011.csv.zip ... 2015.csv.zip  -> data/raw/
    - Optional pooled cleaned modeling dataset: BRFSS_2011_2015_clean_model.csv.gz -> data/derived/
 
-2) Model release (default tag: model-v1)
+2) Model release (default tag: model-v2)
    - disease_models.joblib
    - optimal_thresholds.joblib
    - predictor_cols.joblib
@@ -100,8 +100,8 @@ def download(url: str, dest: Path, *, force: bool = False, timeout: int = 180) -
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Download data/model assets from GitHub Releases.")
-    p.add_argument("--data-tag", default="data-v1", help="Release tag for data assets (default: data-v1)")
-    p.add_argument("--model-tag", default="model-v1", help="Release tag for model assets (default: model-v1)")
+    p.add_argument("--data-tag", default="data-v2", help="Release tag for data assets (default: data-v2)")
+    p.add_argument("--model-tag", default="model-v2", help="Release tag for model assets (default: model-v2)")
     p.add_argument("--only-data", action="store_true", help="Download only data assets")
     p.add_argument("--only-model", action="store_true", help="Download only model artifacts")
     p.add_argument("--force", action="store_true", help="Re-download and overwrite existing files")

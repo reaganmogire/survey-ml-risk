@@ -1,0 +1,7 @@
+disease,disease_pretty,n_test_full_2011_2015,n_test_restricted_2013_2015,AUROC_full,AUROC_restricted,AUROC_delta,AUPRC_full,AUPRC_restricted,AUPRC_delta,Brier_full,Brier_restricted,Brier_delta
+heart_attack,Heart attack,473678,185684,0.8468,0.8501,0.0033,0.2597,0.2649,0.0052,0.0492,0.0484,-0.0008
+coronary_hd,Coronary heart disease,471860,184996,0.8535,0.8626,0.0091,0.2699,0.2838,0.0139,0.0493,0.0475,-0.0018
+stroke,Stroke,474649,186095,0.8261,0.8303,0.0042,0.1629,0.1705,0.0077,0.0366,0.0367,0.0002
+kidney,Chronic kidney disease,474154,185988,0.7916,0.7963,0.0046,0.1274,0.1321,0.0047,0.0306,0.031,0.0004
+depression,Depression,473583,185749,0.8287,0.8329,0.0042,0.6026,0.6163,0.0137,0.1097,0.1103,0.0005
+diabetes,Diabetes,474963,186320,0.8442,0.8508,0.0065,0.4347,0.4459,0.0112,0.0885,0.0877,-0.0008

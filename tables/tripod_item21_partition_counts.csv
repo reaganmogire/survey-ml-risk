@@ -1,0 +1,19 @@
+partition,n,n_events,prevalence_pct,pct_female,mean_age_group,mean_income_group,mean_education_group,disease,disease_pretty
+Train,1515768,90520,5.972,59.21,7.652,3.617,2.894,heart_attack,Heart attack
+Validation,378943,22630,5.972,59.21,7.654,3.619,2.896,heart_attack,Heart attack
+Test,473678,28287,5.972,59.15,7.654,3.619,2.894,heart_attack,Heart attack
+Train,1509951,91184,6.039,59.22,7.636,3.62,2.895,coronary_hd,Coronary heart disease
+Validation,377488,22796,6.039,59.13,7.642,3.623,2.897,coronary_hd,Coronary heart disease
+Test,471860,28495,6.039,59.19,7.643,3.621,2.898,coronary_hd,Coronary heart disease
+Train,1518875,62478,4.113,59.18,7.653,3.618,2.893,stroke,Stroke
+Validation,379719,15619,4.113,59.15,7.66,3.615,2.891,stroke,Stroke
+Test,474649,19524,4.113,59.19,7.659,3.61,2.893,stroke,Stroke
+Train,1517289,50742,3.344,59.21,7.656,3.616,2.894,kidney,Chronic kidney disease
+Validation,379323,12686,3.344,59.1,7.655,3.62,2.893,kidney,Chronic kidney disease
+Test,474154,15857,3.344,59.15,7.654,3.616,2.893,kidney,Chronic kidney disease
+Train,1515464,285788,18.858,59.18,7.662,3.616,2.893,depression,Depression
+Validation,378867,71447,18.858,59.21,7.655,3.616,2.894,depression,Depression
+Test,473583,89309,18.858,59.23,7.66,3.619,2.893,depression,Depression
+Train,1519880,193883,12.756,59.19,7.661,3.616,2.893,diabetes,Diabetes
+Validation,379971,48471,12.756,59.28,7.662,3.615,2.892,diabetes,Diabetes
+Test,474963,60589,12.757,59.13,7.658,3.612,2.892,diabetes,Diabetes

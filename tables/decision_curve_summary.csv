@@ -1,0 +1,7 @@
+disease,disease_pretty,prevalence_pct,f1_optimized_threshold_pct,positive_net_benefit_range_low_pct,positive_net_benefit_range_high_pct,f1_threshold_within_positive_range
+heart_attack,Heart attack,5.97,16.0,1.0,50.0,True
+coronary_hd,Coronary heart disease,6.04,17.0,1.0,50.0,True
+stroke,Stroke,4.11,12.0,1.0,32.68,True
+kidney,Chronic kidney disease,3.34,11.0,1.0,50.0,True
+depression,Depression,18.86,28.0,1.49,50.0,True
+diabetes,Diabetes,12.76,23.0,1.0,50.0,True

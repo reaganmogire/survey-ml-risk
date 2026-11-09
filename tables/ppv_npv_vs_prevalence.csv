@@ -1,0 +1,19 @@
+disease,disease_pretty,prevalence_multiplier,assumed_prevalence_pct,PPV,NPV
+heart_attack,Heart attack,0.5,2.99,0.1403,0.9827
+heart_attack,Heart attack,1.0,5.97,0.2519,0.965
+heart_attack,Heart attack,2.0,11.94,0.4183,0.9282
+coronary_hd,Coronary heart disease,0.5,3.02,0.1471,0.9826
+coronary_hd,Coronary heart disease,1.0,6.04,0.2626,0.9647
+coronary_hd,Coronary heart disease,2.0,12.08,0.4322,0.9274
+stroke,Stroke,0.5,2.06,0.0938,0.9865
+stroke,Stroke,1.0,4.11,0.1746,0.9728
+stroke,Stroke,2.0,8.23,0.3065,0.9447
+kidney,Chronic kidney disease,0.5,1.67,0.0832,0.9874
+kidney,Chronic kidney disease,1.0,3.34,0.1559,0.9747
+kidney,Chronic kidney disease,2.0,6.69,0.2768,0.949
+depression,Depression,0.5,9.43,0.3368,0.9546
+depression,Depression,1.0,18.86,0.5313,0.9041
+depression,Depression,2.0,37.72,0.747,0.7835
+diabetes,Diabetes,0.5,6.38,0.2233,0.9703
+diabetes,Diabetes,1.0,12.76,0.3816,0.9383
+diabetes,Diabetes,2.0,25.51,0.5911,0.8665

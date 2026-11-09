@@ -1,0 +1,61 @@
+disease,disease_pretty,underlying_brfss_var,feature,feature_pretty,rank,mean_abs_shap
+coronary_hd,Coronary heart disease,BPHIGH4,cat__BPHIGH4_1.0,High blood pressure: Yes,5,0.15465958809773803
+depression,Depression,BPHIGH4,cat__BPHIGH4_1.0,High blood pressure: Yes,57,0.0041379175312395945
+diabetes,Diabetes,BPHIGH4,cat__BPHIGH4_1.0,High blood pressure: Yes,5,0.20913964918524774
+heart_attack,Heart attack,BPHIGH4,cat__BPHIGH4_1.0,High blood pressure: Yes,4,0.15209079935321573
+kidney,Chronic kidney disease,BPHIGH4,cat__BPHIGH4_1.0,High blood pressure: Yes,4,0.14369646526644853
+stroke,Stroke,BPHIGH4,cat__BPHIGH4_1.0,High blood pressure: Yes,3,0.17923452413338828
+coronary_hd,Coronary heart disease,BPMEDS,cat__BPMEDS_1.0,Blood pressure medication: Yes,27,0.016693555024022224
+depression,Depression,BPMEDS,cat__BPMEDS_1.0,Blood pressure medication: Yes,47,0.006363399966993948
+diabetes,Diabetes,BPMEDS,cat__BPMEDS_1.0,Blood pressure medication: Yes,19,0.02372853851885863
+heart_attack,Heart attack,BPMEDS,cat__BPMEDS_1.0,Blood pressure medication: Yes,30,0.013963891694608908
+kidney,Chronic kidney disease,BPMEDS,cat__BPMEDS_1.0,Blood pressure medication: Yes,31,0.010555483129158036
+stroke,Stroke,BPMEDS,cat__BPMEDS_1.0,Blood pressure medication: Yes,39,0.0077984364809646845
+coronary_hd,Coronary heart disease,CHOLCHK,num__CHOLCHK,Cholesterol checked recently,7,0.10399663601382568
+depression,Depression,CHOLCHK,num__CHOLCHK,Cholesterol checked recently,66,0.0026089015820634784
+diabetes,Diabetes,CHOLCHK,num__CHOLCHK,Cholesterol checked recently,7,0.16969722662456949
+heart_attack,Heart attack,CHOLCHK,num__CHOLCHK,Cholesterol checked recently,9,0.08691265584644066
+kidney,Chronic kidney disease,CHOLCHK,num__CHOLCHK,Cholesterol checked recently,19,0.030764562179339254
+stroke,Stroke,CHOLCHK,num__CHOLCHK,Cholesterol checked recently,14,0.047645589834292276
+coronary_hd,Coronary heart disease,DECIDE,cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,42,0.006008395731262931
+depression,Depression,DECIDE,cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,8,0.11131027724874702
+diabetes,Diabetes,DECIDE,cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,62,0.0015045504492758488
+heart_attack,Heart attack,DECIDE,cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,35,0.006324994453502794
+kidney,Chronic kidney disease,DECIDE,cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,26,0.014087456346588308
+stroke,Stroke,DECIDE,cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,17,0.04261633428152237
+coronary_hd,Coronary heart disease,DIFFWALK,cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,22,0.03926719968507572
+depression,Depression,DIFFWALK,cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,26,0.022568090936684278
+diabetes,Diabetes,DIFFWALK,cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,24,0.017428099094720723
+heart_attack,Heart attack,DIFFWALK,cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,18,0.045666425243673786
+kidney,Chronic kidney disease,DIFFWALK,cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,10,0.04773884773625387
+stroke,Stroke,DIFFWALK,cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,13,0.0512534937553935
+coronary_hd,Coronary heart disease,FRUIT1,num__FRUIT1,Fruit intake (per day rate),21,0.03974161914776309
+depression,Depression,FRUIT1,num__FRUIT1,Fruit intake (per day rate),38,0.01306115183849011
+diabetes,Diabetes,FRUIT1,num__FRUIT1,Fruit intake (per day rate),14,0.057352792114757085
+heart_attack,Heart attack,FRUIT1,num__FRUIT1,Fruit intake (per day rate),25,0.022264063217425037
+kidney,Chronic kidney disease,FRUIT1,num__FRUIT1,Fruit intake (per day rate),34,0.00953348258195582
+stroke,Stroke,FRUIT1,num__FRUIT1,Fruit intake (per day rate),23,0.023350461501128617
+coronary_hd,Coronary heart disease,TOLDHI2,cat__TOLDHI2_1.0,Told high cholesterol: Yes,4,0.1706662550608523
+depression,Depression,TOLDHI2,cat__TOLDHI2_1.0,Told high cholesterol: Yes,12,0.06992417403940919
+diabetes,Diabetes,TOLDHI2,cat__TOLDHI2_1.0,Told high cholesterol: Yes,8,0.1291093067096829
+heart_attack,Heart attack,TOLDHI2,cat__TOLDHI2_1.0,Told high cholesterol: Yes,6,0.1249307668685695
+kidney,Chronic kidney disease,TOLDHI2,cat__TOLDHI2_1.0,Told high cholesterol: Yes,20,0.02714598575514386
+stroke,Stroke,TOLDHI2,cat__TOLDHI2_1.0,Told high cholesterol: Yes,16,0.04315802308666151
+coronary_hd,Coronary heart disease,VEGETAB1,num__VEGETAB1,Vegetable intake (per day rate),9,0.09075988862382425
+depression,Depression,VEGETAB1,num__VEGETAB1,Vegetable intake (per day rate),22,0.028319500577247556
+diabetes,Diabetes,VEGETAB1,num__VEGETAB1,Vegetable intake (per day rate),13,0.06620739457029699
+heart_attack,Heart attack,VEGETAB1,num__VEGETAB1,Vegetable intake (per day rate),10,0.07314640102278876
+kidney,Chronic kidney disease,VEGETAB1,num__VEGETAB1,Vegetable intake (per day rate),7,0.05920583522728559
+stroke,Stroke,VEGETAB1,num__VEGETAB1,Vegetable intake (per day rate),9,0.06554513456469882
+coronary_hd,Coronary heart disease,_HISPANC,cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,35,0.009118825913314038
+depression,Depression,_HISPANC,cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,40,0.008921869211090202
+diabetes,Diabetes,_HISPANC,cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,27,0.01279800800834914
+heart_attack,Heart attack,_HISPANC,cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,33,0.006874309801614714
+kidney,Chronic kidney disease,_HISPANC,cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,56,0.0021561624841244576
+stroke,Stroke,_HISPANC,cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,32,0.012256803129996866
+coronary_hd,Coronary heart disease,_MRACE1,cat___MRACE1_2.0,Race: Black,31,0.012667214863454677
+depression,Depression,_MRACE1,cat___MRACE1_1.0,Race: White,19,0.03787909767148862
+diabetes,Diabetes,_MRACE1,cat___MRACE1_1.0,Race: White,16,0.0362657516280999
+heart_attack,Heart attack,_MRACE1,cat___MRACE1_2.0,Race: Black,32,0.009508265578521198
+kidney,Chronic kidney disease,_MRACE1,cat___MRACE1_5.0,Race: Native Hawaiian/Pacific Islander,65,0.0011730269004489521
+stroke,Stroke,_MRACE1,cat___MRACE1_1.0,Race: White,38,0.009135653120961032

@@ -1,0 +1,667 @@
+feature,feature_pretty,underlying_brfss_var,mean_abs_shap,rank,disease,disease_pretty
+num___AGEG5YR,Age group,,0.8351047453475574,1,heart_attack,Heart attack
+num__GENHLTH,General health,,0.46493557109592987,2,heart_attack,Heart attack
+cat__SEX_1.0,Sex: Male,,0.3040264743026005,3,heart_attack,Heart attack
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.15209079935321573,4,heart_attack,Heart attack
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.1366118137013091,5,heart_attack,Heart attack
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.1249307668685695,6,heart_attack,Heart attack
+num___INCOMG,Income category,,0.11609032760628149,7,heart_attack,Heart attack
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.09009562129823671,8,heart_attack,Heart attack
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.08691265584644066,9,heart_attack,Heart attack
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.07314640102278876,10,heart_attack,Heart attack
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.06935214642572268,11,heart_attack,Heart attack
+cat__SEX_2.0,Sex: Female,,0.06171244327355497,12,heart_attack,Heart attack
+num__PHYSHLTH,Physical health days,,0.06076679526493864,13,heart_attack,Heart attack
+num___EDUCAG,Education category,,0.05958669503373644,14,heart_attack,Heart attack
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.05611462277976252,15,heart_attack,Heart attack
+cat__ASTHMA3_1.0,Asthma: Yes,,0.054557966850237824,16,heart_attack,Heart attack
+num__CHECKUP1,Time since last checkup,,0.05142722082648234,17,heart_attack,Heart attack
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.045666425243673786,18,heart_attack,Heart attack
+cat__SMOKDAY2_3.0,Current smoking frequency: Not at all,,0.043433987057002625,19,heart_attack,Heart attack
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.0407803842201493,20,heart_attack,Heart attack
+num___BMI5,BMI,,0.03126686062443516,21,heart_attack,Heart attack
+cat__SMOKE100_2.0,Ever smoked 100 cigarettes: No,,0.027874340276935233,22,heart_attack,Heart attack
+num__POORHLTH,Days poor health limited activities,,0.024979727526847382,23,heart_attack,Heart attack
+cat__HAVARTH3_2.0,Arthritis: No,,0.023526694703523195,24,heart_attack,Heart attack
+num__FRUIT1,Fruit intake (per day rate),FRUIT1,0.022264063217425037,25,heart_attack,Heart attack
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.020154418264206983,26,heart_attack,Heart attack
+num__HEIGHT3,Height (feet and inches code),,0.018398869174962855,27,heart_attack,Heart attack
+cat__BPHIGH4_3.0,High blood pressure: Borderline/pre-hypertensive,BPHIGH4,0.01619793135108505,28,heart_attack,Heart attack
+num__WEIGHT2,Weight (lb),,0.01506988465962431,29,heart_attack,Heart attack
+cat__BPMEDS_1.0,Blood pressure medication: Yes,BPMEDS,0.013963891694608908,30,heart_attack,Heart attack
+cat__TOLDHI2_2.0,Told high cholesterol: No,TOLDHI2,0.013868351893866572,31,heart_attack,Heart attack
+cat___MRACE1_2.0,Race: Black,_MRACE1,0.009508265578521198,32,heart_attack,Heart attack
+cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,_HISPANC,0.006874309801614714,33,heart_attack,Heart attack
+cat__PERSDOC2_1.0,"Has personal doctor: Yes, one",,0.00674128905683577,34,heart_attack,Heart attack
+cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,DECIDE,0.006324994453502794,35,heart_attack,Heart attack
+num__MENTHLTH,Mental health days,,0.005864367726424218,36,heart_attack,Heart attack
+cat___MRACE1_4.0,Race: Asian,_MRACE1,0.005691920079877962,37,heart_attack,Heart attack
+cat__ASTHMA3_2.0,Asthma: No,,0.005541123068527556,38,heart_attack,Heart attack
+cat__SMOKDAY2_1.0,Current smoking frequency: Every day,,0.0047913111410214215,39,heart_attack,Heart attack
+cat___STATE_39.0,State: code 39,,0.004669362605822291,40,heart_attack,Heart attack
+cat___STATE_46.0,State: code 46,,0.0037338768797901246,41,heart_attack,Heart attack
+cat___STATE_21.0,State: code 21,,0.0036592675389605844,42,heart_attack,Heart attack
+cat___MRACE1_3.0,Race: Native American/Alaska Native,_MRACE1,0.003658300985949306,43,heart_attack,Heart attack
+cat___STATE_72.0,State: code 72,,0.0036194188364337783,44,heart_attack,Heart attack
+cat___STATE_26.0,State: code 26,,0.0034620583063774673,45,heart_attack,Heart attack
+cat___MRACE1_1.0,Race: White,_MRACE1,0.0032889708926697927,46,heart_attack,Heart attack
+cat___STATE_47.0,State: code 47,,0.0029905678727204523,47,heart_attack,Heart attack
+cat__DRNKANY5_2.0,Any alcohol use: No,,0.002983857028245638,48,heart_attack,Heart attack
+cat__MEDCOST_2.0,Could not see doctor (cost): No,,0.0029407196132198382,49,heart_attack,Heart attack
+cat__BPMEDS_2.0,Blood pressure medication: No,BPMEDS,0.002727893567648388,50,heart_attack,Heart attack
+cat___STATE_4.0,State: code 4,,0.0026809662003463236,51,heart_attack,Heart attack
+cat___MRACE1_7.0,Race: Multiracial,_MRACE1,0.002564436193144938,52,heart_attack,Heart attack
+cat___STATE_24.0,State: Maryland,,0.0025063172969087594,53,heart_attack,Heart attack
+cat__BPHIGH4_4.0,"High blood pressure: Yes, during pregnancy only",BPHIGH4,0.0023905204292305436,54,heart_attack,Heart attack
+cat___STATE_56.0,State: code 56,,0.002349651449364951,55,heart_attack,Heart attack
+cat___STATE_55.0,State: code 55,,0.0020221436091638774,56,heart_attack,Heart attack
+cat___STATE_15.0,State: code 15,,0.0018803800104276514,57,heart_attack,Heart attack
+cat__HLTHPLN1_1.0,Has health insurance: Yes,,0.0018468331994109465,58,heart_attack,Heart attack
+cat__EXERANY2_1.0,Any exercise in past month: Yes,,0.001814469259442321,59,heart_attack,Heart attack
+cat__SMOKDAY2_2.0,Current smoking frequency: Some days,,0.0017910739237455885,60,heart_attack,Heart attack
+cat___STATE_48.0,State: code 48,,0.0017070700922367029,61,heart_attack,Heart attack
+cat___STATE_10.0,State: code 10,,0.0015492486041768841,62,heart_attack,Heart attack
+cat___STATE_8.0,State: code 8,,0.0015034934078677327,63,heart_attack,Heart attack
+cat___STATE_9.0,State: code 9,,0.0014378499910419913,64,heart_attack,Heart attack
+cat___STATE_28.0,State: code 28,,0.0013330541170795422,65,heart_attack,Heart attack
+cat___STATE_45.0,State: code 45,,0.0012335325740154349,66,heart_attack,Heart attack
+cat___STATE_11.0,State: code 11,,0.001212017966126119,67,heart_attack,Heart attack
+cat___STATE_54.0,State: code 54,,0.001114280689580137,68,heart_attack,Heart attack
+cat___HISPANC_2.0,Hispanic ethnicity: Non-Hispanic,_HISPANC,0.0010356625790396382,69,heart_attack,Heart attack
+cat__BPHIGH4_2.0,High blood pressure: No,BPHIGH4,0.0009617445167899209,70,heart_attack,Heart attack
+cat__HLTHPLN1_2.0,Has health insurance: No,,0.0008995604043095051,71,heart_attack,Heart attack
+cat___STATE_27.0,State: code 27,,0.0008738795399779591,72,heart_attack,Heart attack
+cat___STATE_6.0,State: California,,0.0008593970566449858,73,heart_attack,Heart attack
+cat___STATE_23.0,State: code 23,,0.0007689637509008118,74,heart_attack,Heart attack
+cat___STATE_5.0,State: code 5,,0.0006884372045683537,75,heart_attack,Heart attack
+cat___STATE_20.0,State: code 20,,0.0006678365940630313,76,heart_attack,Heart attack
+cat___STATE_32.0,State: code 32,,0.0005771686762510392,77,heart_attack,Heart attack
+cat___STATE_19.0,State: code 19,,0.0005430015675153482,78,heart_attack,Heart attack
+cat___STATE_18.0,State: code 18,,0.0005400290172508935,79,heart_attack,Heart attack
+cat___STATE_37.0,State: code 37,,0.0005302205200042587,80,heart_attack,Heart attack
+cat___STATE_49.0,State: code 49,,0.0004606480141375014,81,heart_attack,Heart attack
+cat___STATE_2.0,State: code 2,,0.00044883792581167586,82,heart_attack,Heart attack
+cat___STATE_22.0,State: code 22,,0.00038425623074672243,83,heart_attack,Heart attack
+cat___STATE_1.0,State: code 1,,0.0003741123692933276,84,heart_attack,Heart attack
+cat___STATE_50.0,State: code 50,,0.00035712459566585264,85,heart_attack,Heart attack
+cat___STATE_30.0,State: code 30,,0.00030448035938152593,86,heart_attack,Heart attack
+cat___STATE_42.0,State: code 42,,0.00029417147651594506,87,heart_attack,Heart attack
+cat___STATE_66.0,State: code 66,,0.00025181916084426973,88,heart_attack,Heart attack
+cat___STATE_41.0,State: code 41,,0.00021128896463158385,89,heart_attack,Heart attack
+cat___STATE_35.0,State: code 35,,0.00020857409904763866,90,heart_attack,Heart attack
+cat___STATE_12.0,State: code 12,,0.00019361739801912624,91,heart_attack,Heart attack
+cat___STATE_25.0,State: code 25,,0.00016904826218403095,92,heart_attack,Heart attack
+cat___STATE_40.0,State: code 40,,0.00016559383733972887,93,heart_attack,Heart attack
+cat___STATE_31.0,State: code 31,,0.00014451167411871004,94,heart_attack,Heart attack
+cat___STATE_36.0,State: code 36,,0.00012406616224124893,95,heart_attack,Heart attack
+cat___MRACE1_6.0,Race: Other race,_MRACE1,0.00011094469326616043,96,heart_attack,Heart attack
+cat___STATE_53.0,State: code 53,,7.427925756683562e-05,97,heart_attack,Heart attack
+cat___STATE_29.0,State: code 29,,7.170972593998254e-05,98,heart_attack,Heart attack
+cat___STATE_34.0,State: code 34,,6.536390957142731e-05,99,heart_attack,Heart attack
+cat___STATE_33.0,State: code 33,,5.915446227771903e-05,100,heart_attack,Heart attack
+cat__DIFFWALK_2.0,Difficulty walking/climbing: No,DIFFWALK,5.208170590553073e-05,101,heart_attack,Heart attack
+cat__EXERANY2_2.0,Any exercise in past month: No,,4.741413108494327e-05,102,heart_attack,Heart attack
+cat___STATE_13.0,State: Georgia,,4.10213897627942e-05,103,heart_attack,Heart attack
+cat___STATE_38.0,State: code 38,,3.455940549243914e-05,104,heart_attack,Heart attack
+cat___STATE_44.0,State: code 44,,3.1933123920239766e-05,105,heart_attack,Heart attack
+cat___MRACE1_5.0,Race: Native Hawaiian/Pacific Islander,_MRACE1,1.4066915411068754e-05,106,heart_attack,Heart attack
+cat___STATE_16.0,State: code 16,,1.0346690574346876e-05,107,heart_attack,Heart attack
+cat___STATE_51.0,State: code 51,,0.0,108,heart_attack,Heart attack
+cat___STATE_17.0,State: code 17,,0.0,109,heart_attack,Heart attack
+cat__DRNKANY5_1.0,Any alcohol use: Yes,,0.0,110,heart_attack,Heart attack
+cat__DECIDE_2.0,Cognitive difficulty (memory/concentration): No,DECIDE,0.0,111,heart_attack,Heart attack
+num___AGEG5YR,Age group,,0.8880356908193289,1,coronary_hd,Coronary heart disease
+num__GENHLTH,General health,,0.5615226062811708,2,coronary_hd,Coronary heart disease
+cat__SEX_1.0,Sex: Male,,0.25215955241281734,3,coronary_hd,Coronary heart disease
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.1706662550608523,4,coronary_hd,Coronary heart disease
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.15465958809773803,5,coronary_hd,Coronary heart disease
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.14394451484482412,6,coronary_hd,Coronary heart disease
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.10399663601382568,7,coronary_hd,Coronary heart disease
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.1007804317657905,8,coronary_hd,Coronary heart disease
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.09075988862382425,9,coronary_hd,Coronary heart disease
+num__PHYSHLTH,Physical health days,,0.07719357326373652,10,coronary_hd,Coronary heart disease
+num___INCOMG,Income category,,0.061814716303540684,11,coronary_hd,Coronary heart disease
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.06046431946302411,12,coronary_hd,Coronary heart disease
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.05744927995439225,13,coronary_hd,Coronary heart disease
+cat__ASTHMA3_1.0,Asthma: Yes,,0.05534099261434443,14,coronary_hd,Coronary heart disease
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.0535097544232284,15,coronary_hd,Coronary heart disease
+num__POORHLTH,Days poor health limited activities,,0.05065131435397822,16,coronary_hd,Coronary heart disease
+cat__SEX_2.0,Sex: Female,,0.0482231510621893,17,coronary_hd,Coronary heart disease
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.046025768344098494,18,coronary_hd,Coronary heart disease
+num__CHECKUP1,Time since last checkup,,0.04256891311842475,19,coronary_hd,Coronary heart disease
+num___BMI5,BMI,,0.042287576221860745,20,coronary_hd,Coronary heart disease
+num__FRUIT1,Fruit intake (per day rate),FRUIT1,0.03974161914776309,21,coronary_hd,Coronary heart disease
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.03926719968507572,22,coronary_hd,Coronary heart disease
+cat__HAVARTH3_2.0,Arthritis: No,,0.029332331630697293,23,coronary_hd,Coronary heart disease
+num___EDUCAG,Education category,,0.027310639987973725,24,coronary_hd,Coronary heart disease
+cat__SMOKE100_2.0,Ever smoked 100 cigarettes: No,,0.017475578550967496,25,coronary_hd,Coronary heart disease
+num__HEIGHT3,Height (feet and inches code),,0.017172034075397333,26,coronary_hd,Coronary heart disease
+cat__BPMEDS_1.0,Blood pressure medication: Yes,BPMEDS,0.016693555024022224,27,coronary_hd,Coronary heart disease
+num__MENTHLTH,Mental health days,,0.015320371341281995,28,coronary_hd,Coronary heart disease
+cat___STATE_72.0,State: code 72,,0.013116103855837554,29,coronary_hd,Coronary heart disease
+cat__TOLDHI2_2.0,Told high cholesterol: No,TOLDHI2,0.013083515852318539,30,coronary_hd,Coronary heart disease
+cat___MRACE1_2.0,Race: Black,_MRACE1,0.012667214863454677,31,coronary_hd,Coronary heart disease
+cat__EXERANY2_1.0,Any exercise in past month: Yes,,0.010401248855990633,32,coronary_hd,Coronary heart disease
+cat__BPHIGH4_3.0,High blood pressure: Borderline/pre-hypertensive,BPHIGH4,0.00981727012620865,33,coronary_hd,Coronary heart disease
+num__WEIGHT2,Weight (lb),,0.009809313245645214,34,coronary_hd,Coronary heart disease
+cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,_HISPANC,0.009118825913314038,35,coronary_hd,Coronary heart disease
+cat__HLTHPLN1_1.0,Has health insurance: Yes,,0.008345322362574516,36,coronary_hd,Coronary heart disease
+cat__SMOKDAY2_3.0,Current smoking frequency: Not at all,,0.007962315195481311,37,coronary_hd,Coronary heart disease
+cat___MRACE1_1.0,Race: White,_MRACE1,0.007849059746956854,38,coronary_hd,Coronary heart disease
+cat___STATE_15.0,State: code 15,,0.007091714687507988,39,coronary_hd,Coronary heart disease
+cat__BPMEDS_2.0,Blood pressure medication: No,BPMEDS,0.006279305383668093,40,coronary_hd,Coronary heart disease
+cat___STATE_47.0,State: code 47,,0.006214413598802848,41,coronary_hd,Coronary heart disease
+cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,DECIDE,0.006008395731262931,42,coronary_hd,Coronary heart disease
+cat___STATE_54.0,State: code 54,,0.0059550676357176015,43,coronary_hd,Coronary heart disease
+cat__DRNKANY5_2.0,Any alcohol use: No,,0.005439291061320877,44,coronary_hd,Coronary heart disease
+cat___STATE_8.0,State: code 8,,0.004871130765098569,45,coronary_hd,Coronary heart disease
+cat___STATE_21.0,State: code 21,,0.004571732526669726,46,coronary_hd,Coronary heart disease
+cat___STATE_39.0,State: code 39,,0.004561023031094068,47,coronary_hd,Coronary heart disease
+cat___STATE_30.0,State: code 30,,0.004473480737774024,48,coronary_hd,Coronary heart disease
+cat___STATE_49.0,State: code 49,,0.004338005844974209,49,coronary_hd,Coronary heart disease
+cat___STATE_27.0,State: code 27,,0.0041411509538552245,50,coronary_hd,Coronary heart disease
+cat__ASTHMA3_2.0,Asthma: No,,0.0040949771654172915,51,coronary_hd,Coronary heart disease
+cat__SMOKDAY2_1.0,Current smoking frequency: Every day,,0.003816118590917702,52,coronary_hd,Coronary heart disease
+cat__DIFFWALK_2.0,Difficulty walking/climbing: No,DIFFWALK,0.003759394581399136,53,coronary_hd,Coronary heart disease
+cat__MEDCOST_2.0,Could not see doctor (cost): No,,0.0033662609377425427,54,coronary_hd,Coronary heart disease
+cat___STATE_22.0,State: code 22,,0.003152534381559729,55,coronary_hd,Coronary heart disease
+cat___STATE_24.0,State: Maryland,,0.0030796469043177783,56,coronary_hd,Coronary heart disease
+cat___STATE_26.0,State: code 26,,0.002791948154989969,57,coronary_hd,Coronary heart disease
+cat___STATE_10.0,State: code 10,,0.002604204865078116,58,coronary_hd,Coronary heart disease
+cat___STATE_35.0,State: code 35,,0.0022659398309474075,59,coronary_hd,Coronary heart disease
+cat__PERSDOC2_1.0,"Has personal doctor: Yes, one",,0.001945559689334846,60,coronary_hd,Coronary heart disease
+cat___STATE_23.0,State: code 23,,0.001884106825809026,61,coronary_hd,Coronary heart disease
+cat___STATE_5.0,State: code 5,,0.001810058164827683,62,coronary_hd,Coronary heart disease
+cat___STATE_12.0,State: code 12,,0.0017344648355296052,63,coronary_hd,Coronary heart disease
+cat__DECIDE_2.0,Cognitive difficulty (memory/concentration): No,DECIDE,0.001710101397026002,64,coronary_hd,Coronary heart disease
+cat___STATE_46.0,State: code 46,,0.0017081764369094841,65,coronary_hd,Coronary heart disease
+cat__HLTHPLN1_2.0,Has health insurance: No,,0.0017068531443649745,66,coronary_hd,Coronary heart disease
+cat___STATE_4.0,State: code 4,,0.0016189238910821633,67,coronary_hd,Coronary heart disease
+cat___STATE_42.0,State: code 42,,0.0014919558170140746,68,coronary_hd,Coronary heart disease
+cat___STATE_16.0,State: code 16,,0.0011759123974344125,69,coronary_hd,Coronary heart disease
+cat___STATE_11.0,State: code 11,,0.0011475401095679826,70,coronary_hd,Coronary heart disease
+cat___MRACE1_4.0,Race: Asian,_MRACE1,0.0011172002721887544,71,coronary_hd,Coronary heart disease
+cat___STATE_20.0,State: code 20,,0.0010660426061353348,72,coronary_hd,Coronary heart disease
+cat___MRACE1_7.0,Race: Multiracial,_MRACE1,0.0010124725994966413,73,coronary_hd,Coronary heart disease
+cat___STATE_48.0,State: code 48,,0.0009383840776511396,74,coronary_hd,Coronary heart disease
+cat___STATE_28.0,State: code 28,,0.0008670295054997542,75,coronary_hd,Coronary heart disease
+cat__EXERANY2_2.0,Any exercise in past month: No,,0.0008134678785536197,76,coronary_hd,Coronary heart disease
+cat___STATE_45.0,State: code 45,,0.0007384957303108408,77,coronary_hd,Coronary heart disease
+cat___STATE_6.0,State: California,,0.0006498120362592629,78,coronary_hd,Coronary heart disease
+cat___STATE_53.0,State: code 53,,0.0006023544381374863,79,coronary_hd,Coronary heart disease
+cat__SMOKDAY2_2.0,Current smoking frequency: Some days,,0.000547021631361464,80,coronary_hd,Coronary heart disease
+cat___STATE_2.0,State: code 2,,0.0005177211709105431,81,coronary_hd,Coronary heart disease
+cat___STATE_40.0,State: code 40,,0.0005094071661284653,82,coronary_hd,Coronary heart disease
+cat___STATE_13.0,State: Georgia,,0.0004894368580046856,83,coronary_hd,Coronary heart disease
+cat___STATE_50.0,State: code 50,,0.00046151710843352783,84,coronary_hd,Coronary heart disease
+cat___STATE_25.0,State: code 25,,0.00030479744578827255,85,coronary_hd,Coronary heart disease
+cat___MRACE1_6.0,Race: Other race,_MRACE1,0.0002958389915521091,86,coronary_hd,Coronary heart disease
+cat___HISPANC_2.0,Hispanic ethnicity: Non-Hispanic,_HISPANC,0.00029127575636970994,87,coronary_hd,Coronary heart disease
+cat__BPHIGH4_2.0,High blood pressure: No,BPHIGH4,0.00028019133181731977,88,coronary_hd,Coronary heart disease
+cat__BPHIGH4_4.0,"High blood pressure: Yes, during pregnancy only",BPHIGH4,0.00026694306252202663,89,coronary_hd,Coronary heart disease
+cat___STATE_66.0,State: code 66,,0.0002347192726310141,90,coronary_hd,Coronary heart disease
+cat___MRACE1_3.0,Race: Native American/Alaska Native,_MRACE1,0.00022914196153864995,91,coronary_hd,Coronary heart disease
+cat___STATE_29.0,State: code 29,,0.0002096905921723671,92,coronary_hd,Coronary heart disease
+cat___STATE_33.0,State: code 33,,0.00019957998230698333,93,coronary_hd,Coronary heart disease
+cat___STATE_34.0,State: code 34,,0.00017367883493088506,94,coronary_hd,Coronary heart disease
+cat___STATE_37.0,State: code 37,,0.00016539263566353718,95,coronary_hd,Coronary heart disease
+cat___STATE_1.0,State: code 1,,0.00015709961144009922,96,coronary_hd,Coronary heart disease
+cat___STATE_17.0,State: code 17,,0.0001515267202217653,97,coronary_hd,Coronary heart disease
+cat___STATE_41.0,State: code 41,,0.00014750849929776855,98,coronary_hd,Coronary heart disease
+cat___MRACE1_5.0,Race: Native Hawaiian/Pacific Islander,_MRACE1,9.987765626278184e-05,99,coronary_hd,Coronary heart disease
+cat___STATE_32.0,State: code 32,,7.464021778678077e-05,100,coronary_hd,Coronary heart disease
+cat___STATE_44.0,State: code 44,,6.978547101297124e-05,101,coronary_hd,Coronary heart disease
+cat___STATE_19.0,State: code 19,,5.393644880766498e-05,102,coronary_hd,Coronary heart disease
+cat___STATE_36.0,State: code 36,,5.256045282791322e-05,103,coronary_hd,Coronary heart disease
+cat___STATE_31.0,State: code 31,,5.118250779925181e-05,104,coronary_hd,Coronary heart disease
+cat___STATE_56.0,State: code 56,,3.1549691943174964e-05,105,coronary_hd,Coronary heart disease
+cat___STATE_55.0,State: code 55,,3.097996550296468e-05,106,coronary_hd,Coronary heart disease
+cat___STATE_18.0,State: code 18,,0.0,107,coronary_hd,Coronary heart disease
+cat___STATE_51.0,State: code 51,,0.0,108,coronary_hd,Coronary heart disease
+cat___STATE_9.0,State: code 9,,0.0,109,coronary_hd,Coronary heart disease
+cat__DRNKANY5_1.0,Any alcohol use: Yes,,0.0,110,coronary_hd,Coronary heart disease
+cat___STATE_38.0,State: code 38,,0.0,111,coronary_hd,Coronary heart disease
+num___AGEG5YR,Age group,,0.6617249026989295,1,stroke,Stroke
+num__GENHLTH,General health,,0.40413818243215477,2,stroke,Stroke
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.17923452413338828,3,stroke,Stroke
+num___INCOMG,Income category,,0.15858662719707686,4,stroke,Stroke
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.09960895409787439,5,stroke,Stroke
+num__CHECKUP1,Time since last checkup,,0.0788390697040748,6,stroke,Stroke
+num__PHYSHLTH,Physical health days,,0.07674719923164727,7,stroke,Stroke
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.0691661845098288,8,stroke,Stroke
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.06554513456469882,9,stroke,Stroke
+cat__ASTHMA3_1.0,Asthma: Yes,,0.060425710121301414,10,stroke,Stroke
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.056910458148668706,11,stroke,Stroke
+cat__SEX_1.0,Sex: Male,,0.05421023272296226,12,stroke,Stroke
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.0512534937553935,13,stroke,Stroke
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.047645589834292276,14,stroke,Stroke
+num__POORHLTH,Days poor health limited activities,,0.04366131258666782,15,stroke,Stroke
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.04315802308666151,16,stroke,Stroke
+cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,DECIDE,0.04261633428152237,17,stroke,Stroke
+cat__SMOKDAY2_3.0,Current smoking frequency: Not at all,,0.04201761148777234,18,stroke,Stroke
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.04194974547503521,19,stroke,Stroke
+cat__HAVARTH3_2.0,Arthritis: No,,0.0344924716245677,20,stroke,Stroke
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.030436434195047768,21,stroke,Stroke
+num___EDUCAG,Education category,,0.02615623864726425,22,stroke,Stroke
+num__FRUIT1,Fruit intake (per day rate),FRUIT1,0.023350461501128617,23,stroke,Stroke
+cat__DIFFWALK_2.0,Difficulty walking/climbing: No,DIFFWALK,0.021663076281611328,24,stroke,Stroke
+num___BMI5,BMI,,0.020625631421925805,25,stroke,Stroke
+num__MENTHLTH,Mental health days,,0.01778555389650252,26,stroke,Stroke
+num__WEIGHT2,Weight (lb),,0.017446554132982198,27,stroke,Stroke
+cat__EXERANY2_1.0,Any exercise in past month: Yes,,0.014540841427858936,28,stroke,Stroke
+cat__DECIDE_2.0,Cognitive difficulty (memory/concentration): No,DECIDE,0.013888598118238596,29,stroke,Stroke
+cat___STATE_72.0,State: code 72,,0.013559951618765448,30,stroke,Stroke
+num__HEIGHT3,Height (feet and inches code),,0.01291168426614784,31,stroke,Stroke
+cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,_HISPANC,0.012256803129996866,32,stroke,Stroke
+cat__DRNKANY5_2.0,Any alcohol use: No,,0.010816231178632566,33,stroke,Stroke
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.01040928921279316,34,stroke,Stroke
+cat__BPHIGH4_3.0,High blood pressure: Borderline/pre-hypertensive,BPHIGH4,0.010054497937253305,35,stroke,Stroke
+cat__SEX_2.0,Sex: Female,,0.009537834130063403,36,stroke,Stroke
+cat__HLTHPLN1_1.0,Has health insurance: Yes,,0.009481625568962163,37,stroke,Stroke
+cat___MRACE1_1.0,Race: White,_MRACE1,0.009135653120961032,38,stroke,Stroke
+cat__BPMEDS_1.0,Blood pressure medication: Yes,BPMEDS,0.0077984364809646845,39,stroke,Stroke
+cat___MRACE1_2.0,Race: Black,_MRACE1,0.007112980119830878,40,stroke,Stroke
+cat__SMOKE100_2.0,Ever smoked 100 cigarettes: No,,0.0067868701766154145,41,stroke,Stroke
+cat__ASTHMA3_2.0,Asthma: No,,0.006078196759880261,42,stroke,Stroke
+cat___STATE_25.0,State: code 25,,0.005233072433027731,43,stroke,Stroke
+cat___MRACE1_4.0,Race: Asian,_MRACE1,0.005002432338442725,44,stroke,Stroke
+cat___STATE_1.0,State: code 1,,0.003950174432110033,45,stroke,Stroke
+cat___STATE_36.0,State: code 36,,0.003739916858399307,46,stroke,Stroke
+cat__MEDCOST_2.0,Could not see doctor (cost): No,,0.003447091846947674,47,stroke,Stroke
+cat__TOLDHI2_2.0,Told high cholesterol: No,TOLDHI2,0.003175923679317519,48,stroke,Stroke
+cat___STATE_44.0,State: code 44,,0.0028686398457172003,49,stroke,Stroke
+cat___STATE_8.0,State: code 8,,0.0026067203276292114,50,stroke,Stroke
+cat___STATE_55.0,State: code 55,,0.0025182346697140263,51,stroke,Stroke
+cat__SMOKDAY2_2.0,Current smoking frequency: Some days,,0.0025103154372190174,52,stroke,Stroke
+cat___STATE_35.0,State: code 35,,0.002492758102256566,53,stroke,Stroke
+cat___STATE_29.0,State: code 29,,0.002310059446726702,54,stroke,Stroke
+cat__EXERANY2_2.0,Any exercise in past month: No,,0.0021174373558343674,55,stroke,Stroke
+cat___STATE_49.0,State: code 49,,0.002055676498070741,56,stroke,Stroke
+cat___HISPANC_2.0,Hispanic ethnicity: Non-Hispanic,_HISPANC,0.0020379403866833882,57,stroke,Stroke
+cat___MRACE1_7.0,Race: Multiracial,_MRACE1,0.0018960772885967252,58,stroke,Stroke
+cat___STATE_9.0,State: code 9,,0.0018250556175742076,59,stroke,Stroke
+cat___STATE_24.0,State: Maryland,,0.0018225364701809565,60,stroke,Stroke
+cat___STATE_11.0,State: code 11,,0.001670120279755595,61,stroke,Stroke
+cat___STATE_47.0,State: code 47,,0.0015789054044862921,62,stroke,Stroke
+cat__PERSDOC2_1.0,"Has personal doctor: Yes, one",,0.001543323270424597,63,stroke,Stroke
+cat___STATE_34.0,State: code 34,,0.0013522600948338906,64,stroke,Stroke
+cat___STATE_33.0,State: code 33,,0.0013355274920501636,65,stroke,Stroke
+cat___STATE_12.0,State: code 12,,0.001326846572064165,66,stroke,Stroke
+cat___STATE_10.0,State: code 10,,0.0012939189603442256,67,stroke,Stroke
+cat___STATE_38.0,State: code 38,,0.0012924045406767053,68,stroke,Stroke
+cat__BPMEDS_2.0,Blood pressure medication: No,BPMEDS,0.0012889656764992904,69,stroke,Stroke
+cat__SMOKDAY2_1.0,Current smoking frequency: Every day,,0.0012832719618815647,70,stroke,Stroke
+cat___STATE_28.0,State: code 28,,0.00123269959516256,71,stroke,Stroke
+cat__HLTHPLN1_2.0,Has health insurance: No,,0.0011954645439002918,72,stroke,Stroke
+cat___STATE_66.0,State: code 66,,0.0011277867330400416,73,stroke,Stroke
+cat___STATE_39.0,State: code 39,,0.0009021648614540615,74,stroke,Stroke
+cat___STATE_2.0,State: code 2,,0.0008263065964704058,75,stroke,Stroke
+cat___STATE_16.0,State: code 16,,0.0007879439088098534,76,stroke,Stroke
+cat___MRACE1_3.0,Race: Native American/Alaska Native,_MRACE1,0.0007346426943096701,77,stroke,Stroke
+cat___STATE_13.0,State: Georgia,,0.0006826866113654621,78,stroke,Stroke
+cat___STATE_40.0,State: code 40,,0.0005405261221301876,79,stroke,Stroke
+cat___STATE_19.0,State: code 19,,0.0005146330917898021,80,stroke,Stroke
+cat___STATE_18.0,State: code 18,,0.00046956228106243117,81,stroke,Stroke
+cat___STATE_22.0,State: code 22,,0.0004679119676159665,82,stroke,Stroke
+cat___STATE_56.0,State: code 56,,0.00045300357804119694,83,stroke,Stroke
+cat___STATE_15.0,State: code 15,,0.0004390954055903915,84,stroke,Stroke
+cat___STATE_41.0,State: code 41,,0.00043014099293924496,85,stroke,Stroke
+cat___STATE_54.0,State: code 54,,0.0003691866010603083,86,stroke,Stroke
+cat___STATE_23.0,State: code 23,,0.0003644701600738903,87,stroke,Stroke
+cat___STATE_26.0,State: code 26,,0.0003445191843721704,88,stroke,Stroke
+cat___STATE_37.0,State: code 37,,0.0002996122189743419,89,stroke,Stroke
+cat___STATE_27.0,State: code 27,,0.0002867729992522369,90,stroke,Stroke
+cat__BPHIGH4_2.0,High blood pressure: No,BPHIGH4,0.00028185054504018225,91,stroke,Stroke
+cat___STATE_30.0,State: code 30,,0.0002661695303404192,92,stroke,Stroke
+cat___STATE_48.0,State: code 48,,0.00022925862796989996,93,stroke,Stroke
+cat___STATE_45.0,State: code 45,,0.0002006663652697164,94,stroke,Stroke
+cat___STATE_46.0,State: code 46,,0.00012743595355066143,95,stroke,Stroke
+cat___STATE_50.0,State: code 50,,0.00012113643401807716,96,stroke,Stroke
+cat___STATE_21.0,State: code 21,,0.00011976100952001539,97,stroke,Stroke
+cat___STATE_17.0,State: code 17,,0.00011821476800628126,98,stroke,Stroke
+cat___MRACE1_6.0,Race: Other race,_MRACE1,0.00011150994303451982,99,stroke,Stroke
+cat___STATE_5.0,State: code 5,,0.00010590180459875587,100,stroke,Stroke
+cat___STATE_20.0,State: code 20,,9.977983544524577e-05,101,stroke,Stroke
+cat___STATE_53.0,State: code 53,,9.483898694334044e-05,102,stroke,Stroke
+cat___STATE_42.0,State: code 42,,7.433753162547922e-05,103,stroke,Stroke
+cat___STATE_6.0,State: California,,4.943192857801007e-05,104,stroke,Stroke
+cat___STATE_32.0,State: code 32,,4.640829000703181e-05,105,stroke,Stroke
+cat___MRACE1_5.0,Race: Native Hawaiian/Pacific Islander,_MRACE1,3.644929900965933e-05,106,stroke,Stroke
+cat___STATE_31.0,State: code 31,,1.6837546367739285e-05,107,stroke,Stroke
+cat__BPHIGH4_4.0,"High blood pressure: Yes, during pregnancy only",BPHIGH4,0.0,108,stroke,Stroke
+cat__DRNKANY5_1.0,Any alcohol use: Yes,,0.0,109,stroke,Stroke
+cat___STATE_4.0,State: code 4,,0.0,110,stroke,Stroke
+cat___STATE_51.0,State: code 51,,0.0,111,stroke,Stroke
+num__GENHLTH,General health,,0.429235891178805,1,kidney,Chronic kidney disease
+num___AGEG5YR,Age group,,0.3315211794103537,2,kidney,Chronic kidney disease
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.16650712189476766,3,kidney,Chronic kidney disease
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.14369646526644853,4,kidney,Chronic kidney disease
+num__PHYSHLTH,Physical health days,,0.11849682076520249,5,kidney,Chronic kidney disease
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.07535987572871185,6,kidney,Chronic kidney disease
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.05920583522728559,7,kidney,Chronic kidney disease
+cat__HAVARTH3_2.0,Arthritis: No,,0.05172466404991559,8,kidney,Chronic kidney disease
+num__POORHLTH,Days poor health limited activities,,0.05110131381020916,9,kidney,Chronic kidney disease
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.04773884773625387,10,kidney,Chronic kidney disease
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.04591235163181487,11,kidney,Chronic kidney disease
+num___EDUCAG,Education category,,0.04237903120635726,12,kidney,Chronic kidney disease
+num__CHECKUP1,Time since last checkup,,0.041033988519240304,13,kidney,Chronic kidney disease
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.03747305290038617,14,kidney,Chronic kidney disease
+num___INCOMG,Income category,,0.03559771683855045,15,kidney,Chronic kidney disease
+cat__BPHIGH4_3.0,High blood pressure: Borderline/pre-hypertensive,BPHIGH4,0.03236840687199448,16,kidney,Chronic kidney disease
+num__MENTHLTH,Mental health days,,0.03224584576861216,17,kidney,Chronic kidney disease
+cat__ASTHMA3_1.0,Asthma: Yes,,0.03137025083952832,18,kidney,Chronic kidney disease
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.030764562179339254,19,kidney,Chronic kidney disease
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.02714598575514386,20,kidney,Chronic kidney disease
+cat__SEX_1.0,Sex: Male,,0.025565581166367538,21,kidney,Chronic kidney disease
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.024477196510246664,22,kidney,Chronic kidney disease
+cat__EXERANY2_1.0,Any exercise in past month: Yes,,0.021688408994226152,23,kidney,Chronic kidney disease
+num__HEIGHT3,Height (feet and inches code),,0.019954106258507746,24,kidney,Chronic kidney disease
+num___BMI5,BMI,,0.018131441075018764,25,kidney,Chronic kidney disease
+cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,DECIDE,0.014087456346588308,26,kidney,Chronic kidney disease
+num__WEIGHT2,Weight (lb),,0.012743105252840293,27,kidney,Chronic kidney disease
+cat__SMOKDAY2_3.0,Current smoking frequency: Not at all,,0.012073518625891263,28,kidney,Chronic kidney disease
+cat___STATE_49.0,State: code 49,,0.011732260107535388,29,kidney,Chronic kidney disease
+cat__HLTHPLN1_1.0,Has health insurance: Yes,,0.010750478349717362,30,kidney,Chronic kidney disease
+cat__BPMEDS_1.0,Blood pressure medication: Yes,BPMEDS,0.010555483129158036,31,kidney,Chronic kidney disease
+cat___STATE_53.0,State: code 53,,0.009826267749088175,32,kidney,Chronic kidney disease
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.00968948736617754,33,kidney,Chronic kidney disease
+num__FRUIT1,Fruit intake (per day rate),FRUIT1,0.00953348258195582,34,kidney,Chronic kidney disease
+cat___STATE_26.0,State: code 26,,0.008700516504780438,35,kidney,Chronic kidney disease
+cat__SEX_2.0,Sex: Female,,0.008652405151205031,36,kidney,Chronic kidney disease
+cat___STATE_4.0,State: code 4,,0.008222410748671726,37,kidney,Chronic kidney disease
+cat___STATE_15.0,State: code 15,,0.007905224988889065,38,kidney,Chronic kidney disease
+cat__SMOKDAY2_1.0,Current smoking frequency: Every day,,0.006987508085132625,39,kidney,Chronic kidney disease
+cat___STATE_72.0,State: code 72,,0.006402606518855072,40,kidney,Chronic kidney disease
+cat__PERSDOC2_1.0,"Has personal doctor: Yes, one",,0.006309888680140578,41,kidney,Chronic kidney disease
+cat___STATE_6.0,State: California,,0.005718121059018193,42,kidney,Chronic kidney disease
+cat__DIFFWALK_2.0,Difficulty walking/climbing: No,DIFFWALK,0.005559215214215671,43,kidney,Chronic kidney disease
+cat__MEDCOST_2.0,Could not see doctor (cost): No,,0.004675543317409068,44,kidney,Chronic kidney disease
+cat__TOLDHI2_2.0,Told high cholesterol: No,TOLDHI2,0.004567793197992597,45,kidney,Chronic kidney disease
+cat__DRNKANY5_2.0,Any alcohol use: No,,0.004306488376666389,46,kidney,Chronic kidney disease
+cat___STATE_35.0,State: code 35,,0.0038464532841267583,47,kidney,Chronic kidney disease
+cat___STATE_28.0,State: code 28,,0.003811483300264807,48,kidney,Chronic kidney disease
+cat___STATE_1.0,State: code 1,,0.0033711765611834556,49,kidney,Chronic kidney disease
+cat___STATE_45.0,State: code 45,,0.0032737533096558885,50,kidney,Chronic kidney disease
+cat___STATE_36.0,State: code 36,,0.002720125324783071,51,kidney,Chronic kidney disease
+cat___STATE_34.0,State: code 34,,0.002646130168300832,52,kidney,Chronic kidney disease
+cat___STATE_9.0,State: code 9,,0.0025469013481908293,53,kidney,Chronic kidney disease
+cat__DECIDE_2.0,Cognitive difficulty (memory/concentration): No,DECIDE,0.002396130805030087,54,kidney,Chronic kidney disease
+cat___STATE_48.0,State: code 48,,0.002160480267878002,55,kidney,Chronic kidney disease
+cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,_HISPANC,0.0021561624841244576,56,kidney,Chronic kidney disease
+cat___STATE_41.0,State: code 41,,0.0021263923740884386,57,kidney,Chronic kidney disease
+cat___STATE_37.0,State: code 37,,0.001944498174173382,58,kidney,Chronic kidney disease
+cat___STATE_13.0,State: Georgia,,0.0017856082922956375,59,kidney,Chronic kidney disease
+cat___STATE_32.0,State: code 32,,0.0017687844425024004,60,kidney,Chronic kidney disease
+cat___STATE_66.0,State: code 66,,0.0017670854613453908,61,kidney,Chronic kidney disease
+cat__BPHIGH4_2.0,High blood pressure: No,BPHIGH4,0.0015272638656814383,62,kidney,Chronic kidney disease
+cat___STATE_56.0,State: code 56,,0.0012536346577393246,63,kidney,Chronic kidney disease
+cat__BPMEDS_2.0,Blood pressure medication: No,BPMEDS,0.0012203323172019337,64,kidney,Chronic kidney disease
+cat___MRACE1_5.0,Race: Native Hawaiian/Pacific Islander,_MRACE1,0.0011730269004489521,65,kidney,Chronic kidney disease
+cat__ASTHMA3_2.0,Asthma: No,,0.0011600715182123887,66,kidney,Chronic kidney disease
+cat___MRACE1_2.0,Race: Black,_MRACE1,0.0009754117568571311,67,kidney,Chronic kidney disease
+cat___STATE_44.0,State: code 44,,0.00089839630508196,68,kidney,Chronic kidney disease
+cat___STATE_27.0,State: code 27,,0.0008572051519286571,69,kidney,Chronic kidney disease
+cat___STATE_12.0,State: code 12,,0.0008351868080788505,70,kidney,Chronic kidney disease
+cat___STATE_29.0,State: code 29,,0.000796994616292421,71,kidney,Chronic kidney disease
+cat__BPHIGH4_4.0,"High blood pressure: Yes, during pregnancy only",BPHIGH4,0.000780702048936036,72,kidney,Chronic kidney disease
+cat___STATE_33.0,State: code 33,,0.0007394349970770394,73,kidney,Chronic kidney disease
+cat___STATE_51.0,State: code 51,,0.0007317924378704086,74,kidney,Chronic kidney disease
+cat___STATE_19.0,State: code 19,,0.0006613734619632909,75,kidney,Chronic kidney disease
+cat___MRACE1_4.0,Race: Asian,_MRACE1,0.00046088147612260657,76,kidney,Chronic kidney disease
+cat___STATE_31.0,State: code 31,,0.0004582047340845171,77,kidney,Chronic kidney disease
+cat___STATE_39.0,State: code 39,,0.00038540558152873913,78,kidney,Chronic kidney disease
+cat___STATE_20.0,State: code 20,,0.0003116735107141766,79,kidney,Chronic kidney disease
+cat__SMOKDAY2_2.0,Current smoking frequency: Some days,,0.00030949084653353207,80,kidney,Chronic kidney disease
+cat___MRACE1_1.0,Race: White,_MRACE1,0.0002337217686704228,81,kidney,Chronic kidney disease
+cat___HISPANC_2.0,Hispanic ethnicity: Non-Hispanic,_HISPANC,0.00020608688713600972,82,kidney,Chronic kidney disease
+cat___STATE_40.0,State: code 40,,0.00020095438557826348,83,kidney,Chronic kidney disease
+cat___STATE_10.0,State: code 10,,0.00020078243737224168,84,kidney,Chronic kidney disease
+cat___STATE_11.0,State: code 11,,0.00016547807292379912,85,kidney,Chronic kidney disease
+cat___STATE_54.0,State: code 54,,0.00016050301925054115,86,kidney,Chronic kidney disease
+cat___STATE_42.0,State: code 42,,0.00015994348114398114,87,kidney,Chronic kidney disease
+cat___MRACE1_3.0,Race: Native American/Alaska Native,_MRACE1,0.00015971209561638352,88,kidney,Chronic kidney disease
+cat___STATE_25.0,State: code 25,,0.00013924436830260427,89,kidney,Chronic kidney disease
+cat___STATE_16.0,State: code 16,,9.672876633118872e-05,90,kidney,Chronic kidney disease
+cat___STATE_22.0,State: code 22,,9.187090147680775e-05,91,kidney,Chronic kidney disease
+cat___STATE_55.0,State: code 55,,8.550007286982474e-05,92,kidney,Chronic kidney disease
+cat___MRACE1_6.0,Race: Other race,_MRACE1,8.175175543375877e-05,93,kidney,Chronic kidney disease
+cat___STATE_17.0,State: code 17,,7.924607274229222e-05,94,kidney,Chronic kidney disease
+cat___STATE_47.0,State: code 47,,5.530973378467229e-05,95,kidney,Chronic kidney disease
+cat___STATE_24.0,State: Maryland,,4.144681757877943e-05,96,kidney,Chronic kidney disease
+cat___STATE_30.0,State: code 30,,3.30565773176896e-05,97,kidney,Chronic kidney disease
+cat___STATE_46.0,State: code 46,,3.0425560420138255e-05,98,kidney,Chronic kidney disease
+cat__HLTHPLN1_2.0,Has health insurance: No,,2.3986062362187446e-05,99,kidney,Chronic kidney disease
+cat___MRACE1_7.0,Race: Multiracial,_MRACE1,2.1442862656322246e-05,100,kidney,Chronic kidney disease
+cat__SMOKE100_2.0,Ever smoked 100 cigarettes: No,,1.565574018490495e-05,101,kidney,Chronic kidney disease
+cat___STATE_21.0,State: code 21,,1.1766752957574812e-05,102,kidney,Chronic kidney disease
+cat___STATE_18.0,State: code 18,,0.0,103,kidney,Chronic kidney disease
+cat___STATE_50.0,State: code 50,,0.0,104,kidney,Chronic kidney disease
+cat___STATE_23.0,State: code 23,,0.0,105,kidney,Chronic kidney disease
+cat___STATE_38.0,State: code 38,,0.0,106,kidney,Chronic kidney disease
+cat__EXERANY2_2.0,Any exercise in past month: No,,0.0,107,kidney,Chronic kidney disease
+cat__DRNKANY5_1.0,Any alcohol use: Yes,,0.0,108,kidney,Chronic kidney disease
+cat___STATE_8.0,State: code 8,,0.0,109,kidney,Chronic kidney disease
+cat___STATE_5.0,State: code 5,,0.0,110,kidney,Chronic kidney disease
+cat___STATE_2.0,State: code 2,,0.0,111,kidney,Chronic kidney disease
+num__MENTHLTH,Mental health days,,0.6837404579348345,1,depression,Depression
+cat__SEX_1.0,Sex: Male,,0.19596498360286455,2,depression,Depression
+num__POORHLTH,Days poor health limited activities,,0.18492636489226905,3,depression,Depression
+num___AGEG5YR,Age group,,0.1718786846335167,4,depression,Depression
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.15381782637324456,5,depression,Depression
+num__GENHLTH,General health,,0.12166628425271035,6,depression,Depression
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.11606502785701134,7,depression,Depression
+cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,DECIDE,0.11131027724874702,8,depression,Depression
+num___INCOMG,Income category,,0.09531180246109629,9,depression,Depression
+num___EDUCAG,Education category,,0.08276716847825073,10,depression,Depression
+cat__ASTHMA3_1.0,Asthma: Yes,,0.07433258791043847,11,depression,Depression
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.06992417403940919,12,depression,Depression
+cat__HAVARTH3_2.0,Arthritis: No,,0.06723884314718251,13,depression,Depression
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.06364445405810687,14,depression,Depression
+num___BMI5,BMI,,0.06174558299294498,15,depression,Depression
+cat__SEX_2.0,Sex: Female,,0.04440265465227623,16,depression,Depression
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.043927879958205844,17,depression,Depression
+num__CHECKUP1,Time since last checkup,,0.042548919578392824,18,depression,Depression
+cat___MRACE1_1.0,Race: White,_MRACE1,0.03787909767148862,19,depression,Depression
+cat___MRACE1_2.0,Race: Black,_MRACE1,0.03153114979141554,20,depression,Depression
+num__PHYSHLTH,Physical health days,,0.030503431768046763,21,depression,Depression
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.028319500577247556,22,depression,Depression
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.027913532741468,23,depression,Depression
+cat__SMOKDAY2_1.0,Current smoking frequency: Every day,,0.026861427882480433,24,depression,Depression
+cat__SMOKE100_2.0,Ever smoked 100 cigarettes: No,,0.025810841905997188,25,depression,Depression
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.022568090936684278,26,depression,Depression
+cat__EXERANY2_1.0,Any exercise in past month: Yes,,0.021925731628417922,27,depression,Depression
+num__WEIGHT2,Weight (lb),,0.020774429376704363,28,depression,Depression
+cat__TOLDHI2_2.0,Told high cholesterol: No,TOLDHI2,0.019246890939769844,29,depression,Depression
+cat__SMOKDAY2_3.0,Current smoking frequency: Not at all,,0.01749630829567797,30,depression,Depression
+cat___STATE_6.0,State: California,,0.01628602080919927,31,depression,Depression
+cat__MEDCOST_2.0,Could not see doctor (cost): No,,0.015495394457846541,32,depression,Depression
+cat__DECIDE_2.0,Cognitive difficulty (memory/concentration): No,DECIDE,0.015191357301977884,33,depression,Depression
+cat__ASTHMA3_2.0,Asthma: No,,0.01496574375658919,34,depression,Depression
+cat___STATE_49.0,State: code 49,,0.014279790645616124,35,depression,Depression
+cat___STATE_34.0,State: code 34,,0.013770093910651255,36,depression,Depression
+cat__HLTHPLN1_1.0,Has health insurance: Yes,,0.013412547200396474,37,depression,Depression
+num__FRUIT1,Fruit intake (per day rate),FRUIT1,0.01306115183849011,38,depression,Depression
+cat___STATE_53.0,State: code 53,,0.011419772784768634,39,depression,Depression
+cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,_HISPANC,0.008921869211090202,40,depression,Depression
+cat___MRACE1_4.0,Race: Asian,_MRACE1,0.008782110500215745,41,depression,Depression
+num__HEIGHT3,Height (feet and inches code),,0.008135533862659042,42,depression,Depression
+cat___STATE_15.0,State: code 15,,0.007867925387211878,43,depression,Depression
+cat___STATE_41.0,State: code 41,,0.00786584934528705,44,depression,Depression
+cat___STATE_21.0,State: code 21,,0.0067822215196631334,45,depression,Depression
+cat___STATE_50.0,State: code 50,,0.006516813701284381,46,depression,Depression
+cat__BPMEDS_1.0,Blood pressure medication: Yes,BPMEDS,0.006363399966993948,47,depression,Depression
+cat___STATE_23.0,State: code 23,,0.006362565734650452,48,depression,Depression
+cat___STATE_66.0,State: code 66,,0.006346181339323997,49,depression,Depression
+cat__DRNKANY5_2.0,Any alcohol use: No,,0.006167196113255693,50,depression,Depression
+cat___STATE_27.0,State: code 27,,0.00604311289510827,51,depression,Depression
+cat___STATE_12.0,State: code 12,,0.005428405510230323,52,depression,Depression
+cat___STATE_30.0,State: code 30,,0.00532361777420322,53,depression,Depression
+cat___STATE_55.0,State: code 55,,0.005070578775636277,54,depression,Depression
+cat___STATE_45.0,State: code 45,,0.0050041875126950455,55,depression,Depression
+cat___STATE_36.0,State: code 36,,0.004264381624105823,56,depression,Depression
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.0041379175312395945,57,depression,Depression
+cat___MRACE1_7.0,Race: Multiracial,_MRACE1,0.0038992184588426647,58,depression,Depression
+cat__BPHIGH4_3.0,High blood pressure: Borderline/pre-hypertensive,BPHIGH4,0.003643262064868002,59,depression,Depression
+cat___STATE_25.0,State: code 25,,0.0032772884162464684,60,depression,Depression
+cat___STATE_40.0,State: code 40,,0.0030444923204898905,61,depression,Depression
+cat___STATE_33.0,State: code 33,,0.0029831780764859343,62,depression,Depression
+cat___STATE_35.0,State: code 35,,0.0029391106221572554,63,depression,Depression
+cat___STATE_17.0,State: code 17,,0.002902525172245742,64,depression,Depression
+cat___STATE_72.0,State: code 72,,0.00263461464482993,65,depression,Depression
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.0026089015820634784,66,depression,Depression
+cat___STATE_29.0,State: code 29,,0.002561650566071356,67,depression,Depression
+cat___STATE_22.0,State: code 22,,0.002532826154375518,68,depression,Depression
+cat___STATE_44.0,State: code 44,,0.0024920487085045313,69,depression,Depression
+cat___STATE_56.0,State: code 56,,0.002256927391076898,70,depression,Depression
+cat__DIFFWALK_2.0,Difficulty walking/climbing: No,DIFFWALK,0.002219073904616263,71,depression,Depression
+cat__HLTHPLN1_2.0,Has health insurance: No,,0.002124671295632297,72,depression,Depression
+cat___STATE_10.0,State: code 10,,0.0018457165369640655,73,depression,Depression
+cat___STATE_11.0,State: code 11,,0.0018027828774464258,74,depression,Depression
+cat___STATE_31.0,State: code 31,,0.0016592418049056104,75,depression,Depression
+cat___STATE_24.0,State: Maryland,,0.0015624894453364257,76,depression,Depression
+cat___STATE_16.0,State: code 16,,0.0015456320848053185,77,depression,Depression
+cat___STATE_28.0,State: code 28,,0.0015175582269153912,78,depression,Depression
+cat__BPMEDS_2.0,Blood pressure medication: No,BPMEDS,0.0014307495227441488,79,depression,Depression
+cat___STATE_54.0,State: code 54,,0.0013171602122901474,80,depression,Depression
+cat___STATE_42.0,State: code 42,,0.001301734364015191,81,depression,Depression
+cat___STATE_8.0,State: code 8,,0.0012521921858350822,82,depression,Depression
+cat___HISPANC_2.0,Hispanic ethnicity: Non-Hispanic,_HISPANC,0.0010614222595031221,83,depression,Depression
+cat___STATE_20.0,State: code 20,,0.0010076854877526414,84,depression,Depression
+cat___STATE_13.0,State: Georgia,,0.0009858010063428571,85,depression,Depression
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.000978589929123499,86,depression,Depression
+cat___MRACE1_3.0,Race: Native American/Alaska Native,_MRACE1,0.0009269323766393036,87,depression,Depression
+cat___MRACE1_5.0,Race: Native Hawaiian/Pacific Islander,_MRACE1,0.0007831340370409908,88,depression,Depression
+cat__EXERANY2_2.0,Any exercise in past month: No,,0.0007332319497606097,89,depression,Depression
+cat___MRACE1_6.0,Race: Other race,_MRACE1,0.0007153635403054953,90,depression,Depression
+cat___STATE_1.0,State: code 1,,0.0005459209597850331,91,depression,Depression
+cat__PERSDOC2_1.0,"Has personal doctor: Yes, one",,0.0005079964112794967,92,depression,Depression
+cat___STATE_51.0,State: code 51,,0.0005023579957113769,93,depression,Depression
+cat___STATE_32.0,State: code 32,,0.00046209878204421094,94,depression,Depression
+cat___STATE_26.0,State: code 26,,0.00023687293726091025,95,depression,Depression
+cat___STATE_48.0,State: code 48,,0.00021475922472125134,96,depression,Depression
+cat__BPHIGH4_2.0,High blood pressure: No,BPHIGH4,0.0002019454417901533,97,depression,Depression
+cat__SMOKDAY2_2.0,Current smoking frequency: Some days,,0.0001778196752955517,98,depression,Depression
+cat___STATE_2.0,State: code 2,,0.00014451271733578074,99,depression,Depression
+cat___STATE_19.0,State: code 19,,0.00013291128748553496,100,depression,Depression
+cat___STATE_39.0,State: code 39,,0.00010681211672956261,101,depression,Depression
+cat__BPHIGH4_4.0,"High blood pressure: Yes, during pregnancy only",BPHIGH4,9.046453427916691e-05,102,depression,Depression
+cat___STATE_9.0,State: code 9,,4.5687011006339054e-05,103,depression,Depression
+cat___STATE_18.0,State: code 18,,2.8654630759013716e-05,104,depression,Depression
+cat___STATE_38.0,State: code 38,,2.776957890934742e-05,105,depression,Depression
+cat___STATE_47.0,State: code 47,,2.7680082811672253e-05,106,depression,Depression
+cat___STATE_4.0,State: code 4,,1.3929405979263484e-05,107,depression,Depression
+cat___STATE_37.0,State: code 37,,9.422482630793197e-06,108,depression,Depression
+cat___STATE_5.0,State: code 5,,0.0,109,depression,Depression
+cat___STATE_46.0,State: code 46,,0.0,110,depression,Depression
+cat__DRNKANY5_1.0,Any alcohol use: Yes,,0.0,111,depression,Depression
+num__GENHLTH,General health,,0.6479335386704818,1,diabetes,Diabetes
+num___AGEG5YR,Age group,,0.594560251481687,2,diabetes,Diabetes
+num___BMI5,BMI,,0.28747415138046006,3,diabetes,Diabetes
+num__ALCDAY5,Alcohol drinking days (per day rate),,0.20914057284799228,4,diabetes,Diabetes
+cat__BPHIGH4_1.0,High blood pressure: Yes,BPHIGH4,0.20913964918524774,5,diabetes,Diabetes
+num__CHECKUP1,Time since last checkup,,0.1918839653853285,6,diabetes,Diabetes
+num__CHOLCHK,Cholesterol checked recently,CHOLCHK,0.16969722662456949,7,diabetes,Diabetes
+cat__TOLDHI2_1.0,Told high cholesterol: Yes,TOLDHI2,0.1291093067096829,8,diabetes,Diabetes
+cat__PERSDOC2_3.0,Has personal doctor: No,,0.12413708785160854,9,diabetes,Diabetes
+num__WEIGHT2,Weight (lb),,0.11555107751996106,10,diabetes,Diabetes
+cat__SEX_1.0,Sex: Male,,0.09279870844463052,11,diabetes,Diabetes
+num___INCOMG,Income category,,0.08812007611393752,12,diabetes,Diabetes
+num__VEGETAB1,Vegetable intake (per day rate),VEGETAB1,0.06620739457029699,13,diabetes,Diabetes
+num__FRUIT1,Fruit intake (per day rate),FRUIT1,0.057352792114757085,14,diabetes,Diabetes
+num__PHYSHLTH,Physical health days,,0.03733483442930644,15,diabetes,Diabetes
+cat___MRACE1_1.0,Race: White,_MRACE1,0.0362657516280999,16,diabetes,Diabetes
+num___EDUCAG,Education category,,0.03384717062804186,17,diabetes,Diabetes
+cat__TOLDHI2_2.0,Told high cholesterol: No,TOLDHI2,0.027967614680132594,18,diabetes,Diabetes
+cat__BPMEDS_1.0,Blood pressure medication: Yes,BPMEDS,0.02372853851885863,19,diabetes,Diabetes
+cat__SMOKE100_1.0,Ever smoked 100 cigarettes: Yes,,0.023519772229514308,20,diabetes,Diabetes
+cat__MEDCOST_1.0,Could not see doctor (cost): Yes,,0.01862831886779815,21,diabetes,Diabetes
+cat__DRNKANY5_2.0,Any alcohol use: No,,0.01852436246224593,22,diabetes,Diabetes
+cat__SEX_2.0,Sex: Female,,0.018172439424086362,23,diabetes,Diabetes
+cat__DIFFWALK_1.0,Difficulty walking/climbing: Yes,DIFFWALK,0.017428099094720723,24,diabetes,Diabetes
+cat__EXERANY2_1.0,Any exercise in past month: Yes,,0.016141348626736978,25,diabetes,Diabetes
+num__HEIGHT3,Height (feet and inches code),,0.014606216929402092,26,diabetes,Diabetes
+cat___HISPANC_1.0,Hispanic ethnicity: Hispanic,_HISPANC,0.01279800800834914,27,diabetes,Diabetes
+cat__ASTHMA3_1.0,Asthma: Yes,,0.011858525366441846,28,diabetes,Diabetes
+cat__HAVARTH3_1.0,Arthritis: Yes,,0.011715980628466086,29,diabetes,Diabetes
+cat__SMOKDAY2_3.0,Current smoking frequency: Not at all,,0.009330678734861066,30,diabetes,Diabetes
+cat___STATE_39.0,State: code 39,,0.005696865094641338,31,diabetes,Diabetes
+cat__BPHIGH4_3.0,High blood pressure: Borderline/pre-hypertensive,BPHIGH4,0.005575473857076591,32,diabetes,Diabetes
+num__MENTHLTH,Mental health days,,0.005199473384939257,33,diabetes,Diabetes
+cat___MRACE1_3.0,Race: Native American/Alaska Native,_MRACE1,0.005071390413680231,34,diabetes,Diabetes
+cat__HLTHPLN1_1.0,Has health insurance: Yes,,0.005041273491817203,35,diabetes,Diabetes
+num__POORHLTH,Days poor health limited activities,,0.00492181880725793,36,diabetes,Diabetes
+cat___STATE_8.0,State: code 8,,0.004913725069100313,37,diabetes,Diabetes
+cat___STATE_24.0,State: Maryland,,0.004575804417487188,38,diabetes,Diabetes
+cat__EXERANY2_2.0,Any exercise in past month: No,,0.0045255570433362004,39,diabetes,Diabetes
+cat___STATE_45.0,State: code 45,,0.004257242952300457,40,diabetes,Diabetes
+cat__HAVARTH3_2.0,Arthritis: No,,0.004066308888409307,41,diabetes,Diabetes
+cat___STATE_6.0,State: California,,0.004022402770623742,42,diabetes,Diabetes
+cat___STATE_13.0,State: Georgia,,0.003838047174873672,43,diabetes,Diabetes
+cat___STATE_48.0,State: code 48,,0.003627637074892219,44,diabetes,Diabetes
+cat___STATE_4.0,State: code 4,,0.003467238734300029,45,diabetes,Diabetes
+cat___STATE_15.0,State: code 15,,0.002873964560176372,46,diabetes,Diabetes
+cat__ASTHMA3_2.0,Asthma: No,,0.002831376191796394,47,diabetes,Diabetes
+cat__PERSDOC2_1.0,"Has personal doctor: Yes, one",,0.002736408637538369,48,diabetes,Diabetes
+cat__BPHIGH4_4.0,"High blood pressure: Yes, during pregnancy only",BPHIGH4,0.002451332434701426,49,diabetes,Diabetes
+cat___MRACE1_4.0,Race: Asian,_MRACE1,0.0024348848284066592,50,diabetes,Diabetes
+cat__SMOKE100_2.0,Ever smoked 100 cigarettes: No,,0.0023900172416863093,51,diabetes,Diabetes
+cat___STATE_31.0,State: code 31,,0.002373866792819533,52,diabetes,Diabetes
+cat___STATE_27.0,State: code 27,,0.002147263820119632,53,diabetes,Diabetes
+cat___STATE_30.0,State: code 30,,0.0018714252138740618,54,diabetes,Diabetes
+cat___MRACE1_2.0,Race: Black,_MRACE1,0.001866553668074452,55,diabetes,Diabetes
+cat__DIFFWALK_2.0,Difficulty walking/climbing: No,DIFFWALK,0.0016806641595319154,56,diabetes,Diabetes
+cat___STATE_2.0,State: code 2,,0.0015874588579299568,57,diabetes,Diabetes
+cat___STATE_49.0,State: code 49,,0.0015356804913215887,58,diabetes,Diabetes
+cat___MRACE1_6.0,Race: Other race,_MRACE1,0.001532172965490917,59,diabetes,Diabetes
+cat__BPMEDS_2.0,Blood pressure medication: No,BPMEDS,0.0015241052442095159,60,diabetes,Diabetes
+cat___STATE_50.0,State: code 50,,0.001520504366746681,61,diabetes,Diabetes
+cat__DECIDE_1.0,Cognitive difficulty (memory/concentration): Yes,DECIDE,0.0015045504492758488,62,diabetes,Diabetes
+cat___HISPANC_2.0,Hispanic ethnicity: Non-Hispanic,_HISPANC,0.0013805728133144239,63,diabetes,Diabetes
+cat__SMOKDAY2_2.0,Current smoking frequency: Some days,,0.001346621716845655,64,diabetes,Diabetes
+cat__PERSDOC2_2.0,"Has personal doctor: Yes, more than one",,0.0013440109245551207,65,diabetes,Diabetes
+cat___STATE_47.0,State: code 47,,0.0013386837722578876,66,diabetes,Diabetes
+cat__MEDCOST_2.0,Could not see doctor (cost): No,,0.001265255419555193,67,diabetes,Diabetes
+cat___STATE_72.0,State: code 72,,0.001200141260119812,68,diabetes,Diabetes
+cat___STATE_55.0,State: code 55,,0.0011424159616713915,69,diabetes,Diabetes
+cat___STATE_20.0,State: code 20,,0.001056531025041561,70,diabetes,Diabetes
+cat___STATE_41.0,State: code 41,,0.00104065334698422,71,diabetes,Diabetes
+cat___MRACE1_7.0,Race: Multiracial,_MRACE1,0.0010305834678330736,72,diabetes,Diabetes
+cat__SMOKDAY2_1.0,Current smoking frequency: Every day,,0.0010298031322541193,73,diabetes,Diabetes
+cat___STATE_21.0,State: code 21,,0.0009965365576676541,74,diabetes,Diabetes
+cat___STATE_33.0,State: code 33,,0.0009165031972258089,75,diabetes,Diabetes
+cat___STATE_10.0,State: code 10,,0.0008960433105964266,76,diabetes,Diabetes
+cat___STATE_23.0,State: code 23,,0.0008906088422068017,77,diabetes,Diabetes
+cat___STATE_46.0,State: code 46,,0.0008504191774780756,78,diabetes,Diabetes
+cat___STATE_35.0,State: code 35,,0.0008168982142613931,79,diabetes,Diabetes
+cat___MRACE1_5.0,Race: Native Hawaiian/Pacific Islander,_MRACE1,0.0007177167946699568,80,diabetes,Diabetes
+cat___STATE_22.0,State: code 22,,0.00047351498804350315,81,diabetes,Diabetes
+cat___STATE_66.0,State: code 66,,0.00034072153003992205,82,diabetes,Diabetes
+cat___STATE_53.0,State: code 53,,0.0003141354500664675,83,diabetes,Diabetes
+cat___STATE_25.0,State: code 25,,0.00027647926490292825,84,diabetes,Diabetes
+cat___STATE_29.0,State: code 29,,0.00027473671973883026,85,diabetes,Diabetes
+cat___STATE_40.0,State: code 40,,0.00025375131217345763,86,diabetes,Diabetes
+cat__DECIDE_2.0,Cognitive difficulty (memory/concentration): No,DECIDE,0.00023864145791231635,87,diabetes,Diabetes
+cat___STATE_37.0,State: code 37,,0.00022139694718993367,88,diabetes,Diabetes
+cat___STATE_54.0,State: code 54,,0.00022128227671067426,89,diabetes,Diabetes
+cat___STATE_1.0,State: code 1,,0.0002207217453896944,90,diabetes,Diabetes
+cat___STATE_28.0,State: code 28,,0.00019511375342272093,91,diabetes,Diabetes
+cat___STATE_5.0,State: code 5,,0.0001896031988459285,92,diabetes,Diabetes
+cat___STATE_12.0,State: code 12,,0.00018489207380124347,93,diabetes,Diabetes
+cat___STATE_38.0,State: code 38,,0.00016987872852112002,94,diabetes,Diabetes
+cat__BPHIGH4_2.0,High blood pressure: No,BPHIGH4,0.00014809255290744572,95,diabetes,Diabetes
+cat___STATE_34.0,State: code 34,,0.00014096815896713565,96,diabetes,Diabetes
+cat___STATE_42.0,State: code 42,,0.00014088190891975704,97,diabetes,Diabetes
+cat___STATE_18.0,State: code 18,,0.00012139067253387852,98,diabetes,Diabetes
+cat___STATE_16.0,State: code 16,,0.00012107481920887539,99,diabetes,Diabetes
+cat___STATE_44.0,State: code 44,,0.00011616630277113187,100,diabetes,Diabetes
+cat___STATE_17.0,State: code 17,,0.00011101143852490047,101,diabetes,Diabetes
+cat___STATE_9.0,State: code 9,,9.855388768429126e-05,102,diabetes,Diabetes
+cat__HLTHPLN1_2.0,Has health insurance: No,,9.408415966975951e-05,103,diabetes,Diabetes
+cat___STATE_56.0,State: code 56,,8.266586528113838e-05,104,diabetes,Diabetes
+cat___STATE_36.0,State: code 36,,7.098757654370583e-05,105,diabetes,Diabetes
+cat___STATE_19.0,State: code 19,,6.303805562596931e-05,106,diabetes,Diabetes
+cat___STATE_11.0,State: code 11,,4.902675867331777e-05,107,diabetes,Diabetes
+cat___STATE_51.0,State: code 51,,4.549657313699018e-05,108,diabetes,Diabetes
+cat___STATE_32.0,State: code 32,,3.6686339740423336e-05,109,diabetes,Diabetes
+cat___STATE_26.0,State: code 26,,3.119683231246621e-05,110,diabetes,Diabetes
+cat__DRNKANY5_1.0,Any alcohol use: Yes,,0.0,111,diabetes,Diabetes
